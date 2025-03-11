@@ -4,6 +4,35 @@ namespace App\Http\Messages;
 
 class ErrorMessages
 {
+    public const NOT_FOUND = 'No se encontro el recurso';
+    public const UNAUTHORIZED = 'No tiene permisos para realizar esta accion';
+    public const BAD_REQUEST = 'Solicitud invalida';
 
+    public const UNPROCESSABLE_ENTITY = 'Error de validacion';
+    public const INVALID_CREDENTIALS = "Credenciales Invalidas";
+    public const USER_ALREADY_EXISTS = 'El usuario ya existe';
+    public const EMAIL_ALREADY_EXISTS = 'El correo ya fue asociado a otro user';
+
+    public const NOT_FOUND_ROL = 'EL usuario no fue registrado como ';
+
+    public const INVALID_PASSWORD = 'El password actual es incorrecto';
+    public const USER_NOT_HAVE_PASSWORD = 'El usuario no se registro con contraseña';
+
+    const USER_NOT_FOUND = 'Usuario no encontrado';
+
+
+    //BILLBOARD
+    const BILLBOARD_NOT_FOUND = 'Valla no encontrado';
+    const BILLBOARD_NOT_AVAILABLE = 'Valla no habilitada';
+
+
+    //ACTIVITY
+    const ACTIVITY_NOT_FOUND = 'Actividad no encontrada';
+
+    //SALE
+    const SALE_NOT_FOUND = 'Venta no encontrada';
+
+    //QUOTES
+    const QUOTE_NOT_FOUND = 'Cotización no encontrada';
 
 }
