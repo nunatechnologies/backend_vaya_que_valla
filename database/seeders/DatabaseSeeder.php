@@ -16,11 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolSeeder::class,
             UserSeeder::class,
-            CitySeeder::class,
-            BillboardTypeSeeder::class,
-            BillboardStructureSeeder::class,
-            BillboardSeeder::class,
-            BillboardFaceSeeder::class
+            BillboardMasterSeeder::class
         ]);
     }
 }

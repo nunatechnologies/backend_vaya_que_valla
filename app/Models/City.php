@@ -11,6 +11,11 @@ class City extends Model
 
     protected $fillable = ['name', 'department'];
 
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
+
     public function billboards()
     {
         return $this->hasMany(Billboard::class);

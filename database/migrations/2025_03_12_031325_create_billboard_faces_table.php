@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('billboard_faces', function (Blueprint $table) {
             $table->id();
             $table->foreignId('billboard_id')->constrained();
-            $table->enum('face', ['A', 'B', 'C', 'D']);
+            $table->string('face',10);
             $table->string('location_detail'); // ie: "Face see to avenue Beni"
             $table->timestamps();
         });
