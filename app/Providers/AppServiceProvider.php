@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Repositories\Billboard\BillboardRepository;
 use App\Repositories\Billboard\BillboardRepositoryInterface;
+use App\Repositories\BillboardFace\BillboardFaceRepository;
+use App\Repositories\BillboardFace\BillboardFaceRepositoryInterface;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
@@ -18,6 +20,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             UserRepositoryInterface::class,
             UserRepository::class,
+        );
+
+        $this->app->bind(
+            BillboardFaceRepositoryInterface::class,
+            BillboardFaceRepository::class
         );
 
         $this->app->bind(

@@ -29,7 +29,7 @@ class BillboardResource extends JsonResource
             'longitude' => $this->longitude,
             'billboard_type_id' => $this->billboard_type_id,
             'city_id' => $this->city_id,
-            'advertiser' => new UserResource($this)
+            'advertiser' => new UserResource($this->advertiser)
         ];
     }
 }

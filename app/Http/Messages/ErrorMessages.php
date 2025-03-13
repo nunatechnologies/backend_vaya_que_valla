@@ -20,7 +20,10 @@ class ErrorMessages
 
     const USER_NOT_FOUND = 'Usuario no encontrado';
 
-
+    //BILLBOARD FACE
+    const BILLBOARD_FACE_NOT_FOUND = 'Cara de valla no encontrado';
+    const BILLBOARD_FACE_NOT_AVAILABLE = 'Vara de valla no habilitada';
+    
     //BILLBOARD
     const BILLBOARD_NOT_FOUND = 'Valla no encontrado';
     const BILLBOARD_NOT_AVAILABLE = 'Valla no habilitada';

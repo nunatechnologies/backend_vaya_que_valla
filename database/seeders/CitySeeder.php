@@ -14,6 +14,6 @@ class CitySeeder extends Seeder
     public function run(): void
     {
         City::create(['name' => 'Trinidad', 'department' => 'Beni']);
-        City::create(['name' => 'Santa Cruz De la Sierra', 'department' => 'Santa Cruz']);
+        City::create(['name' => 'Santa Cruz', 'department' => 'Santa Cruz']);
     }
 }

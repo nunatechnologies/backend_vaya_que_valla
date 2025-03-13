@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('city_id')->constrained();
             $table->foreignId('billboard_structure_id')->constrained();
             $table->enum('entity_status', ['active', 'inactive']);
-            $table->enum('size', ['small', 'medium', 'large']);
+            $table->string('size');
             $table->decimal('price_per_month', 10, 2);
             $table->text('traffic_data')->nullable();
             $table->string('image')->nullable();

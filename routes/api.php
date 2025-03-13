@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BillboardController;
+use App\Http\Controllers\BillboardFaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,4 +24,5 @@ Route::group(['prefix' => 'authen'], function () {
 
 Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     Route::get('/billboards', [BillboardController::class, 'list_billboard_pagination']);
+    Route::get('/billboard-faces', [BillboardFaceController::class, 'list_billboard_face_pagination']);
 });

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             BillboardTypeSeeder::class,
             BillboardStructureSeeder::class,
             BillboardSeeder::class,
+            BillboardFaceSeeder::class
         ]);
     }
 }
