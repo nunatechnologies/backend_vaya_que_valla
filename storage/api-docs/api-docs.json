@@ -25,12 +25,12 @@
                                     "email": {
                                         "type": "string",
                                         "format": "email",
-                                        "example": "Administrador@gmail.com"
+                                        "example": "user1@example.com"
                                     },
                                     "password": {
                                         "type": "string",
                                         "format": "password",
-                                        "example": "123456789"
+                                        "example": "12345678"
                                     }
                                 },
                                 "type": "object"

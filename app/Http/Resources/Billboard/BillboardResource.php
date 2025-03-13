@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\Billboard;
 
+use App\Http\Resources\BillboardType\BillboardTypeResource;
+use App\Http\Resources\City\CityResource;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -27,8 +29,8 @@ class BillboardResource extends JsonResource
             'image' => $this->image,
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
-            'billboard_type_id' => $this->billboard_type_id,
-            'city_id' => $this->city_id,
+            'billboard_type' => new BillboardTypeResource($this->billboardType),
+            'city' => new CityResource($this->city),
             'advertiser' => new UserResource($this->advertiser)
         ];
     }
