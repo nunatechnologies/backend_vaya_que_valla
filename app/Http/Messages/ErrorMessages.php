@@ -28,6 +28,11 @@ class ErrorMessages
     const BILLBOARD_NOT_FOUND = 'Valla no encontrado';
     const BILLBOARD_NOT_AVAILABLE = 'Valla no habilitada';
 
+    //BILLBOARD TYPE
+    const BILLBOARD_TYPE_NOT_FOUND = 'Tipo de valla no encontrada';
+
+    //CITY
+    const CITY_NOT_FOUND = 'Ciudad no encontrada';
 
     //ACTIVITY
     const ACTIVITY_NOT_FOUND = 'Actividad no encontrada';
