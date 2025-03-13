@@ -6,13 +6,13 @@ use App\Http\Controllers\BillboardFaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['api', 'jwt.auth'])->get('/me', function (Request $request) {
-    return response()->json(auth()->user());
-});
+// Route::middleware(['api', 'jwt.auth'])->get('/me', function (Request $request) {
+//     return response()->json(auth()->user());
+// });
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:sanctum');
 
 Route::group(['prefix' => 'authen'], function () {
     Route::post('login', [AuthController::class, 'login']);
