@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Repositories\{{Object}};
+
+use App\Models\{{Object}};
+use App\Repositories\{{Object}}\{{Object}}RepositoryInterface;
+
+class {{Object}}Repository implements {{Object}}RepositoryInterface
+{
+    public function all()
+    {
+        return {{Object}}::all();
+    }
+
+    public function allquery()
+    {
+        return {{Object}}::query();
+    }
+
+    public function create(array $data)
+    {
+        return {{Object}}::create($data);
+    }
+
+    public function update($id, array $data)
+    {
+        $object = $this->find($id);
+        $object->update($data);
+        return $object;
+    }
+
+    public function find($id)
+    {
+        return {{Object}}::find($id);
+    }
+}

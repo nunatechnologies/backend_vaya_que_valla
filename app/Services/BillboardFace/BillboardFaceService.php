@@ -8,56 +8,49 @@ use App\Repositories\BillboardFace\BillboardFaceRepositoryInterface;
 
 class BillboardFaceService
 {
-    protected $billboardFaceRepository;
+    protected $billboardfaceRepository;
 
-    public function __construct(BillboardFaceRepositoryInterface $billboardFaceRepository)
+    public function __construct(BillboardFaceRepositoryInterface $billboardfaceRepository)
     {
-        $this->billboardFaceRepository = $billboardFaceRepository;
+        $this->billboardfaceRepository = $billboardfaceRepository;
     }
 
     public function getBillboardFaceById($id){
         return $this->isBillboardFaceExists($id);
     }
 
+    private function isBillboardFaceExists($id)
+    {
+        return $this->billboardfaceRepository->find($id)
+            ?? throw new \Exception(ErrorMessages::OBJECT_NOT_FOUND, 404);
+    }
+
     public function createBillboardFace($data)
     {
         return DB::transaction(function () use ($data) {
-            $billboard = $this->billboardFaceRepository->create($data);
-            return $billboard;
+            return $this->billboardfaceRepository->create($data);
         });
     }
 
     public function updateBillboardFace($id, $data)
     {
-        return  $this->billboardFaceRepository->update($id, $data);
-    }
-
-    private function isBillboardFaceExists($billboardFaceId)
-    {
-        return $this->billboardFaceRepository->find($billboardFaceId)
-            ?? throw new \Exception(ErrorMessages::BILLBOARD_FACE_NOT_FOUND, 404);
+        return $this->billboardfaceRepository->update($id, $data);
     }
 
     public function getAllBillboardFacePagination($datos)
     {
-        $query = $this->billboardFaceRepository->allquery();
+        $query = $this->billboardfaceRepository->allquery();
 
         if ($datos->filled('search')) {
-            $searchTerm = $datos->query('search');
-            $query->where(function ($query) use ($searchTerm) {
-                $query->where('face', 'like', '%' . $searchTerm . '%')
-                ->orWhere('location_detail', 'like', '%' . $searchTerm . '%');
-            });
+            $query->where('face', 'like', '%' . $datos->query('search') . '%')
+				->orWhere('location_detail', 'like', '%' . $datos->query('search') . '%');
+
         }
 
         if ($datos->query('sortBy') && $datos->query('orderBy')) {
-            $sortBy = $datos->query('sortBy');
-            $orderBy = $datos->query('orderBy');
-            $query->orderBy($sortBy, $orderBy);
+            $query->orderBy($datos->query('sortBy'), $datos->query('orderBy'));
         }
 
-        $itemsPerPage = $datos->query('itemsPerPage') ?? 10;
-        $page = $datos->query('page') ?? 1;
-        return $query->paginate($itemsPerPage, ['*'], 'page', $page);
+        return $query->paginate($datos->query('itemsPerPage') ?? 10);
     }
 }

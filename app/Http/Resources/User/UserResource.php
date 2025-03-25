@@ -17,18 +17,7 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'last_name' => $this->last_name,
-            'profile_image' => $this->profile_image,
             'email' => $this->email,
-            'position' => $this->position,
-            'phone' => $this->phone,
-            'cod_phone' => $this->cod_phone,
-            'gender' => $this->gender,
-            'entity_status' => $this->entity_status,
-            //todo: poner los branch. un usuario tiene una sola branch
-
-            //todo: que se vean los roles
-            // 'roles'=> $this->getRoleNames(),
         ];
     }
 }

@@ -2,32 +2,158 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\SeveritySystemLog;
 use App\Http\Messages\SuccessMessages;
 use App\Http\Requests\PaginationRequest;
 use App\Http\Resources\BillboardFace\BillboardFaceResource;
 use App\Http\Resources\PaginacionResource;
 use App\Http\Responses\ApiResponse;
-use App\Models\BillboardFace;
 use App\Services\BillboardFace\BillboardFaceService;
 use App\Services\SystemLogService;
-use Illuminate\Http\Request;
+use App\Http\Requests\BillboardFace\BillboardFaceRequest;
+use App\Http\Requests\BillboardFace\PatchBillboardFaceRequest;
 
 class BillboardFaceController extends Controller
 {
-    protected $billboardFaceService;
+    protected $billboardfaceService;
     protected $systemLogService;
 
-    public function __construct(BillboardFaceService $billboardFaceService, SystemLogService $systemLogService)
+    public function __construct(BillboardFaceService $billboardfaceService, SystemLogService $systemLogService)
     {
-        $this->billboardFaceService = $billboardFaceService;
+        $this->billboardfaceService = $billboardfaceService;
         $this->systemLogService = $systemLogService;
+    }
+    
+    /**
+     * @OA\Post(
+     *     path="/api/billboard_faces",
+     *     summary="Register billboardface",
+     *     tags={"Billboard_faces"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *          @OA\JsonContent(
+	 *             required={"billboard_id", "face", "location_detail"},
+	 *                 @OA\Property(property="billboard_id", type="number", maxLength=20),
+	 *                 @OA\Property(property="face", type="string", maxLength=10),
+	 *                 @OA\Property(property="location_detail", type="string", maxLength=255),
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="BillboardFace registered successfully"),
+     *     @OA\Response(response=400, description="Invalid request")
+     * )
+     */
+
+    public function register(BillboardFaceRequest $BillboardFaceRequest)
+    {
+        try {
+            $data = $this->billboardfaceService->createBillboardFace($BillboardFaceRequest->all());
+            $this->systemLogService->logActivity('billboardface','BillboardFace registrado',
+                SeveritySystemLog::info->name,
+                $data
+            );
+            return ApiResponse::success(SuccessMessages::CREATE_SUCCESS, new BillboardFaceResource($data), [], 201);
+        } catch (\Exception $e) {
+            $this->systemLogService->logActivity(
+                'billboardface',
+                'Registro de BillboardFace Fallido',
+                SeveritySystemLog::error->name,
+            );
+            return ApiResponse::error($e->getMessage(), $e, [], 500);
+        }
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/api/billboard_faces/{id}",
+     *     summary="Update billboardface",
+     *     tags={"Billboard_faces"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the billboardface to update",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         request="PatchBillboardFaceRequest",
+     *         required=true,
+     *         description="Updated billboardface data",
+     *         @OA\JsonContent(
+	 *             required={"billboard_id", "face", "location_detail"},
+	 *                 @OA\Property(property="billboard_id", type="number", maxLength=20),
+	 *                 @OA\Property(property="face", type="string", maxLength=10),
+	 *                 @OA\Property(property="location_detail", type="string", maxLength=255),
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="BillboardFace updated successfully"),
+     *     @OA\Response(response=500, description="Internal server error")
+     * )
+     */
+
+    public function update_billboardface(PatchBillboardFaceRequest $billboardfaceRequest, $id)
+    {
+        try {
+            $billboardface = $this->billboardfaceService->updateBillboardFace($id, $billboardfaceRequest->validated());
+            $this->systemLogService->logActivity(
+                'billboardface',
+                'BillboardFace actualizado',
+                SeveritySystemLog::info->name,
+                $billboardface
+            );
+            return ApiResponse::success(SuccessMessages::UPDATE_SUCCESS, new BillboardFaceResource($billboardface), [], 200);
+        } catch (\Exception $e) {
+            $this->systemLogService->logActivity(
+                'billboardface',
+                'Actualización de billboardface Fallida',
+                SeveritySystemLog::error->name,
+            );
+            return ApiResponse::error($e->getMessage(), null, [], $e->getCode());
+        }
     }
 
     /**
      * @OA\Get(
-     *     path="/api/billboard-faces",
-     *     summary="List billboard faces with pagination",
-     *     tags={"Billboard face"},
+     *     path="/api/billboard_faces/{id}",
+     *     summary="Get billboardface by ID",
+     *     tags={"Billboard_faces"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the billboardface",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="BillboardFace found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="BillboardFace found"),
+     *             @OA\Property(property="organization", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="BillboardFace not found"),
+     *     @OA\Response(response=500, description="Internal server error"),
+     * )
+     */
+
+    public function get_billboardface($id)
+    {
+        try {
+            $billboardface = $this->billboardfaceService->getBillboardFaceByid($id);
+            return ApiResponse::success(SuccessMessages::SUCCESSFUL, new BillboardFaceResource($billboardface), [], 200);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), null, [], $e->getCode());
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/billboard_faces",
+     *     summary="List billboard_faces with pagination",
+     *     tags={"Billboard_faces"},
      *     @OA\Parameter(
      *         name="search",
      *         in="query",
@@ -67,12 +193,12 @@ class BillboardFaceController extends Controller
      *     @OA\Response(response=500, description="Internal server error")
      * )
      */
-    public function list_billboard_face_pagination(PaginationRequest $pagerequest)
+    public function list_billboardface_pagination(PaginationRequest $pagerequest)
     {
         try {
-            $billboardFaces = $this->billboardFaceService->getAllBillboardFacePagination($pagerequest);
-            $billboardFaces->data = BillboardFaceResource::collection($billboardFaces->getCollection());
-            return ApiResponse::success(SuccessMessages::SUCCESSFUL,  new PaginacionResource($billboardFaces), [], 200);
+            $objects= $this->billboardfaceService->getAllBillboardFacePagination($pagerequest);
+            $objects->data = BillboardFaceResource::collection($objects->getCollection());
+            return ApiResponse::success(SuccessMessages::SUCCESSFUL,  new PaginacionResource($objects), [], 200);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), $e, [], $e->getCode());
         }

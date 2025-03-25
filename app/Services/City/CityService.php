@@ -15,27 +15,26 @@ class CityService
         $this->cityRepository = $cityRepository;
     }
 
-    public function getBillboardById($id){
+    public function getCityById($id){
         return $this->isCityExists($id);
+    }
+
+    private function isCityExists($id)
+    {
+        return $this->cityRepository->find($id)
+            ?? throw new \Exception(ErrorMessages::OBJECT_NOT_FOUND, 404);
     }
 
     public function createCity($data)
     {
         return DB::transaction(function () use ($data) {
-            $city = $this->cityRepository->create($data);
-            return $city;
+            return $this->cityRepository->create($data);
         });
     }
 
     public function updateCity($id, $data)
     {
-        return  $this->cityRepository->update($id, $data);
-    }
-
-    private function isCityExists($cityId)
-    {
-        return $this->cityRepository->find($cityId)
-            ?? throw new \Exception(ErrorMessages::CITY_NOT_FOUND, 404);
+        return $this->cityRepository->update($id, $data);
     }
 
     public function getAllCityPagination($datos)
@@ -43,20 +42,14 @@ class CityService
         $query = $this->cityRepository->allquery();
 
         if ($datos->filled('search')) {
-            $searchTerm = $datos->query('search');
-            $query->where(function ($query) use ($searchTerm) {
-                $query->where('name', 'like', '%' . $searchTerm . '%');
-            });
+            $query->where('department', 'like', '%' . $datos->query('search') . '%');
+
         }
 
         if ($datos->query('sortBy') && $datos->query('orderBy')) {
-            $sortBy = $datos->query('sortBy');
-            $orderBy = $datos->query('orderBy');
-            $query->orderBy($sortBy, $orderBy);
+            $query->orderBy($datos->query('sortBy'), $datos->query('orderBy'));
         }
 
-        $itemsPerPage = $datos->query('itemsPerPage') ?? 10;
-        $page = $datos->query('page') ?? 1;
-        return $query->paginate($itemsPerPage, ['*'], 'page', $page);
+        return $query->paginate($datos->query('itemsPerPage') ?? 10);
     }
 }

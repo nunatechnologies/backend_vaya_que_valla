@@ -19,23 +19,22 @@ class BillboardService
         return $this->isBillboardExists($id);
     }
 
+    private function isBillboardExists($id)
+    {
+        return $this->billboardRepository->find($id)
+            ?? throw new \Exception(ErrorMessages::OBJECT_NOT_FOUND, 404);
+    }
+
     public function createBillboard($data)
     {
         return DB::transaction(function () use ($data) {
-            $billboard = $this->billboardRepository->create($data);
-            return $billboard;
+            return $this->billboardRepository->create($data);
         });
     }
 
     public function updateBillboard($id, $data)
     {
-        return  $this->billboardRepository->update($id, $data);
-    }
-
-    private function isBillboardExists($billboardId)
-    {
-        return $this->billboardRepository->find($billboardId)
-            ?? throw new \Exception(ErrorMessages::BILLBOARD_NOT_FOUND, 404);
+        return $this->billboardRepository->update($id, $data);
     }
 
     public function getAllBillboardPagination($datos)
@@ -43,20 +42,17 @@ class BillboardService
         $query = $this->billboardRepository->allquery();
 
         if ($datos->filled('search')) {
-            $searchTerm = $datos->query('search');
-            $query->where(function ($query) use ($searchTerm) {
-                $query->where('name', 'like', '%' . $searchTerm . '%');
-            });
+            $query->where('name', 'like', '%' . $datos->query('search') . '%')
+				->orWhere('status', 'like', '%' . $datos->query('search') . '%')
+				->orWhere('location', 'like', '%' . $datos->query('search') . '%')
+				->orWhere('entity_status', 'like', '%' . $datos->query('search') . '%');
+
         }
 
         if ($datos->query('sortBy') && $datos->query('orderBy')) {
-            $sortBy = $datos->query('sortBy');
-            $orderBy = $datos->query('orderBy');
-            $query->orderBy($sortBy, $orderBy);
+            $query->orderBy($datos->query('sortBy'), $datos->query('orderBy'));
         }
 
-        $itemsPerPage = $datos->query('itemsPerPage') ?? 10;
-        $page = $datos->query('page') ?? 1;
-        return $query->paginate($itemsPerPage, ['*'], 'page', $page);
+        return $query->paginate($datos->query('itemsPerPage') ?? 10);
     }
 }

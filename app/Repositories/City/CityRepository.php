@@ -24,9 +24,9 @@ class CityRepository implements CityRepositoryInterface
 
     public function update($id, array $data)
     {
-        $city= $this->find($id);
-        $city->update($data);
-        return $city;
+        $object = $this->find($id);
+        $object->update($data);
+        return $object;
     }
 
     public function find($id)

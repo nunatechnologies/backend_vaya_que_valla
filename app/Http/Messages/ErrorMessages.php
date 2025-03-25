@@ -43,4 +43,7 @@ class ErrorMessages
     //QUOTES
     const QUOTE_NOT_FOUND = 'Cotización no encontrada';
 
+    //GENERIC RESPONSE
+    const OBJECT_NOT_FOUND = 'objeto encontrada';
+
 }

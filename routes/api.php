@@ -5,6 +5,13 @@ use App\Http\Controllers\BillboardController;
 use App\Http\Controllers\BillboardFaceController;
 use App\Http\Controllers\BillboardTypeController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\PeopleController;
+use App\Http\Controllers\PersonController;
+use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\RentalController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,8 +32,59 @@ Route::group(['prefix' => 'authen'], function () {
 });
 
 Route::group(['middleware' => ['api', 'jwt.auth']], function () {
+    Route::get('/users', [UserController::class, 'list_user_pagination']);
+    
+    //Cities
     Route::get('/cities', [CityController::class, 'list_city_pagination']);
-    Route::get('/billboard-types', [BillboardTypeController::class, 'list_billboard_type_pagination']);
+    Route::post('/cities', [CityController::class, 'register']);
+    Route::get('/cities/{id}', [CityController::class, 'get_city']);
+    Route::put('/cities/{id}', [CityController::class, 'update_city']);
+
+    //Quotes
+    Route::get('/quotes', [QuoteController::class, 'list_quote_pagination']);
+    Route::post('/quotes', [QuoteController::class, 'register']);
+    Route::get('/quotes/{id}', [QuoteController::class, 'get_quote']);
+    Route::put('/quotes/{id}', [QuoteController::class, 'update_quote']);
+
+    //People
+    Route::get('/people', [PersonController::class, 'list_person_pagination']);
+    Route::post('/people', [PersonController::class, 'register']);
+    Route::get('/people/{id}', [PersonController::class, 'get_person']);
+    Route::put('/people/{id}', [PersonController::class, 'update_person']);
+
+    //Organizations
+    Route::get('/organizations', [OrganizationController::class, 'list_organization_pagination']);
+    Route::post('/organizations', [OrganizationController::class, 'register']);
+    Route::get('/organizations/{id}', [OrganizationController::class, 'get_organization']);
+    Route::put('/organizations/{id}', [OrganizationController::class, 'update_organization']);
+
+    //Rentals
+    Route::get('/rentals', [RentalController::class, 'list_rental_pagination']);
+    Route::post('/rentals', [RentalController::class, 'register']);
+    Route::get('/rentals/{id}', [RentalController::class, 'get_rental']);
+    Route::put('/rentals/{id}', [RentalController::class, 'update_rental']);
+
+    //Billboard types
+    Route::get('/billboard_types', [BillboardTypeController::class, 'list_billboardtype_pagination']);
+    Route::post('/billboard_types', [BillboardTypeController::class, 'register']);
+    Route::get('/billboard_types/{id}', [BillboardTypeController::class, 'get_billboardtype']);
+    Route::put('/billboard_types/{id}', [BillboardTypeController::class, 'update_billboardtype']);
+
+    //Billboards
     Route::get('/billboards', [BillboardController::class, 'list_billboard_pagination']);
-    Route::get('/billboard-faces', [BillboardFaceController::class, 'list_billboard_face_pagination']);
+    Route::post('/billboards', [BillboardController::class, 'register']);
+    Route::get('/billboards/{id}', [BillboardController::class, 'get_billboard']);
+    Route::put('/billboards/{id}', [BillboardController::class, 'update_billboard']);
+
+    //Billboard faces
+    Route::get('/billboard_faces', [BillboardFaceController::class, 'list_billboardface_pagination']);
+    Route::post('/billboard_faces', [BillboardFaceController::class, 'register']);
+    Route::get('/billboard_faces/{id}', [BillboardFaceController::class, 'get_billboardface']);
+    Route::put('/billboard_faces/{id}', [BillboardFaceController::class, 'update_billboardface']);
+    
+    //Roles
+    Route::get('/roles', [RoleController::class, 'list_role_pagination']);
+    Route::post('/roles', [RoleController::class, 'register']);
+    Route::get('/roles/{id}', [RoleController::class, 'get_role']);
+    Route::put('/roles/{id}', [RoleController::class, 'update_role']);
 });

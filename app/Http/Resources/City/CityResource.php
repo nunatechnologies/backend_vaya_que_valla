@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\City;
 
-use App\Http\Resources\Province\ProvinceResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,8 +17,10 @@ class CityResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'province' => new ProvinceResource($this->province),
-            'department' => $this->department
+            'province_id' => $this->province_id,
+            'department' => $this->department,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

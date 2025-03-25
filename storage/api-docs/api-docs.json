@@ -76,7 +76,7 @@
         "/api/billboards": {
             "get": {
                 "tags": [
-                    "Billboard"
+                    "Billboards"
                 ],
                 "summary": "List billboards with pagination",
                 "operationId": "578933d449e14f695b32eeaa308d079a",
@@ -143,15 +143,273 @@
                         "description": "Internal server error"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Billboards"
+                ],
+                "summary": "Register billboard",
+                "operationId": "8d06e41556472d49690265f6910d3d8f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "location",
+                                    "advertiser_id",
+                                    "status",
+                                    "billboard_type_id",
+                                    "city_id",
+                                    "billboard_structure_id",
+                                    "entity_status",
+                                    "size",
+                                    "price_per_month",
+                                    "traffic_data",
+                                    "image",
+                                    "longitude",
+                                    "latitude"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "advertiser_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "status": {
+                                        "type": "string"
+                                    },
+                                    "billboard_type_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "city_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "billboard_structure_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "entity_status": {
+                                        "type": "string"
+                                    },
+                                    "size": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "price_per_month": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 10
+                                    },
+                                    "traffic_data": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 10
+                                    },
+                                    "latitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 10
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Billboard registered successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
             }
         },
-        "/api/billboard-faces": {
+        "/api/billboards/{id}": {
             "get": {
                 "tags": [
-                    "Billboard face"
+                    "Billboards"
                 ],
-                "summary": "List billboard faces with pagination",
-                "operationId": "02ce916bd8917788b7cfdf5f5786c907",
+                "summary": "Get billboard by ID",
+                "operationId": "3478c092da7df772ed3ed1dcd27f913e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the billboard",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Billboard found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Billboard found"
+                                        },
+                                        "organization": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Billboard not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Billboards"
+                ],
+                "summary": "Update billboard",
+                "operationId": "827626841af6648fa5907d722e204235",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the billboard to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated billboard data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "location",
+                                    "advertiser_id",
+                                    "status",
+                                    "billboard_type_id",
+                                    "city_id",
+                                    "billboard_structure_id",
+                                    "entity_status",
+                                    "size",
+                                    "price_per_month",
+                                    "traffic_data",
+                                    "image",
+                                    "longitude",
+                                    "latitude"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "advertiser_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "status": {
+                                        "type": "string"
+                                    },
+                                    "billboard_type_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "city_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "billboard_structure_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "entity_status": {
+                                        "type": "string"
+                                    },
+                                    "size": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "price_per_month": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 10
+                                    },
+                                    "traffic_data": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 10
+                                    },
+                                    "latitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 10
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Billboard updated successfully"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/billboard_faces": {
+            "get": {
+                "tags": [
+                    "Billboard_faces"
+                ],
+                "summary": "List billboard_faces with pagination",
+                "operationId": "cf9f4dc1715a08b27e7c3d5c944d2251",
                 "parameters": [
                     {
                         "name": "search",
@@ -215,15 +473,163 @@
                         "description": "Internal server error"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Billboard_faces"
+                ],
+                "summary": "Register billboardface",
+                "operationId": "27892523bfe19f4de4e568410b36eadf",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "billboard_id",
+                                    "face",
+                                    "location_detail"
+                                ],
+                                "properties": {
+                                    "billboard_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "face": {
+                                        "type": "string",
+                                        "maxLength": 10
+                                    },
+                                    "location_detail": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "BillboardFace registered successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
             }
         },
-        "/api/billboard-types": {
+        "/api/billboard_faces/{id}": {
             "get": {
                 "tags": [
-                    "Billboard types"
+                    "Billboard_faces"
                 ],
-                "summary": "List billboard types with pagination",
-                "operationId": "ddc55a0ce850a03fe58ca80d8cbe1191",
+                "summary": "Get billboardface by ID",
+                "operationId": "512f48302b91e263b9721c4bfadd333d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the billboardface",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "BillboardFace found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "BillboardFace found"
+                                        },
+                                        "organization": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "BillboardFace not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Billboard_faces"
+                ],
+                "summary": "Update billboardface",
+                "operationId": "e1b62c89e97f35b0d9945465b690ec2a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the billboardface to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated billboardface data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "billboard_id",
+                                    "face",
+                                    "location_detail"
+                                ],
+                                "properties": {
+                                    "billboard_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "face": {
+                                        "type": "string",
+                                        "maxLength": 10
+                                    },
+                                    "location_detail": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "BillboardFace updated successfully"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/billboard_types": {
+            "get": {
+                "tags": [
+                    "Billboard_types"
+                ],
+                "summary": "List billboard_types with pagination",
+                "operationId": "c83b2a684087ef2e8d08f47d75078e4f",
                 "parameters": [
                     {
                         "name": "search",
@@ -282,6 +688,142 @@
                 "responses": {
                     "200": {
                         "description": "Successful operation"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Billboard_types"
+                ],
+                "summary": "Register billboardtype",
+                "operationId": "cd6ef06c1cb1af49009181645b4409c8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "category"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "category": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "BillboardType registered successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/billboard_types/{id}": {
+            "get": {
+                "tags": [
+                    "Billboard_types"
+                ],
+                "summary": "Get billboardtype by ID",
+                "operationId": "14709583a89649638c37fd2824b303ff",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the billboardtype",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "BillboardType found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "BillboardType found"
+                                        },
+                                        "organization": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "BillboardType not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Billboard_types"
+                ],
+                "summary": "Update billboardtype",
+                "operationId": "607a43dadd870a368f9b3417e0c728fb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the billboardtype to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated billboardtype data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "category"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "category": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "BillboardType updated successfully"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -296,6 +838,1380 @@
                 ],
                 "summary": "List cities with pagination",
                 "operationId": "ba14b8114e71452f81043d32d53709c9",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "itemsPerPage",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "Sort by field",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "orderBy",
+                        "in": "query",
+                        "description": "Sort order",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Cities"
+                ],
+                "summary": "Register city",
+                "operationId": "d251a9ddfd3ca48a13efc4acf6ec26a5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "province_id",
+                                    "department"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "province_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "department": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "City registered successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/cities/{id}": {
+            "get": {
+                "tags": [
+                    "Cities"
+                ],
+                "summary": "Get city by ID",
+                "operationId": "e74edcffc1bad6df6e7aaee778c566a3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the city",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "City found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "City found"
+                                        },
+                                        "organization": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "City not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Cities"
+                ],
+                "summary": "Update city",
+                "operationId": "246cccd5c39d6f332323741eff6ede32",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the city to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated city data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "province_id",
+                                    "department"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "province_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "department": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "City updated successfully"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/organizations": {
+            "get": {
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "List organizations with pagination",
+                "operationId": "4dd65f29cf8a1b2d4d29bfa69e011ce8",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "itemsPerPage",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "Sort by field",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "orderBy",
+                        "in": "query",
+                        "description": "Sort order",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Register organization",
+                "operationId": "33aac33c149c5eef825506081540399f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "social_reason",
+                                    "name_contact",
+                                    "phone_contact",
+                                    "commision_percentage"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "social_reason": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "name_contact": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "phone_contact": {
+                                        "type": "string",
+                                        "maxLength": 20
+                                    },
+                                    "commision_percentage": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 8
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Organization registered successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/organizations/{id}": {
+            "get": {
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Get organization by ID",
+                "operationId": "d85d9db3e2033402324aebce70d51dd1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the organization",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Organization found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Organization found"
+                                        },
+                                        "organization": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Organization not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Update organization",
+                "operationId": "f40f6f3799c6b8fb104117717b17f561",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the organization to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated organization data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "social_reason",
+                                    "name_contact",
+                                    "phone_contact",
+                                    "commision_percentage"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "social_reason": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "name_contact": {
+                                        "type": "string",
+                                        "maxLength": 100
+                                    },
+                                    "phone_contact": {
+                                        "type": "string",
+                                        "maxLength": 20
+                                    },
+                                    "commision_percentage": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 8
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Organization updated successfully"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/people": {
+            "get": {
+                "tags": [
+                    "People"
+                ],
+                "summary": "List people with pagination",
+                "operationId": "976e57b9226f2dc22980245ced2df2b4",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "itemsPerPage",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "Sort by field",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "orderBy",
+                        "in": "query",
+                        "description": "Sort order",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "People"
+                ],
+                "summary": "Register person",
+                "operationId": "c834ed8852fc632c5b2598e56f073104",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "ci"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "ci": {
+                                        "type": "string",
+                                        "maxLength": 10
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Person registered successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/people/{id}": {
+            "get": {
+                "tags": [
+                    "People"
+                ],
+                "summary": "Get person by ID",
+                "operationId": "05a5743195157680da7a763178fa1422",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the person",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Person found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Person found"
+                                        },
+                                        "organization": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Person not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "People"
+                ],
+                "summary": "Update person",
+                "operationId": "eff34984a480eabe15d13b4fc05ae326",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the person to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated person data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "ci"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "ci": {
+                                        "type": "string",
+                                        "maxLength": 10
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Person updated successfully"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/quotes": {
+            "get": {
+                "tags": [
+                    "Quotes"
+                ],
+                "summary": "List quotes with pagination",
+                "operationId": "661fc6b5be9fae62117dfb58a5f1732a",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "itemsPerPage",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "Sort by field",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "orderBy",
+                        "in": "query",
+                        "description": "Sort order",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Quotes"
+                ],
+                "summary": "Register quote",
+                "operationId": "cbc64f2d5bf1efcfdd3391f2cae01ef5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "status",
+                                    "request_date",
+                                    "total_amount"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "status": {
+                                        "type": "string"
+                                    },
+                                    "request_date": {
+                                        "type": "string"
+                                    },
+                                    "total_amount": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 8
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Quote registered successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/quotes/{id}": {
+            "get": {
+                "tags": [
+                    "Quotes"
+                ],
+                "summary": "Get quote by ID",
+                "operationId": "114eb8eff718346161619727bb6ba575",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the quote",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Quote found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Quote found"
+                                        },
+                                        "organization": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Quote not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Quotes"
+                ],
+                "summary": "Update quote",
+                "operationId": "6c013f3af9642f741ef8b76798af233a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the quote to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated quote data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "status",
+                                    "request_date",
+                                    "total_amount"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "status": {
+                                        "type": "string"
+                                    },
+                                    "request_date": {
+                                        "type": "string"
+                                    },
+                                    "total_amount": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 8
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Quote updated successfully"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/rentals": {
+            "get": {
+                "tags": [
+                    "Rentals"
+                ],
+                "summary": "List rentals with pagination",
+                "operationId": "61f375610d7555c7a683958fbb87d32d",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "itemsPerPage",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "Sort by field",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "orderBy",
+                        "in": "query",
+                        "description": "Sort order",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Rentals"
+                ],
+                "summary": "Register rental",
+                "operationId": "e96eea0319f47b0b51bb255485df3074",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "quote_id",
+                                    "starts_at",
+                                    "ends_at",
+                                    "status",
+                                    "has_lona",
+                                    "total_amount",
+                                    "unsubscribe_status"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "quote_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "starts_at": {
+                                        "type": "string"
+                                    },
+                                    "ends_at": {
+                                        "type": "string"
+                                    },
+                                    "status": {
+                                        "type": "string"
+                                    },
+                                    "has_lona": {
+                                        "type": "string",
+                                        "maxLength": 1
+                                    },
+                                    "total_amount": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 8
+                                    },
+                                    "unsubscribe_status": {
+                                        "type": "string",
+                                        "maxLength": 150
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Rental registered successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/rentals/{id}": {
+            "get": {
+                "tags": [
+                    "Rentals"
+                ],
+                "summary": "Get rental by ID",
+                "operationId": "bafe372c226fc702259e261f204d94b5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the rental",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Rental found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Rental found"
+                                        },
+                                        "organization": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Rental not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Rentals"
+                ],
+                "summary": "Update rental",
+                "operationId": "e86792d29d5a3776b8b6a2adf98bc2a1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the rental to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated rental data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "quote_id",
+                                    "starts_at",
+                                    "ends_at",
+                                    "status",
+                                    "has_lona",
+                                    "total_amount",
+                                    "unsubscribe_status"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "quote_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "starts_at": {
+                                        "type": "string"
+                                    },
+                                    "ends_at": {
+                                        "type": "string"
+                                    },
+                                    "status": {
+                                        "type": "string"
+                                    },
+                                    "has_lona": {
+                                        "type": "string",
+                                        "maxLength": 1
+                                    },
+                                    "total_amount": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 8
+                                    },
+                                    "unsubscribe_status": {
+                                        "type": "string",
+                                        "maxLength": 150
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Rental updated successfully"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/roles": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "List roles with pagination",
+                "operationId": "0b0bd0204173fc1cd0aeea3e4f8d2526",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "itemsPerPage",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "Sort by field",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "orderBy",
+                        "in": "query",
+                        "description": "Sort order",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Register role",
+                "operationId": "110f636845e61b126b12862107c3e81b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "guard_name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "guard_name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Role registered successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/roles/{id}": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Get role by ID",
+                "operationId": "5f5da01ce3215d2abcdb5927ad61dbb0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the role",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Role found"
+                                        },
+                                        "organization": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Role not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Update role",
+                "operationId": "e4327bce5304936ee70d5b9711c1d5d3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the role to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated role data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "guard_name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "guard_name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Role updated successfully"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "List users with pagination",
+                "operationId": "b83f864af90f6db8c6ee55e4022a024d",
                 "parameters": [
                     {
                         "name": "search",
@@ -383,20 +2299,44 @@
             "description": "Authentication"
         },
         {
-            "name": "Billboard",
-            "description": "Billboard"
+            "name": "Billboards",
+            "description": "Billboards"
         },
         {
-            "name": "Billboard face",
-            "description": "Billboard face"
+            "name": "Billboard_faces",
+            "description": "Billboard_faces"
         },
         {
-            "name": "Billboard types",
-            "description": "Billboard types"
+            "name": "Billboard_types",
+            "description": "Billboard_types"
         },
         {
             "name": "Cities",
             "description": "Cities"
+        },
+        {
+            "name": "Organizations",
+            "description": "Organizations"
+        },
+        {
+            "name": "People",
+            "description": "People"
+        },
+        {
+            "name": "Quotes",
+            "description": "Quotes"
+        },
+        {
+            "name": "Rentals",
+            "description": "Rentals"
+        },
+        {
+            "name": "Roles",
+            "description": "Roles"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
         }
     ]
 }

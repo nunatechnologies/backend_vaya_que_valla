@@ -1,0 +1,200 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Enums\SeveritySystemLog;
+use App\Http\Messages\SuccessMessages;
+use App\Http\Requests\PaginationRequest;
+use App\Http\Resources\{{Object}}\{{Object}}Resource;
+use App\Http\Resources\PaginacionResource;
+use App\Http\Responses\ApiResponse;
+use App\Services\{{Object}}\{{Object}}Service;
+use App\Services\SystemLogService;
+use App\Http\Requests\{{Object}}\{{Object}}Request;
+use App\Http\Requests\{{Object}}\Patch{{Object}}Request;
+
+class {{Object}}Controller extends Controller
+{
+    protected ${{object}}Service;
+    protected $systemLogService;
+
+    public function __construct({{Object}}Service ${{object}}Service, SystemLogService $systemLogService)
+    {
+        $this->{{object}}Service = ${{object}}Service;
+        $this->systemLogService = $systemLogService;
+    }
+    
+    /**
+     * @OA\Post(
+     *     path="/api/{{tableName}}",
+     *     summary="Register {{object}}",
+     *     tags={"{{TableName}}"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *          @OA\JsonContent(
+{{registerDoc}}
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="{{Object}} registered successfully"),
+     *     @OA\Response(response=400, description="Invalid request")
+     * )
+     */
+
+    public function register({{Object}}Request ${{Object}}Request)
+    {
+        try {
+            $data = $this->{{object}}Service->create{{Object}}(${{Object}}Request->all());
+            $this->systemLogService->logActivity('{{object}}','{{Object}} registrado',
+                SeveritySystemLog::info->name,
+                $data
+            );
+            return ApiResponse::success(SuccessMessages::CREATE_SUCCESS, new {{Object}}Resource($data), [], 201);
+        } catch (\Exception $e) {
+            $this->systemLogService->logActivity(
+                '{{object}}',
+                'Registro de {{Object}} Fallido',
+                SeveritySystemLog::error->name,
+            );
+            return ApiResponse::error($e->getMessage(), $e, [], 500);
+        }
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/api/{{tableName}}/{id}",
+     *     summary="Update {{object}}",
+     *     tags={"{{TableName}}"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the {{object}} to update",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         request="Patch{{Object}}Request",
+     *         required=true,
+     *         description="Updated {{object}} data",
+     *         @OA\JsonContent(
+{{updateDoc}}
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="{{Object}} updated successfully"),
+     *     @OA\Response(response=500, description="Internal server error")
+     * )
+     */
+
+    public function update_{{object}}(Patch{{Object}}Request ${{object}}Request, $id)
+    {
+        try {
+            ${{object}} = $this->{{object}}Service->update{{Object}}($id, ${{object}}Request->validated());
+            $this->systemLogService->logActivity(
+                '{{object}}',
+                '{{Object}} actualizado',
+                SeveritySystemLog::info->name,
+                ${{object}}
+            );
+            return ApiResponse::success(SuccessMessages::UPDATE_SUCCESS, new {{Object}}Resource(${{object}}), [], 200);
+        } catch (\Exception $e) {
+            $this->systemLogService->logActivity(
+                '{{object}}',
+                'Actualización de {{object}} Fallida',
+                SeveritySystemLog::error->name,
+            );
+            return ApiResponse::error($e->getMessage(), null, [], $e->getCode());
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/{{tableName}}/{id}",
+     *     summary="Get {{object}} by ID",
+     *     tags={"{{TableName}}"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the {{object}}",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="{{Object}} found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="{{Object}} found"),
+     *             @OA\Property(property="organization", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="{{Object}} not found"),
+     *     @OA\Response(response=500, description="Internal server error"),
+     * )
+     */
+
+    public function get_{{object}}($id)
+    {
+        try {
+            ${{object}} = $this->{{object}}Service->get{{Object}}Byid($id);
+            return ApiResponse::success(SuccessMessages::SUCCESSFUL, new {{Object}}Resource(${{object}}), [], 200);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), null, [], $e->getCode());
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/{{tableName}}",
+     *     summary="List {{tableName}} with pagination",
+     *     tags={"{{TableName}}"},
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *         description="Search query",
+     *         required=false,
+     *         @OA\Schema(type="string", maxLength=255)
+     *     ),
+     *     @OA\Parameter(
+     *         name="itemsPerPage",
+     *         in="query",
+     *         description="Items per page",
+     *         required=true,
+     *         @OA\Schema(type="integer", minimum=1)
+     *     ),
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Page number",
+     *         required=true,
+     *         @OA\Schema(type="integer", minimum=1)
+     *     ),
+     *     @OA\Parameter(
+     *         name="sortBy",
+     *         in="query",
+     *         description="Sort by field",
+     *         required=false,
+     *         @OA\Schema(type="string", maxLength=255)
+     *     ),
+     *     @OA\Parameter(
+     *         name="orderBy",
+     *         in="query",
+     *         description="Sort order",
+     *         required=false,
+     *         @OA\Schema(type="string", enum={"asc", "desc"})
+     *     ),
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=500, description="Internal server error")
+     * )
+     */
+    public function list_{{object}}_pagination(PaginationRequest $pagerequest)
+    {
+        try {
+            $objects= $this->{{object}}Service->getAll{{Object}}Pagination($pagerequest);
+            $objects->data = {{Object}}Resource::collection($objects->getCollection());
+            return ApiResponse::success(SuccessMessages::SUCCESSFUL,  new PaginacionResource($objects), [], 200);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), $e, [], $e->getCode());
+        }
+    }
+}

@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Services\{{Object}};
+
+use Illuminate\Support\Facades\DB;
+use App\Http\Messages\ErrorMessages;
+use App\Repositories\{{Object}}\{{Object}}RepositoryInterface;
+
+class {{Object}}Service
+{
+    protected ${{object}}Repository;
+
+    public function __construct({{Object}}RepositoryInterface ${{object}}Repository)
+    {
+        $this->{{object}}Repository = ${{object}}Repository;
+    }
+
+    public function get{{Object}}ById($id){
+        return $this->is{{Object}}Exists($id);
+    }
+
+    private function is{{Object}}Exists($id)
+    {
+        return $this->{{object}}Repository->find($id)
+            ?? throw new \Exception(ErrorMessages::OBJECT_NOT_FOUND, 404);
+    }
+
+    public function create{{Object}}($data)
+    {
+        return DB::transaction(function () use ($data) {
+            return $this->{{object}}Repository->create($data);
+        });
+    }
+
+    public function update{{Object}}($id, $data)
+    {
+        return $this->{{object}}Repository->update($id, $data);
+    }
+
+    public function getAll{{Object}}Pagination($datos)
+    {
+        $query = $this->{{object}}Repository->allquery();
+
+        if ($datos->filled('search')) {
+            {{query}}
+        }
+
+        if ($datos->query('sortBy') && $datos->query('orderBy')) {
+            $query->orderBy($datos->query('sortBy'), $datos->query('orderBy'));
+        }
+
+        return $query->paginate($datos->query('itemsPerPage') ?? 10);
+    }
+}

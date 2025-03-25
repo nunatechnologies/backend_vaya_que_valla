@@ -24,9 +24,9 @@ class BillboardFaceRepository implements BillboardFaceRepositoryInterface
 
     public function update($id, array $data)
     {
-        $billboardFace = $this->find($id);
-        $billboardFace->update($data);
-        return $billboardFace;
+        $object = $this->find($id);
+        $object->update($data);
+        return $object;
     }
 
     public function find($id)

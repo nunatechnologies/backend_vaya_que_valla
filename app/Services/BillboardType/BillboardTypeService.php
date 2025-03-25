@@ -8,55 +8,48 @@ use App\Repositories\BillboardType\BillboardTypeRepositoryInterface;
 
 class BillboardTypeService
 {
-    protected $billboardTypeRepository;
+    protected $billboardtypeRepository;
 
-    public function __construct(BillboardTypeRepositoryInterface $billboardTypeRepository)
+    public function __construct(BillboardTypeRepositoryInterface $billboardtypeRepository)
     {
-        $this->billboardTypeRepository = $billboardTypeRepository;
+        $this->billboardtypeRepository = $billboardtypeRepository;
     }
 
     public function getBillboardTypeById($id){
         return $this->isBillboardTypeExists($id);
     }
 
+    private function isBillboardTypeExists($id)
+    {
+        return $this->billboardtypeRepository->find($id)
+            ?? throw new \Exception(ErrorMessages::OBJECT_NOT_FOUND, 404);
+    }
+
     public function createBillboardType($data)
     {
         return DB::transaction(function () use ($data) {
-            $billboard = $this->billboardTypeRepository->create($data);
-            return $billboard;
+            return $this->billboardtypeRepository->create($data);
         });
     }
 
     public function updateBillboardType($id, $data)
     {
-        return  $this->billboardTypeRepository->update($id, $data);
-    }
-
-    private function isBillboardTypeExists($billboardTypeId)
-    {
-        return $this->billboardTypeRepository->find($billboardTypeId)
-            ?? throw new \Exception(ErrorMessages::BILLBOARD_TYPE_NOT_FOUND, 404);
+        return $this->billboardtypeRepository->update($id, $data);
     }
 
     public function getAllBillboardTypePagination($datos)
     {
-        $query = $this->billboardTypeRepository->allquery();
+        $query = $this->billboardtypeRepository->allquery();
 
         if ($datos->filled('search')) {
-            $searchTerm = $datos->query('search');
-            $query->where(function ($query) use ($searchTerm) {
-                $query->where('name', 'like', '%' . $searchTerm . '%');
-            });
+            $query->where('name', 'like', '%' . $datos->query('search') . '%');
+
         }
 
         if ($datos->query('sortBy') && $datos->query('orderBy')) {
-            $sortBy = $datos->query('sortBy');
-            $orderBy = $datos->query('orderBy');
-            $query->orderBy($sortBy, $orderBy);
+            $query->orderBy($datos->query('sortBy'), $datos->query('orderBy'));
         }
 
-        $itemsPerPage = $datos->query('itemsPerPage') ?? 10;
-        $page = $datos->query('page') ?? 1;
-        return $query->paginate($itemsPerPage, ['*'], 'page', $page);
+        return $query->paginate($datos->query('itemsPerPage') ?? 10);
     }
 }

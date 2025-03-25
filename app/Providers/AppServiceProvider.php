@@ -10,6 +10,18 @@ use App\Repositories\BillboardFace\BillboardFaceRepository;
 use App\Repositories\BillboardFace\BillboardFaceRepositoryInterface;
 use App\Repositories\City\CityRepository;
 use App\Repositories\City\CityRepositoryInterface;
+use App\Repositories\Organization\OrganizationRepository;
+use App\Repositories\Organization\OrganizationRepositoryInterface;
+use App\Repositories\People\PeopleRepository;
+use App\Repositories\People\PeopleRepositoryInterface;
+use App\Repositories\Person\PersonRepository;
+use App\Repositories\Person\PersonRepositoryInterface;
+use App\Repositories\Quote\QuoteRepository;
+use App\Repositories\Quote\QuoteRepositoryInterface;
+use App\Repositories\Rental\RentalRepository;
+use App\Repositories\Rental\RentalRepositoryInterface;
+use App\Repositories\Role\RoleRepository;
+use App\Repositories\Role\RoleRepositoryInterface;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
@@ -44,6 +56,31 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             CityRepositoryInterface::class,
             CityRepository::class
+        );
+
+        $this->app->bind(
+            OrganizationRepositoryInterface::class,
+            OrganizationRepository::class
+        );
+
+        $this->app->bind(
+            QuoteRepositoryInterface::class,
+            QuoteRepository::class
+        );
+
+        $this->app->bind(
+            RentalRepositoryInterface::class,
+            RentalRepository::class
+        );
+
+        $this->app->bind(
+            PersonRepositoryInterface::class,
+            PersonRepository::class
+        );
+
+        $this->app->bind(
+            RoleRepositoryInterface::class,
+            RoleRepository::class
         );
     }
 
