@@ -32,12 +32,9 @@ class UserRequest extends FormRequest
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'cod_phone' => 'required|string',
-            'phone' => 'required|string|unique:users,phone',
-            'position' => 'required|string',
-            'branch_id' => 'nullable',
+            'cod_phone' => 'nullable|string',
+            'phone' => 'nullable|string|unique:users,phone',
             'password' => 'required|string|min:8',
-            'gender' => ['nullable', new Enum(GenderType::class)],
             'rol'=>['required', new Enum(RolSpatie::class)],
         ];
     }

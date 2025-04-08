@@ -32,11 +32,8 @@ class PatchUserRequest extends FormRequest
             'name' => 'sometimes|string|max:255',
             'last_name' => 'sometimes|string|max:255',
             'email' => 'required|email|unique:users,email,' . $this->route('id'),
-            'cod_phone' => 'required|string',
-            'phone' => 'required|string|unique:users,phone,'. $this->route('id'),
-            'position' => 'sometimes|string',
-            'branch_id' => 'sometimes',
-            'gender' => ['sometimes', new Enum(GenderType::class)],
+            'cod_phone' => 'nullable|string',
+            'phone' => 'nullable|string|unique:users,phone,'. $this->route('id'),
             'rol'=>['sometimes', new Enum(RolSpatie::class)],
         ];
     }

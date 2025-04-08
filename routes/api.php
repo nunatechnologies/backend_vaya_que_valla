@@ -32,7 +32,12 @@ Route::group(['prefix' => 'authen'], function () {
 });
 
 Route::group(['middleware' => ['api', 'jwt.auth']], function () {
+    Route::post('/users', [UserController::class, 'register']);
+    Route::post('/users/{id}/rol', [UserController::class, 'update_rol']);
+    Route::put('/users/{id}', [UserController::class, 'update_user']);
+    Route::get('/users/{id}', [UserController::class, 'get_user']);
     Route::get('/users', [UserController::class, 'list_user_pagination']);
+    // Route::get('/roles', [UserController::class, 'all_roles']);
     
     //Cities
     Route::get('/cities', [CityController::class, 'list_city_pagination']);
