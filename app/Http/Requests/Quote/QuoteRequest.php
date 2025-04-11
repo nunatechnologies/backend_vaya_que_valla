@@ -26,9 +26,10 @@ class QuoteRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'user_id' => ['required','integer'],
+			'billboard_face_id' => ['required','integer'],
 			'status' => ['required'],
-			'request_date' => ['required'],
+			'start_date' => ['required'],
+			'end_date' => ['required'],
 			'total_amount' => ['required','numeric','between:0,999999.99']
 		];
     }

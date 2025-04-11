@@ -9,7 +9,9 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\QuoteController;
+use App\Http\Controllers\QuoteRequestController;
 use App\Http\Controllers\RentalController;
+use App\Http\Controllers\RequestController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -92,4 +94,16 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     Route::post('/roles', [RoleController::class, 'register']);
     Route::get('/roles/{id}', [RoleController::class, 'get_role']);
     Route::put('/roles/{id}', [RoleController::class, 'update_role']);
+
+    //Requests
+    Route::get('/requests', [RequestController::class, 'list_request_pagination']);
+    Route::post('/requests', [RequestController::class, 'register']);
+    Route::get('/requests/{id}', [RequestController::class, 'get_request']);
+    Route::put('/requests/{id}', [RequestController::class, 'update_request']);
+
+    //Quote requests
+    Route::get('/quote_request', [QuoteRequestController::class, 'list_quoterequest_pagination']);
+    Route::post('/quote_request', [QuoteRequestController::class, 'register']);
+    Route::get('/quote_request/{id}', [QuoteRequestController::class, 'get_quoterequest']);
+    Route::put('/quote_request/{id}', [QuoteRequestController::class, 'update_quoterequest']);
 });

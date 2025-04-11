@@ -42,7 +42,10 @@ class QuoteService
         $query = $this->quoteRepository->allquery();
 
         if ($datos->filled('search')) {
-            $query->where('status', 'like', '%' . $datos->query('search') . '%');
+            $query->where('billboard_face_id', 'like', '%' . $datos->query('search') . '%')
+				->orWhere('status', 'like', '%' . $datos->query('search') . '%')
+				->orWhere('start_date', 'like', '%' . $datos->query('search') . '%')
+				->orWhere('end_date', 'like', '%' . $datos->query('search') . '%');
 
         }
 

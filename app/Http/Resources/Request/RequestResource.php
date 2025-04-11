@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Resources\Quote;
+namespace App\Http\Resources\Request;
 
-use App\Http\Resources\BillboardFace\BillboardFaceResource;
+use App\Http\Resources\Quote\QuoteResource;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class QuoteResource extends JsonResource
+class RequestResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,11 +18,9 @@ class QuoteResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'billboard_face' => new BillboardFaceResource($this->billboardFace),
-            'status' => $this->status,
-            'start_date' => $this->start_date,
-            'end_date' => $this->end_date,
-            'total_amount' => $this->total_amount,
+            'user' => new UserResource($this->user),
+            'company' => $this->company,
+            'quotes' => QuoteResource::collection($this->quotes),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

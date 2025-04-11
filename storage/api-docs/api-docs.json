@@ -1584,20 +1584,24 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "user_id",
+                                    "billboard_face_id",
                                     "status",
-                                    "request_date",
+                                    "start_date",
+                                    "end_date",
                                     "total_amount"
                                 ],
                                 "properties": {
-                                    "user_id": {
+                                    "billboard_face_id": {
                                         "type": "number",
                                         "maxLength": 20
                                     },
                                     "status": {
                                         "type": "string"
                                     },
-                                    "request_date": {
+                                    "start_date": {
+                                        "type": "string"
+                                    },
+                                    "end_date": {
                                         "type": "string"
                                     },
                                     "total_amount": {
@@ -1692,20 +1696,24 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "user_id",
+                                    "billboard_face_id",
                                     "status",
-                                    "request_date",
+                                    "start_date",
+                                    "end_date",
                                     "total_amount"
                                 ],
                                 "properties": {
-                                    "user_id": {
+                                    "billboard_face_id": {
                                         "type": "number",
                                         "maxLength": 20
                                     },
                                     "status": {
                                         "type": "string"
                                     },
-                                    "request_date": {
+                                    "start_date": {
+                                        "type": "string"
+                                    },
+                                    "end_date": {
                                         "type": "string"
                                     },
                                     "total_amount": {
@@ -1722,6 +1730,216 @@
                 "responses": {
                     "200": {
                         "description": "Quote updated successfully"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/quote_request": {
+            "get": {
+                "tags": [
+                    "Quote_request"
+                ],
+                "summary": "List quote_request with pagination",
+                "operationId": "c2decdd043317a22e88872fee6332145",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "itemsPerPage",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "Sort by field",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "orderBy",
+                        "in": "query",
+                        "description": "Sort order",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Quote_request"
+                ],
+                "summary": "Register quoterequest",
+                "operationId": "c302a201d95adad7a84784e86fb9f856",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "request_id",
+                                    "quote_id"
+                                ],
+                                "properties": {
+                                    "request_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "quote_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "QuoteRequest registered successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/quote_request/{id}": {
+            "get": {
+                "tags": [
+                    "Quote_request"
+                ],
+                "summary": "Get quoterequest by ID",
+                "operationId": "b12c9d6d7e89f353a508bbeffb631870",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the quoterequest",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "QuoteRequest found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "QuoteRequest found"
+                                        },
+                                        "organization": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "QuoteRequest not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Quote_request"
+                ],
+                "summary": "Update quoterequest",
+                "operationId": "a48a2d5137ceaa8ec058a131b833a54c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the quoterequest to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated quoterequest data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "request_id",
+                                    "quote_id"
+                                ],
+                                "properties": {
+                                    "request_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "quote_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "QuoteRequest updated successfully"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -1988,6 +2206,216 @@
                 "responses": {
                     "200": {
                         "description": "Rental updated successfully"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/requests": {
+            "get": {
+                "tags": [
+                    "Requests"
+                ],
+                "summary": "List requests with pagination",
+                "operationId": "a28f719540fccecaeaeedf2feadfc0b1",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "itemsPerPage",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "Sort by field",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "orderBy",
+                        "in": "query",
+                        "description": "Sort order",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Requests"
+                ],
+                "summary": "Register request",
+                "operationId": "314b493f6face484dc541255ff81393b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "company"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "company": {
+                                        "type": "string",
+                                        "maxLength": 40
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Request registered successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/requests/{id}": {
+            "get": {
+                "tags": [
+                    "Requests"
+                ],
+                "summary": "Get request by ID",
+                "operationId": "a4eb44b218f74c793f0a3aa270363943",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the request",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Request found"
+                                        },
+                                        "organization": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Request not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Requests"
+                ],
+                "summary": "Update request",
+                "operationId": "bf1ee7f1de06e9446225fd36a2f0254e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the request to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated request data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "company"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "company": {
+                                        "type": "string",
+                                        "maxLength": 40
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Request updated successfully"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -2462,8 +2890,16 @@
             "description": "Quotes"
         },
         {
+            "name": "Quote_request",
+            "description": "Quote_request"
+        },
+        {
             "name": "Rentals",
             "description": "Rentals"
+        },
+        {
+            "name": "Requests",
+            "description": "Requests"
         },
         {
             "name": "Roles",

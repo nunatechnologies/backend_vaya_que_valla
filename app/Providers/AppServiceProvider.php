@@ -18,8 +18,12 @@ use App\Repositories\Person\PersonRepository;
 use App\Repositories\Person\PersonRepositoryInterface;
 use App\Repositories\Quote\QuoteRepository;
 use App\Repositories\Quote\QuoteRepositoryInterface;
+use App\Repositories\QuoteRequest\QuoteRequestRepository;
+use App\Repositories\QuoteRequest\QuoteRequestRepositoryInterface;
 use App\Repositories\Rental\RentalRepository;
 use App\Repositories\Rental\RentalRepositoryInterface;
+use App\Repositories\Request\RequestRepository;
+use App\Repositories\Request\RequestRepositoryInterface;
 use App\Repositories\Role\RoleRepository;
 use App\Repositories\Role\RoleRepositoryInterface;
 use App\Repositories\User\UserRepository;
@@ -81,6 +85,16 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             RoleRepositoryInterface::class,
             RoleRepository::class
+        );
+
+        $this->app->bind(
+            RequestRepositoryInterface::class,
+            RequestRepository::class
+        );
+
+        $this->app->bind(
+            QuoteRequestRepositoryInterface::class,
+            QuoteRequestRepository::class
         );
     }
 

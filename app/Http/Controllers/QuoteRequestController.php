@@ -5,59 +5,56 @@ namespace App\Http\Controllers;
 use App\Enums\SeveritySystemLog;
 use App\Http\Messages\SuccessMessages;
 use App\Http\Requests\PaginationRequest;
-use App\Http\Resources\Quote\QuoteResource;
+use App\Http\Resources\QuoteRequest\QuoteRequestResource;
 use App\Http\Resources\PaginacionResource;
 use App\Http\Responses\ApiResponse;
-use App\Services\Quote\QuoteService;
+use App\Services\QuoteRequest\QuoteRequestService;
 use App\Services\SystemLogService;
-use App\Http\Requests\Quote\QuoteRequest;
-use App\Http\Requests\Quote\PatchQuoteRequest;
+use App\Http\Requests\QuoteRequest\QuoteRequestRequest;
+use App\Http\Requests\QuoteRequest\PatchQuoteRequestRequest;
 
-class QuoteController extends Controller
+class QuoteRequestController extends Controller
 {
-    protected $quoteService;
+    protected $quoterequestService;
     protected $systemLogService;
 
-    public function __construct(QuoteService $quoteService, SystemLogService $systemLogService)
+    public function __construct(QuoteRequestService $quoterequestService, SystemLogService $systemLogService)
     {
-        $this->quoteService = $quoteService;
+        $this->quoterequestService = $quoterequestService;
         $this->systemLogService = $systemLogService;
     }
     
     /**
      * @OA\Post(
-     *     path="/api/quotes",
-     *     summary="Register quote",
-     *     tags={"Quotes"},
+     *     path="/api/quote_request",
+     *     summary="Register quoterequest",
+     *     tags={"Quote_request"},
      *     @OA\RequestBody(
      *         required=true,
      *          @OA\JsonContent(
-	 *             required={"billboard_face_id", "status", "start_date", "end_date", "total_amount"},
-	 *                 @OA\Property(property="billboard_face_id", type="number", maxLength=20),
-	 *                 @OA\Property(property="status", type="string"),
-	 *                 @OA\Property(property="start_date", type="string"),
-	 *                 @OA\Property(property="end_date", type="string"),
-	 *                 @OA\Property(property="total_amount", type="number", maxLength=8, format="float"),
+	 *             required={"request_id", "quote_id"},
+	 *                 @OA\Property(property="request_id", type="number", maxLength=20),
+	 *                 @OA\Property(property="quote_id", type="number", maxLength=20),
      *         )
      *     ),
-     *     @OA\Response(response=201, description="Quote registered successfully"),
+     *     @OA\Response(response=201, description="QuoteRequest registered successfully"),
      *     @OA\Response(response=400, description="Invalid request")
      * )
      */
 
-    public function register(QuoteRequest $QuoteRequest)
+    public function register(QuoteRequestRequest $QuoteRequestRequest)
     {
         try {
-            $data = $this->quoteService->createQuote($QuoteRequest->all());
-            $this->systemLogService->logActivity('quote','Quote registrado',
+            $data = $this->quoterequestService->createQuoteRequest($QuoteRequestRequest->all());
+            $this->systemLogService->logActivity('quoterequest','QuoteRequest registrado',
                 SeveritySystemLog::info->name,
                 $data
             );
-            return ApiResponse::success(SuccessMessages::CREATE_SUCCESS, new QuoteResource($data), [], 201);
+            return ApiResponse::success(SuccessMessages::CREATE_SUCCESS, new QuoteRequestResource($data), [], 201);
         } catch (\Exception $e) {
             $this->systemLogService->logActivity(
-                'quote',
-                'Registro de Quote Fallido',
+                'quoterequest',
+                'Registro de QuoteRequest Fallido',
                 SeveritySystemLog::error->name,
             );
             return ApiResponse::error($e->getMessage(), $e, [], 500);
@@ -66,49 +63,46 @@ class QuoteController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/quotes/{id}",
-     *     summary="Update quote",
-     *     tags={"Quotes"},
+     *     path="/api/quote_request/{id}",
+     *     summary="Update quoterequest",
+     *     tags={"Quote_request"},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
-     *         description="ID of the quote to update",
+     *         description="ID of the quoterequest to update",
      *         required=true,
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\RequestBody(
-     *         request="PatchQuoteRequest",
+     *         request="PatchQuoteRequestRequest",
      *         required=true,
-     *         description="Updated quote data",
+     *         description="Updated quoterequest data",
      *         @OA\JsonContent(
-	 *             required={"billboard_face_id", "status", "start_date", "end_date", "total_amount"},
-	 *                 @OA\Property(property="billboard_face_id", type="number", maxLength=20),
-	 *                 @OA\Property(property="status", type="string"),
-	 *                 @OA\Property(property="start_date", type="string"),
-	 *                 @OA\Property(property="end_date", type="string"),
-	 *                 @OA\Property(property="total_amount", type="number", maxLength=8, format="float"),
+	 *             required={"request_id", "quote_id"},
+	 *                 @OA\Property(property="request_id", type="number", maxLength=20),
+	 *                 @OA\Property(property="quote_id", type="number", maxLength=20),
      *         )
      *     ),
-     *     @OA\Response(response=200, description="Quote updated successfully"),
+     *     @OA\Response(response=200, description="QuoteRequest updated successfully"),
      *     @OA\Response(response=500, description="Internal server error")
      * )
      */
 
-    public function update_quote(PatchQuoteRequest $quoteRequest, $id)
+    public function update_quoterequest(PatchQuoteRequestRequest $quoterequestRequest, $id)
     {
         try {
-            $quote = $this->quoteService->updateQuote($id, $quoteRequest->validated());
+            $quoterequest = $this->quoterequestService->updateQuoteRequest($id, $quoterequestRequest->validated());
             $this->systemLogService->logActivity(
-                'quote',
-                'Quote actualizado',
+                'quoterequest',
+                'QuoteRequest actualizado',
                 SeveritySystemLog::info->name,
-                $quote
+                $quoterequest
             );
-            return ApiResponse::success(SuccessMessages::UPDATE_SUCCESS, new QuoteResource($quote), [], 200);
+            return ApiResponse::success(SuccessMessages::UPDATE_SUCCESS, new QuoteRequestResource($quoterequest), [], 200);
         } catch (\Exception $e) {
             $this->systemLogService->logActivity(
-                'quote',
-                'Actualización de quote Fallida',
+                'quoterequest',
+                'Actualización de quoterequest Fallida',
                 SeveritySystemLog::error->name,
             );
             return ApiResponse::error($e->getMessage(), null, [], $e->getCode());
@@ -117,13 +111,13 @@ class QuoteController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/quotes/{id}",
-     *     summary="Get quote by ID",
-     *     tags={"Quotes"},
+     *     path="/api/quote_request/{id}",
+     *     summary="Get quoterequest by ID",
+     *     tags={"Quote_request"},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
-     *         description="ID of the quote",
+     *         description="ID of the quoterequest",
      *         required=true,
      *         @OA\Schema(
      *             type="integer",
@@ -132,22 +126,22 @@ class QuoteController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Quote found",
+     *         description="QuoteRequest found",
      *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Quote found"),
+     *             @OA\Property(property="message", type="string", example="QuoteRequest found"),
      *             @OA\Property(property="organization", type="object")
      *         )
      *     ),
-     *     @OA\Response(response=404, description="Quote not found"),
+     *     @OA\Response(response=404, description="QuoteRequest not found"),
      *     @OA\Response(response=500, description="Internal server error"),
      * )
      */
 
-    public function get_quote($id)
+    public function get_quoterequest($id)
     {
         try {
-            $quote = $this->quoteService->getQuoteByid($id);
-            return ApiResponse::success(SuccessMessages::SUCCESSFUL, new QuoteResource($quote), [], 200);
+            $quoterequest = $this->quoterequestService->getQuoteRequestByid($id);
+            return ApiResponse::success(SuccessMessages::SUCCESSFUL, new QuoteRequestResource($quoterequest), [], 200);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), null, [], $e->getCode());
         }
@@ -155,9 +149,9 @@ class QuoteController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/quotes",
-     *     summary="List quotes with pagination",
-     *     tags={"Quotes"},
+     *     path="/api/quote_request",
+     *     summary="List quote_request with pagination",
+     *     tags={"Quote_request"},
      *     @OA\Parameter(
      *         name="search",
      *         in="query",
@@ -197,11 +191,11 @@ class QuoteController extends Controller
      *     @OA\Response(response=500, description="Internal server error")
      * )
      */
-    public function list_quote_pagination(PaginationRequest $pagerequest)
+    public function list_quoterequest_pagination(PaginationRequest $pagerequest)
     {
         try {
-            $objects= $this->quoteService->getAllQuotePagination($pagerequest);
-            $objects->data = QuoteResource::collection($objects->getCollection());
+            $objects= $this->quoterequestService->getAllQuoteRequestPagination($pagerequest);
+            $objects->data = QuoteRequestResource::collection($objects->getCollection());
             return ApiResponse::success(SuccessMessages::SUCCESSFUL,  new PaginacionResource($objects), [], 200);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), $e, [], $e->getCode());

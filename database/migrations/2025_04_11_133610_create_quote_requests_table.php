@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('quotes', function (Blueprint $table) {
+        Schema::create('quote_requests', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('billboard_face_id')->constrained();
-            $table->enum('status',['pending','approved','rejected']);
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->decimal('total_amount');
+            $table->foreignId('request_id')->constrained('requests');
+            $table->foreignId('quote_id')->constrained('quotes');
             $table->timestamps();
+
+            $table->unique(['request_id', 'quote_id']);
         });
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('quotes');
+        Schema::dropIfExists('quote_requests');
     }
 };

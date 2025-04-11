@@ -10,14 +10,20 @@ class Quote extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'billboard_face_id',
         'status',
-        'request_date',
+        'start_date',
+        'end_date',
         'total_amount'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function billboardFace()
+    {
+        return $this->belongsTo(BillboardFace::class, 'billboard_face_id');
     }
 }

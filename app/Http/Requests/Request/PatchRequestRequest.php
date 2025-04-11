@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Quote;
+namespace App\Http\Requests\Request;
 
 use App\Http\Messages\ErrorMessages;
 use App\Http\Responses\ApiResponse;
@@ -8,7 +8,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class PatchQuoteRequest extends FormRequest
+class PatchRequestRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,11 +26,8 @@ class PatchQuoteRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'billboard_face_id' => ['sometimes','integer'],
-			'status' => ['sometimes'],
-			'start_date' => ['sometimes'],
-			'end_date' => ['sometimes'],
-			'total_amount' => ['sometimes','numeric','between:0,999999.99']
+			'user_id' => ['sometimes','integer'],
+			'company' => ['sometimes','string','max:40']
 		];
     }
 
