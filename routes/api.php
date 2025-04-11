@@ -31,10 +31,14 @@ Route::group(['prefix' => 'authen'], function () {
     // Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
     // Route::put('reset-password', [ForgotPasswordController::class, 'resetPassword']);
     // Route::get('verify-token/{token}/{email}', [ForgotPasswordController::class, 'verifyTokenResetPassword']);
+
+    Route::post('/users', [UserController::class, 'register']);
+    Route::post('/people', [PersonController::class, 'register']);
+    Route::post('/organizations', [OrganizationController::class, 'register']);
 });
 
 Route::group(['middleware' => ['api', 'jwt.auth']], function () {
-    Route::post('/users', [UserController::class, 'register']);
+    
     Route::post('/users/{id}/rol', [UserController::class, 'update_rol']);
     Route::put('/users/{id}', [UserController::class, 'update_user']);
     Route::get('/users/{id}', [UserController::class, 'get_user']);
@@ -55,13 +59,13 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
 
     //People
     Route::get('/people', [PersonController::class, 'list_person_pagination']);
-    Route::post('/people', [PersonController::class, 'register']);
+    
     Route::get('/people/{id}', [PersonController::class, 'get_person']);
     Route::put('/people/{id}', [PersonController::class, 'update_person']);
 
     //Organizations
     Route::get('/organizations', [OrganizationController::class, 'list_organization_pagination']);
-    Route::post('/organizations', [OrganizationController::class, 'register']);
+    
     Route::get('/organizations/{id}', [OrganizationController::class, 'get_organization']);
     Route::put('/organizations/{id}', [OrganizationController::class, 'update_organization']);
 
