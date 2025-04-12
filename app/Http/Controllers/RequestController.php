@@ -160,6 +160,13 @@ class RequestController extends Controller
      *         @OA\Schema(type="string", maxLength=255)
      *     ),
      *     @OA\Parameter(
+     *         name="user_id",
+     *         in="query",
+     *         description="Filter by user_id",
+     *         required=false,
+     *         @OA\Schema(type="string", maxLength=255)
+     *     ),
+     *     @OA\Parameter(
      *         name="itemsPerPage",
      *         in="query",
      *         description="Items per page",
