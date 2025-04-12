@@ -2,7 +2,10 @@
 
 namespace App\Services\User;
 
+use App\Enums\RolSpatie;
+use App\Enums\UserType;
 use App\Http\Messages\ErrorMessages;
+use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -44,13 +47,50 @@ class AuthService
 
     public function authUser($email, $password)
     {
-        $user = $this->userRepository->findByEmail($email);
+        $user = $this->userRepository->findByEmail($email)->with(['organization', 'person'])->first();
         if (!$user) {
             throw new \Exception(ErrorMessages::USER_NOT_FOUND, 401);
         }
         if (!Hash::check($password, $user->password)) {
             throw new \Exception(ErrorMessages::INVALID_CREDENTIALS, 401);
         }
+        return $user;
+    }
+
+    public function registerUser(array $data): User
+    {
+        $user = User::create([
+            'name' => $data['name'],
+            'last_name' => $data['last_name'],
+            'cod_phone' => $data['cod_phone'] ?? '',
+            'phone' => $data['phone'] ?? '',
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+            'user_type' => $data['user_type'],
+        ]);
+    
+        // Crear relación según el tipo de usuario
+        if ($data['user_type'] === UserType::PERSON->name) {
+            $user->person()->create([
+                'user_id' => $user->id,
+                'ci' => $data['ci'],
+            ]);
+            $user->assignRole(RolSpatie::ANUNCIANTE->name);
+        }
+    
+        if ($data['user_type'] === UserType::ORGANIZATION->name) {
+            $user->organization()->create([
+                'user_id' => $user->id,
+                'social_reason' => $data['social_reason'],
+                'name_contact' => $data['name_contact'],
+                'phone_contact' => $data['phone_contact'],
+                'commision_percentage' => $data['commision_percentage'],
+            ]);
+            $user->assignRole(RolSpatie::ADMINISTRADOR->name);
+        }
+    
+        $user->sendEmailVerificationNotification();
+    
         return $user;
     }
 }

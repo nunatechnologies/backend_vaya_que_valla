@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\User;
 
+use App\Http\Resources\Organization\OrganizationResource;
+use App\Http\Resources\Person\PersonResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,7 +23,10 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'cod_phone' => $this->cod_phone,
-            'roles' => $this->getRoleNames()
+            'user_type' => $this->user_type,
+            'roles' => $this->getRoleNames(),
+            'organization' => new OrganizationResource($this->whenLoaded('organization')),
+            'person' => new PersonResource($this->whenLoaded('person')),
         ];
     }
 }

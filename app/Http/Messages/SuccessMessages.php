@@ -13,4 +13,5 @@ class SuccessMessages
     public const PASSWORD_UPDATE_SUCCESS = "Contraseña actualizada exitosamente";
     public const SUCCESSFUL = "CONSULTA EXITOSA";
     public const OPERATION_SUCCESS = "OPERACION EXITOSA";
+    public const USER_REGISTER_SUCCESS = 'Usuario registrado exitosamente.';
 }

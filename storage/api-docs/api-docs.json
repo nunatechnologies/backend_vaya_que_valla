@@ -73,6 +73,111 @@
                 ]
             }
         },
+        "/api/authen/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register",
+                "operationId": "df3120731a531631d74a7c3b9f2c7cee",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "last_name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation",
+                                    "user_type"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Juan"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "Pérez"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@example.com"
+                                    },
+                                    "cod_phone": {
+                                        "type": "string",
+                                        "example": "+591"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "72566987"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "12345678"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "12345678"
+                                    },
+                                    "user_type": {
+                                        "description": "Allowed values: PERSON, ORGANIZATION",
+                                        "type": "string",
+                                        "enum": [
+                                            "PERSON",
+                                            "ORGANIZATION"
+                                        ],
+                                        "example": "PERSON"
+                                    },
+                                    "ci": {
+                                        "description": "Required if user_type is PERSON",
+                                        "type": "string",
+                                        "example": "12345678"
+                                    },
+                                    "social_reason": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string",
+                                        "example": "Mi Empresa SRL"
+                                    },
+                                    "name_contact": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string",
+                                        "example": "Carlos Méndez"
+                                    },
+                                    "phone_contact": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string",
+                                        "example": "76789987"
+                                    },
+                                    "commision_percentage": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "number",
+                                        "example": "10"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful registration"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/api/billboards": {
             "get": {
                 "tags": [
@@ -1596,6 +1701,7 @@
                                         "maxLength": 20
                                     },
                                     "status": {
+                                        "description": "Allowed values: pending, approved, rejected",
                                         "type": "string"
                                     },
                                     "start_date": {
@@ -1708,6 +1814,7 @@
                                         "maxLength": 20
                                     },
                                     "status": {
+                                        "description": "Allowed values: pending, approved, rejected",
                                         "type": "string"
                                     },
                                     "start_date": {

@@ -16,4 +16,9 @@ class Organization extends Model
 		'phone_contact',
 		'commision_percentage',
 	];
+	
+	public function user()
+	{
+		return $this->belongsTo(User::class, 'user_id');
+	}
 }

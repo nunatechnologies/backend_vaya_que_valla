@@ -14,8 +14,10 @@ use App\Http\Controllers\RentalController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 // Route::middleware(['api', 'jwt.auth'])->get('/me', function (Request $request) {
 //     return response()->json(auth()->user());
@@ -25,20 +27,41 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
+Route::get('/email/verify/{id}/{hash}', function (Request $request) {
+    // Cargar el usuario manualmente mediante el id de la URL
+    $user = User::findOrFail($request->route('id'));
+
+    // Validar que el hash concuerde con el email del usuario
+    if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) {
+        return response()->json(['message' => 'El enlace de verificación es inválido.'], 403);
+    }
+
+    if ($user->hasVerifiedEmail()) {
+        return response()->json(['message' => 'El email ya fue verificado.'], 200);
+    }
+
+    $user->markEmailAsVerified();
+
+    return response()->json(['message' => 'Email verificado correctamente'], 200);
+})->middleware(['signed'])->name('verification.verify');
+
+Route::post('/email/resend', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return response()->json(['message' => 'Correo de verificación reenviado']);
+})->middleware(['auth:api'])->name('verification.send');
+
 Route::group(['prefix' => 'authen'], function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('register', [AuthController::class, 'register']);
     // Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
     // Route::put('reset-password', [ForgotPasswordController::class, 'resetPassword']);
     // Route::get('verify-token/{token}/{email}', [ForgotPasswordController::class, 'verifyTokenResetPassword']);
-
-    Route::post('/users', [UserController::class, 'register']);
-    Route::post('/people', [PersonController::class, 'register']);
-    Route::post('/organizations', [OrganizationController::class, 'register']);
 });
 
 Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     
+    Route::post('/users', [UserController::class, 'register']);
     Route::post('/users/{id}/rol', [UserController::class, 'update_rol']);
     Route::put('/users/{id}', [UserController::class, 'update_user']);
     Route::get('/users/{id}', [UserController::class, 'get_user']);
@@ -59,13 +82,13 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
 
     //People
     Route::get('/people', [PersonController::class, 'list_person_pagination']);
-    
+    Route::post('/people', [PersonController::class, 'register']);
     Route::get('/people/{id}', [PersonController::class, 'get_person']);
     Route::put('/people/{id}', [PersonController::class, 'update_person']);
 
     //Organizations
     Route::get('/organizations', [OrganizationController::class, 'list_organization_pagination']);
-    
+    Route::post('/organizations', [OrganizationController::class, 'register']);
     Route::get('/organizations/{id}', [OrganizationController::class, 'get_organization']);
     Route::put('/organizations/{id}', [OrganizationController::class, 'update_organization']);
 

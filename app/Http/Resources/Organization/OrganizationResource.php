@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Organization;
 
+use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,8 +22,6 @@ class OrganizationResource extends JsonResource
             'name_contact' => $this->name_contact,
             'phone_contact' => $this->phone_contact,
             'commision_percentage' => $this->commision_percentage,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ];
     }
 }

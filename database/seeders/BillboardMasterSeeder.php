@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RolSpatie;
 use App\Imports\BillboardsImport;
 use App\Models\Billboard;
 use App\Models\BillboardFace;
@@ -118,7 +119,7 @@ class BillboardMasterSeeder extends Seeder
 
     public function billboards()
     {
-        $advertisers = User::all();
+        $advertisers = User::role(RolSpatie::ANUNCIANTE->name)->get();
         $billboardStructures = BillboardStructure::all();
         $billboardTypes = BillboardType::all();
         $cities = City::all();
