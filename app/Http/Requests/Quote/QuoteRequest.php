@@ -7,6 +7,7 @@ use App\Http\Responses\ApiResponse;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class QuoteRequest extends FormRequest
 {
@@ -27,10 +28,11 @@ class QuoteRequest extends FormRequest
     {
         return [
 			'billboard_face_id' => ['required','integer'],
-			'status' => ['required'],
-			'start_date' => ['required'],
-			'end_date' => ['required'],
-			'total_amount' => ['required','numeric','between:0,999999.99']
+			'status' => ['required',Rule::in(['pending','approved','rejected'])],
+			'start_date' => ['required', Rule::date()->format('Y-m-d')],
+			'end_date' => ['nullable', Rule::date()->format('Y-m-d')],
+			'total_amount' => ['required','numeric','between:0,999999.99'],
+			'months' => ['required','integer']
 		];
     }
 

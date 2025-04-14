@@ -32,12 +32,13 @@ class QuoteController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *          @OA\JsonContent(
-	 *             required={"billboard_face_id", "status", "start_date", "end_date", "total_amount"},
+	 *             required={"billboard_face_id", "status", "start_date", "total_amount", "months"},
 	 *                 @OA\Property(property="billboard_face_id", type="number", maxLength=20),
 	 *                 @OA\Property(property="status", type="string", description="Allowed values: pending, approved, rejected"),
 	 *                 @OA\Property(property="start_date", type="string"),
 	 *                 @OA\Property(property="end_date", type="string"),
 	 *                 @OA\Property(property="total_amount", type="number", maxLength=8, format="float"),
+     *                 @OA\Property(property="months", type="number"),
      *         )
      *     ),
      *     @OA\Response(response=201, description="Quote registered successfully"),
@@ -81,12 +82,13 @@ class QuoteController extends Controller
      *         required=true,
      *         description="Updated quote data",
      *         @OA\JsonContent(
-	 *             required={"billboard_face_id", "status", "start_date", "end_date", "total_amount"},
+	 *             required={"billboard_face_id", "status", "start_date", "total_amount", "months"},
 	 *                 @OA\Property(property="billboard_face_id", type="number", maxLength=20),
 	 *                 @OA\Property(property="status", type="string", description="Allowed values: pending, approved, rejected"),
 	 *                 @OA\Property(property="start_date", type="string"),
 	 *                 @OA\Property(property="end_date", type="string"),
 	 *                 @OA\Property(property="total_amount", type="number", maxLength=8, format="float"),
+     *                 @OA\Property(property="months", type="number"),
      *         )
      *     ),
      *     @OA\Response(response=200, description="Quote updated successfully"),

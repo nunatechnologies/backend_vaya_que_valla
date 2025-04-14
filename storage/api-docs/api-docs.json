@@ -1692,8 +1692,8 @@
                                     "billboard_face_id",
                                     "status",
                                     "start_date",
-                                    "end_date",
-                                    "total_amount"
+                                    "total_amount",
+                                    "months"
                                 ],
                                 "properties": {
                                     "billboard_face_id": {
@@ -1714,6 +1714,9 @@
                                         "type": "number",
                                         "format": "float",
                                         "maxLength": 8
+                                    },
+                                    "months": {
+                                        "type": "number"
                                     }
                                 },
                                 "type": "object"
@@ -1805,8 +1808,8 @@
                                     "billboard_face_id",
                                     "status",
                                     "start_date",
-                                    "end_date",
-                                    "total_amount"
+                                    "total_amount",
+                                    "months"
                                 ],
                                 "properties": {
                                     "billboard_face_id": {
@@ -1827,6 +1830,9 @@
                                         "type": "number",
                                         "format": "float",
                                         "maxLength": 8
+                                    },
+                                    "months": {
+                                        "type": "number"
                                     }
                                 },
                                 "type": "object"
@@ -2413,7 +2419,8 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "user_id"
+                                    "user_id",
+                                    "status"
                                 ],
                                 "properties": {
                                     "user_id": {
@@ -2529,7 +2536,8 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "user_id"
+                                    "user_id",
+                                    "status"
                                 ],
                                 "properties": {
                                     "user_id": {

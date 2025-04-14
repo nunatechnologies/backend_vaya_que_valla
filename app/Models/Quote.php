@@ -14,7 +14,8 @@ class Quote extends Model
         'status',
         'start_date',
         'end_date',
-        'total_amount'
+        'total_amount',
+        'months'
     ];
 
     public function user()

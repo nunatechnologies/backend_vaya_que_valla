@@ -32,7 +32,7 @@ class RequestController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *          @OA\JsonContent(
-	 *             required={"user_id"},
+	 *             required={"user_id", "status"},
 	 *                 @OA\Property(property="user_id", type="number", maxLength=20),
 	 *                 @OA\Property(property="company", type="string", maxLength=40),
      *                 @OA\Property(property="description", type="string", maxLength=200),
@@ -82,7 +82,7 @@ class RequestController extends Controller
      *         required=true,
      *         description="Updated request data",
      *         @OA\JsonContent(
-	 *             required={"user_id"},
+	 *             required={"user_id", "status"},
 	 *                 @OA\Property(property="user_id", type="number", maxLength=20),
 	 *                 @OA\Property(property="company", type="string", maxLength=40),
      *                 @OA\Property(property="description", type="string", maxLength=200),

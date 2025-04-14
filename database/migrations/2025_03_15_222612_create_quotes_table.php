@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('billboard_face_id')->constrained();
             $table->enum('status',['pending','approved','rejected']);
             $table->date('start_date');
-            $table->date('end_date');
+            $table->date('end_date')->nullable();
             $table->decimal('total_amount');
             $table->integer('months');
             $table->timestamps();

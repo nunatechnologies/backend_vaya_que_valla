@@ -23,6 +23,7 @@ class QuoteResource extends JsonResource
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'total_amount' => $this->total_amount,
+            'months' => $this->months,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
