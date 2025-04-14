@@ -12,6 +12,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('company',40)->nullable();
+            $table->enum('status',['pending','approved','rejected']);
+            $table->longText('description', 300)->nullable();
+            $table->longText('budget_description', 300)->nullable();
+            $table->date('tentative_start_date')->nullable();
             $table->timestamps();
         });
     }

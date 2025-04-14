@@ -2344,7 +2344,7 @@
                         "description": "Filter by user_id",
                         "required": false,
                         "schema": {
-                            "type": "string",
+                            "type": "integer",
                             "maxLength": 255
                         }
                     },
@@ -2413,8 +2413,7 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "user_id",
-                                    "company"
+                                    "user_id"
                                 ],
                                 "properties": {
                                     "user_id": {
@@ -2424,6 +2423,24 @@
                                     "company": {
                                         "type": "string",
                                         "maxLength": 40
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "maxLength": 200
+                                    },
+                                    "budget_description": {
+                                        "type": "string",
+                                        "maxLength": 200
+                                    },
+                                    "status": {
+                                        "description": "allowed values: pending,approved,rejected",
+                                        "type": "string",
+                                        "maxLength": 200
+                                    },
+                                    "tentative_start_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-04-14"
                                     }
                                 },
                                 "type": "object"
@@ -2512,8 +2529,7 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "user_id",
-                                    "company"
+                                    "user_id"
                                 ],
                                 "properties": {
                                     "user_id": {
@@ -2523,6 +2539,24 @@
                                     "company": {
                                         "type": "string",
                                         "maxLength": 40
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "maxLength": 200
+                                    },
+                                    "budget_description": {
+                                        "type": "string",
+                                        "maxLength": 200
+                                    },
+                                    "status": {
+                                        "description": "allowed values: pending,approved,rejected",
+                                        "type": "string",
+                                        "maxLength": 200
+                                    },
+                                    "tentative_start_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-04-14"
                                     }
                                 },
                                 "type": "object"

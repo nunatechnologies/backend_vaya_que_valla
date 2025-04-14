@@ -14,7 +14,15 @@ class Request extends Model
     protected $fillable = [
 		'user_id',
 		'company',
+        'status',
+        'description',
+        'budget_description',
+        'tentative_start_date'
 	];
+
+    protected $casts = [
+        'tentative_start_date' => 'date:Y-m-d'
+    ];
 
 	public function user(): BelongsTo
     {

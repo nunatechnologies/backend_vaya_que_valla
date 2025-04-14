@@ -7,6 +7,7 @@ use App\Http\Responses\ApiResponse;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class RequestRequest extends FormRequest
 {
@@ -27,7 +28,11 @@ class RequestRequest extends FormRequest
     {
         return [
 			'user_id' => ['required','integer'],
-			'company' => ['required','string','max:40']
+			'company' => ['nullable','string','max:40'],
+			'status' => ['required', Rule::in(['pending', 'approved', 'rejected'])],
+			'description' => ['nullable','string', "max:200"],
+			'budget_description' => ['nullable','string', "max:200"],
+			'tentative_start_date' => ['required', Rule::date()->format('Y-m-d')]
 		];
     }
 

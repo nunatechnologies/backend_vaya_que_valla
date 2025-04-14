@@ -27,7 +27,11 @@ class PatchRequestRequest extends FormRequest
     {
         return [
 			'user_id' => ['sometimes','integer'],
-			'company' => ['sometimes','string','max:40']
+			'company' => ['sometimes','string','max:40'],
+			'status' => ['sometimes'],
+			'description' => ['sometimes'],
+			'budget_description' => ['sometimes'],
+			'tentative_start_date' => ['sometimes']
 		];
     }
 

@@ -43,11 +43,12 @@ class RequestService
 
         if ($datos->filled('search')) {
             $query->where('company', 'like', '%' . $datos->query('search') . '%')
+				->orWhere('status', 'like', '%' . $datos->query('search') . '%')
+				->orWhere('description', 'like', '%' . $datos->query('search') . '%')
+				->orWhere('budget_description', 'like', '%' . $datos->query('search') . '%')
+				->orWhere('tentative_start_date', 'like', '%' . $datos->query('search') . '%')
 				->orWhere('user_id', 'like', '%' . $datos->query('search') . '%');
-        }
 
-        if ($datos->filled('user_id')) {
-            $query->where('user_id', $datos->query('user_id'));
         }
 
         if ($datos->query('sortBy') && $datos->query('orderBy')) {

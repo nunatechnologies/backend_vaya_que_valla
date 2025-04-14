@@ -32,9 +32,13 @@ class RequestController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *          @OA\JsonContent(
-	 *             required={"user_id", "company"},
+	 *             required={"user_id"},
 	 *                 @OA\Property(property="user_id", type="number", maxLength=20),
 	 *                 @OA\Property(property="company", type="string", maxLength=40),
+     *                 @OA\Property(property="description", type="string", maxLength=200),
+     *                 @OA\Property(property="budget_description", type="string", maxLength=200),
+     *                 @OA\Property(property="status", type="string", maxLength=200, description="allowed values: pending,approved,rejected"),
+     *                 @OA\Property(property="tentative_start_date", type="date", example="2025-04-14"),
      *         )
      *     ),
      *     @OA\Response(response=201, description="Request registered successfully"),
@@ -78,9 +82,13 @@ class RequestController extends Controller
      *         required=true,
      *         description="Updated request data",
      *         @OA\JsonContent(
-	 *             required={"user_id", "company"},
+	 *             required={"user_id"},
 	 *                 @OA\Property(property="user_id", type="number", maxLength=20),
 	 *                 @OA\Property(property="company", type="string", maxLength=40),
+     *                 @OA\Property(property="description", type="string", maxLength=200),
+     *                 @OA\Property(property="budget_description", type="string", maxLength=200),
+     *                 @OA\Property(property="status", type="string", maxLength=200, description="allowed values: pending,approved,rejected"),
+     *                 @OA\Property(property="tentative_start_date", type="date", example="2025-04-14"),
      *         )
      *     ),
      *     @OA\Response(response=200, description="Request updated successfully"),
@@ -164,7 +172,7 @@ class RequestController extends Controller
      *         in="query",
      *         description="Filter by user_id",
      *         required=false,
-     *         @OA\Schema(type="string", maxLength=255)
+     *         @OA\Schema(type="integer", maxLength=255)
      *     ),
      *     @OA\Parameter(
      *         name="itemsPerPage",
