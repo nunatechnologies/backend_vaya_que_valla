@@ -57,12 +57,6 @@ class RegisterRequest extends FormRequest
                 if (!$this->filled('social_reason')) {
                     $validator->errors()->add('social_reason', 'The social_reason is required for user type ORGANIZATION.');
                 }
-                if (!$this->filled('name_contact')) {
-                    $validator->errors()->add('name_contact', 'The contact_name is required for user type ORGANIZATION.');
-                }
-                if (!$this->filled('phone_contact')) {
-                    $validator->errors()->add('phone_contact', 'The phone_contact is required for user type ORGANIZATION.');
-                }
                 if (!$this->filled('commision_percentage')) {
                     $validator->errors()->add('commision_percentage', 'The commision_percentage is required for user type ORGANIZATION.');
                 }
