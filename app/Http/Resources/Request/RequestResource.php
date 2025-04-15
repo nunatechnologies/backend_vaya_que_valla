@@ -21,6 +21,10 @@ class RequestResource extends JsonResource
             'user' => new UserResource($this->user),
             'company' => $this->company,
             'quotes' => QuoteResource::collection($this->quotes),
+            'status' => $this->status,
+            'description' => $this->description,
+            'budget_description' => $this->budget_description,
+            'tentative_start_date' => $this->tentative_start_date,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
