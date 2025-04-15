@@ -86,7 +86,7 @@ class AuthService
                 'phone_contact' => $data['phone_contact'],
                 'commision_percentage' => $data['commision_percentage'],
             ]);
-            $user->assignRole(RolSpatie::ADMINISTRADOR->name);
+            $user->assignRole($data['role']);
         }
     
         $user->sendEmailVerificationNotification();

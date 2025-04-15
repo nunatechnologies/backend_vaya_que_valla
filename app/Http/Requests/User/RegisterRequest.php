@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use App\Enums\RolSpatie;
 use App\Enums\UserType;
 use App\Http\Messages\ErrorMessages;
 use App\Http\Responses\ApiResponse;
@@ -9,6 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 class RegisterRequest extends FormRequest
 {
@@ -30,6 +32,7 @@ class RegisterRequest extends FormRequest
                 UserType::ORGANIZATION->name,
                 UserType::PERSON->name
             ])],
+            'role'=>['required', new Enum(RolSpatie::class)],
             // Not required right now, will be validated conditionally
             'ci' => ['nullable', 'string','max:10'],
             'social_reason' => ['nullable', 'string','max:50'],

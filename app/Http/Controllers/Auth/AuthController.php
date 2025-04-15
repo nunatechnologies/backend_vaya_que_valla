@@ -114,7 +114,7 @@ class AuthController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"name", "last_name", "email", "password", "password_confirmation", "user_type"},
+     *             required={"name", "last_name", "email", "password", "password_confirmation", "user_type", "role"},
      *             @OA\Property(property="name", type="string", example="Juan"),
      *             @OA\Property(property="last_name", type="string", example="Pérez"),
      *             @OA\Property(property="email", type="string", format="email", example="user1@example.com"),
@@ -122,7 +122,8 @@ class AuthController extends Controller
      *             @OA\Property(property="phone", type="string", example="72566987"),
      *             @OA\Property(property="password", type="string", format="password", example="12345678"),
      *             @OA\Property(property="password_confirmation", type="string", format="password", example="12345678"),
-     *             @OA\Property(property="user_type", type="string", enum={"PERSON", "ORGANIZATION"}, example="PERSON", description="Allowed values: PERSON, ORGANIZATION"),
+     *             @OA\Property(property="user_type", type="string", enum={"PERSON", "ORGANIZATION"}, example="PERSON"),
+     *            @OA\Property(property="role", type="string",enum={"ADMINISTRADOR", "OPERADOR", "ANUNCIANTE","AGENCIA","CLIENTE"}),
      *             
      *             @OA\Property(
      *                 property="ci",
