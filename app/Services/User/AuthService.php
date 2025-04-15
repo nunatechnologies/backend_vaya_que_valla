@@ -82,8 +82,8 @@ class AuthService
             $user->organization()->create([
                 'user_id' => $user->id,
                 'social_reason' => $data['social_reason'],
-                'name_contact' => $data['name_contact'],
-                'phone_contact' => $data['phone_contact'],
+                'name_contact' => $data['name_contact']??"",
+                'phone_contact' => $data['phone_contact']??"",
                 'commision_percentage' => $data['commision_percentage'],
             ]);
             $user->assignRole($data['role']);
