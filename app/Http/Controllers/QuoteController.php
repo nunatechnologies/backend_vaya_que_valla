@@ -34,7 +34,7 @@ class QuoteController extends Controller
      *          @OA\JsonContent(
 	 *             required={"billboard_face_id", "status", "start_date", "total_amount", "months"},
 	 *                 @OA\Property(property="billboard_face_id", type="number", maxLength=20),
-	 *                 @OA\Property(property="status", type="string", description="Allowed values: pending, approved, rejected"),
+	 *                 @OA\Property(property="status", type="string", enum={"pending", "approved", "rejected"}),
 	 *                 @OA\Property(property="start_date", type="string"),
 	 *                 @OA\Property(property="end_date", type="string"),
 	 *                 @OA\Property(property="total_amount", type="number", maxLength=8, format="float"),
@@ -84,7 +84,7 @@ class QuoteController extends Controller
      *         @OA\JsonContent(
 	 *             required={"billboard_face_id", "status", "start_date", "total_amount", "months"},
 	 *                 @OA\Property(property="billboard_face_id", type="number", maxLength=20),
-	 *                 @OA\Property(property="status", type="string", description="Allowed values: pending, approved, rejected"),
+	 *                 @OA\Property(property="status", type="string", enum={"pending", "approved", "rejected"}),
 	 *                 @OA\Property(property="start_date", type="string"),
 	 *                 @OA\Property(property="end_date", type="string"),
 	 *                 @OA\Property(property="total_amount", type="number", maxLength=8, format="float"),

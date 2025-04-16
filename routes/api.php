@@ -5,6 +5,7 @@ use App\Http\Controllers\BillboardController;
 use App\Http\Controllers\BillboardFaceController;
 use App\Http\Controllers\BillboardTypeController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\PersonController;
@@ -133,4 +134,7 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     Route::post('/quote_request', [QuoteRequestController::class, 'register']);
     Route::get('/quote_request/{id}', [QuoteRequestController::class, 'get_quoterequest']);
     Route::put('/quote_request/{id}', [QuoteRequestController::class, 'update_quoterequest']);
+
+    //Dashboard
+    Route::get('/dashboard/general', [DashboardController::class, 'getGeneralStatistics']);
 });

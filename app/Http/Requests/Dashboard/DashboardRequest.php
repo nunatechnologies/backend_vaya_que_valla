@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\BillboardFace;
+namespace App\Http\Requests\Dashboard;
 
 use App\Http\Messages\ErrorMessages;
 use App\Http\Responses\ApiResponse;
@@ -8,7 +8,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class PatchBillboardFaceRequest extends FormRequest
+class DashboardRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,12 +26,8 @@ class PatchBillboardFaceRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'code' => ['sometimes','string','max:10','unique:billboard_faces,code,'.$this->route("id")],
-			'billboard_id' => ['sometimes','integer','exists:billboards,id'],
-			'face' => ['sometimes','string','max:10'],
-			'location_detail' => ['sometimes','string','max:255'],
-            'image' => ['nullable','image','max:2048']
-		];
+            'status' =>'nullable|string',
+        ];
     }
 
     protected function failedValidation(Validator $validator)

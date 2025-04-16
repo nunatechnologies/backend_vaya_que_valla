@@ -13,6 +13,7 @@ use App\Models\Province;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
 
@@ -165,20 +166,40 @@ class BillboardMasterSeeder extends Seeder
     public function faces()
     {
         $billboards = Billboard::all();
-        $billboardFaces = [];
+        // $billboardFaces = [];
         foreach ($this->sheet as $col) 
         {
+            $code = trim($col[4]);
             $location = trim($col[5]);
             $billboard = $billboards->firstWhere('location',trim($location));
             $face = trim($col[9]);
             $locationDetail = trim($col[6]);
 
-            $billboardFaces[] = [
+            // $billboardFaces[] = [
+            //     'code' => $code,
+            //     'face' => $face,
+            //     'location_detail' => $locationDetail,
+            //     'billboard_id' => $billboard->id,
+            // ];
+            $billboardFace = BillboardFace::create([
+                'code' => $code,
                 'face' => $face,
                 'location_detail' => $locationDetail,
                 'billboard_id' => $billboard->id,
-            ];
+            ]);
+            $path = 'images/Santa_Cruz/' . $code . '.jpg';
+            $relativePath = 'images/Santa_Cruz/' . $code . '.jpg';
+            $fullPath = public_path($relativePath);
+            // $billboardFace->addMediaFromUrl(asset($path));
+            if (file_exists($fullPath)) 
+            {
+                $billboardFace->addMediaFromUrl(asset($relativePath))->preservingOriginal()->toMediaCollection();
+            } 
+            else 
+            {
+                // Opcional: log, fallback o ignorar
+                Log::warning("Imagen no encontrada: $relativePath");
+            }
         }
-        BillboardFace::insert($billboardFaces);
     }
 }

@@ -26,9 +26,11 @@ class BillboardFaceRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'billboard_id' => ['required','integer'],
+			'code' => ['required','string','max:10','unique:billboard_faces,code'],
+			'billboard_id' => ['required','integer','exists:billboards,id'],
 			'face' => ['required','string','max:10'],
-			'location_detail' => ['required','string','max:255']
+			'location_detail' => ['required','string','max:255'],
+            'image' => ['nullable', 'image', 'max:2048']
 		];
     }
 

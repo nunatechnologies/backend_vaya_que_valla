@@ -12,6 +12,9 @@ use App\Services\BillboardFace\BillboardFaceService;
 use App\Services\SystemLogService;
 use App\Http\Requests\BillboardFace\BillboardFaceRequest;
 use App\Http\Requests\BillboardFace\PatchBillboardFaceRequest;
+use Illuminate\Http\Request;
+
+// use Illuminate\Support\Facades\Request;
 
 class BillboardFaceController extends Controller
 {
@@ -24,18 +27,23 @@ class BillboardFaceController extends Controller
         $this->systemLogService = $systemLogService;
     }
     
-    /**
+     /**
      * @OA\Post(
      *     path="/api/billboard_faces",
      *     summary="Register billboardface",
      *     tags={"Billboard_faces"},
      *     @OA\RequestBody(
      *         required=true,
-     *          @OA\JsonContent(
-	 *             required={"billboard_id", "face", "location_detail"},
-	 *                 @OA\Property(property="billboard_id", type="number", maxLength=20),
-	 *                 @OA\Property(property="face", type="string", maxLength=10),
-	 *                 @OA\Property(property="location_detail", type="string", maxLength=255),
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"code", "billboard_id", "face", "location_detail"},
+     *                 @OA\Property(property="code", type="string", maxLength=10),
+     *                 @OA\Property(property="billboard_id", type="integer"),
+     *                 @OA\Property(property="face", type="string", maxLength=10),
+     *                 @OA\Property(property="location_detail", type="string", maxLength=255),
+     *                 @OA\Property(property="image", type="string", format="binary", description="Optional image upload")
+     *             )
      *         )
      *     ),
      *     @OA\Response(response=201, description="BillboardFace registered successfully"),
@@ -47,6 +55,13 @@ class BillboardFaceController extends Controller
     {
         try {
             $data = $this->billboardfaceService->createBillboardFace($BillboardFaceRequest->all());
+            if (request()->hasFile('image')) 
+            {
+                $data
+                    ->addMediaFromRequest('image')
+                    ->toMediaCollection();
+            }
+            
             $this->systemLogService->logActivity('billboardface','BillboardFace registrado',
                 SeveritySystemLog::info->name,
                 $data
@@ -63,7 +78,7 @@ class BillboardFaceController extends Controller
     }
 
     /**
-     * @OA\Put(
+     * @OA\Post(
      *     path="/api/billboard_faces/{id}",
      *     summary="Update billboardface",
      *     tags={"Billboard_faces"},
@@ -75,14 +90,19 @@ class BillboardFaceController extends Controller
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\RequestBody(
-     *         request="PatchBillboardFaceRequest",
      *         required=true,
      *         description="Updated billboardface data",
-     *         @OA\JsonContent(
-	 *             required={"billboard_id", "face", "location_detail"},
-	 *                 @OA\Property(property="billboard_id", type="number", maxLength=20),
-	 *                 @OA\Property(property="face", type="string", maxLength=10),
-	 *                 @OA\Property(property="location_detail", type="string", maxLength=255),
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"code", "billboard_id", "face", "location_detail"},
+     *                 @OA\Property(property="_method", type="string", default="PUT"),
+     *                 @OA\Property(property="code", type="string", maxLength=10),
+     *                 @OA\Property(property="billboard_id", type="integer"),
+     *                 @OA\Property(property="face", type="string", maxLength=10),
+     *                 @OA\Property(property="location_detail", type="string", maxLength=255),
+     *                 @OA\Property(property="image", type="string", format="binary", description="Optional image upload")
+     *             )
      *         )
      *     ),
      *     @OA\Response(response=200, description="BillboardFace updated successfully"),
@@ -94,6 +114,12 @@ class BillboardFaceController extends Controller
     {
         try {
             $billboardface = $this->billboardfaceService->updateBillboardFace($id, $billboardfaceRequest->validated());
+            if (request()->hasFile('image')) 
+            {
+                $billboardface
+                    ->addMediaFromRequest('image')
+                    ->toMediaCollection();
+            }
             $this->systemLogService->logActivity(
                 'billboardface',
                 'BillboardFace actualizado',

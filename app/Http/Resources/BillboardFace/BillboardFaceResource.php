@@ -17,8 +17,14 @@ class BillboardFaceResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'code' => $this->code,
             'face' => $this->face,
             'location_detail' => $this->location_detail,
+            'images' => ['md' => $this->getFirstMediaUrl('default','md'),
+                'original' => $this->getFirstMediaUrl('default'),
+                'md' => $this->getFirstMediaUrl('default','md'),
+                'sm' => $this->getFirstMediaUrl('default','sm')
+            ],
             'billboard' => new BillboardResource($this->billboard)
         ];
     }

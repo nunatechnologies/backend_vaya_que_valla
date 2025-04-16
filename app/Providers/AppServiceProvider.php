@@ -10,6 +10,8 @@ use App\Repositories\BillboardFace\BillboardFaceRepository;
 use App\Repositories\BillboardFace\BillboardFaceRepositoryInterface;
 use App\Repositories\City\CityRepository;
 use App\Repositories\City\CityRepositoryInterface;
+use App\Repositories\Dashboard\DashboardRepository;
+use App\Repositories\Dashboard\DashboardRepositoryInterface;
 use App\Repositories\Organization\OrganizationRepository;
 use App\Repositories\Organization\OrganizationRepositoryInterface;
 use App\Repositories\People\PeopleRepository;
@@ -98,6 +100,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             QuoteRequestRepositoryInterface::class,
             QuoteRequestRepository::class
+        );
+
+        $this->app->bind(
+            DashboardRepositoryInterface::class,
+            DashboardRepository::class
         );
     }
 

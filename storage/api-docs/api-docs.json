@@ -598,17 +598,21 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
+                                    "code",
                                     "billboard_id",
                                     "face",
                                     "location_detail"
                                 ],
                                 "properties": {
+                                    "code": {
+                                        "type": "string",
+                                        "maxLength": 10
+                                    },
                                     "billboard_id": {
-                                        "type": "number",
-                                        "maxLength": 20
+                                        "type": "integer"
                                     },
                                     "face": {
                                         "type": "string",
@@ -617,6 +621,11 @@
                                     "location_detail": {
                                         "type": "string",
                                         "maxLength": 255
+                                    },
+                                    "image": {
+                                        "description": "Optional image upload",
+                                        "type": "string",
+                                        "format": "binary"
                                     }
                                 },
                                 "type": "object"
@@ -681,12 +690,12 @@
                     }
                 }
             },
-            "put": {
+            "post": {
                 "tags": [
                     "Billboard_faces"
                 ],
                 "summary": "Update billboardface",
-                "operationId": "e1b62c89e97f35b0d9945465b690ec2a",
+                "operationId": "114c2f53a511b76a3622e3af7e900cd3",
                 "parameters": [
                     {
                         "name": "id",
@@ -702,17 +711,25 @@
                     "description": "Updated billboardface data",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
+                                    "code",
                                     "billboard_id",
                                     "face",
                                     "location_detail"
                                 ],
                                 "properties": {
+                                    "_method": {
+                                        "type": "string",
+                                        "default": "PUT"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "maxLength": 10
+                                    },
                                     "billboard_id": {
-                                        "type": "number",
-                                        "maxLength": 20
+                                        "type": "integer"
                                     },
                                     "face": {
                                         "type": "string",
@@ -721,6 +738,11 @@
                                     "location_detail": {
                                         "type": "string",
                                         "maxLength": 255
+                                    },
+                                    "image": {
+                                        "description": "Optional image upload",
+                                        "type": "string",
+                                        "format": "binary"
                                     }
                                 },
                                 "type": "object"
@@ -1157,6 +1179,23 @@
                 "responses": {
                     "200": {
                         "description": "City updated successfully"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/dashboard/general": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "General info",
+                "operationId": "a1549e7521b3c3b78dd58066a750cfc1",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -1711,8 +1750,12 @@
                                         "maxLength": 20
                                     },
                                     "status": {
-                                        "description": "Allowed values: pending, approved, rejected",
-                                        "type": "string"
+                                        "type": "string",
+                                        "enum": [
+                                            "pending",
+                                            "approved",
+                                            "rejected"
+                                        ]
                                     },
                                     "start_date": {
                                         "type": "string"
@@ -1827,8 +1870,12 @@
                                         "maxLength": 20
                                     },
                                     "status": {
-                                        "description": "Allowed values: pending, approved, rejected",
-                                        "type": "string"
+                                        "type": "string",
+                                        "enum": [
+                                            "pending",
+                                            "approved",
+                                            "rejected"
+                                        ]
                                     },
                                     "start_date": {
                                         "type": "string"
@@ -2450,9 +2497,13 @@
                                         "maxLength": 200
                                     },
                                     "status": {
-                                        "description": "allowed values: pending,approved,rejected",
                                         "type": "string",
-                                        "maxLength": 200
+                                        "enum": [
+                                            "pending",
+                                            "approved",
+                                            "in_progress",
+                                            "rejected"
+                                        ]
                                     },
                                     "tentative_start_date": {
                                         "type": "string",
@@ -2567,9 +2618,13 @@
                                         "maxLength": 200
                                     },
                                     "status": {
-                                        "description": "allowed values: pending,approved,rejected",
                                         "type": "string",
-                                        "maxLength": 200
+                                        "enum": [
+                                            "pending",
+                                            "approved",
+                                            "in_progress",
+                                            "rejected"
+                                        ]
                                     },
                                     "tentative_start_date": {
                                         "type": "string",
@@ -3046,6 +3101,10 @@
         {
             "name": "Cities",
             "description": "Cities"
+        },
+        {
+            "name": "Dashboard",
+            "description": "Dashboard"
         },
         {
             "name": "Organizations",

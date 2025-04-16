@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('billboard_faces', function (Blueprint $table) {
             $table->id();
+            $table->string('code',10);
             $table->foreignId('billboard_id')->constrained();
             $table->string('face',10);
             $table->string('location_detail'); // ie: "Face see to avenue Beni"

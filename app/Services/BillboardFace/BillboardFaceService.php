@@ -42,7 +42,8 @@ class BillboardFaceService
         $query = $this->billboardfaceRepository->allquery();
 
         if ($datos->filled('search')) {
-            $query->where('face', 'like', '%' . $datos->query('search') . '%')
+            $query->where('code', 'like', '%' . $datos->query('search') . '%')
+				->orWhere('face', 'like', '%' . $datos->query('search') . '%')
 				->orWhere('location_detail', 'like', '%' . $datos->query('search') . '%');
 
         }

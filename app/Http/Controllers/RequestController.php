@@ -37,7 +37,7 @@ class RequestController extends Controller
 	 *                 @OA\Property(property="company", type="string", maxLength=40),
      *                 @OA\Property(property="description", type="string", maxLength=200),
      *                 @OA\Property(property="budget_description", type="string", maxLength=200),
-     *                 @OA\Property(property="status", type="string", maxLength=200, description="allowed values: pending,approved,rejected"),
+     *                 @OA\Property(property="status", type="string", enum={"pending","approved","in_progress","rejected"}),
      *                 @OA\Property(property="tentative_start_date", type="date", example="2025-04-14"),
      *         )
      *     ),
@@ -87,7 +87,7 @@ class RequestController extends Controller
 	 *                 @OA\Property(property="company", type="string", maxLength=40),
      *                 @OA\Property(property="description", type="string", maxLength=200),
      *                 @OA\Property(property="budget_description", type="string", maxLength=200),
-     *                 @OA\Property(property="status", type="string", maxLength=200, description="allowed values: pending,approved,rejected"),
+     *                 @OA\Property(property="status", type="string", enum={"pending","approved","in_progress","rejected"}),
      *                 @OA\Property(property="tentative_start_date", type="date", example="2025-04-14"),
      *         )
      *     ),
