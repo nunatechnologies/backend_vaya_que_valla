@@ -166,6 +166,37 @@ class BillboardMasterSeeder extends Seeder
     public function faces()
     {
         $billboards = Billboard::all();
+    
+        foreach ($this->sheet as $col) {
+            $code = trim($col[4]);
+            $location = trim($col[5]);
+            $billboard = $billboards->firstWhere('location', trim($location));
+            $face = trim($col[9]);
+            $locationDetail = trim($col[6]);
+    
+            $billboardFace = BillboardFace::create([
+                'code' => $code,
+                'face' => $face,
+                'location_detail' => $locationDetail,
+                'billboard_id' => $billboard->id,
+            ]);
+    
+            $relativePath = 'images/Santa_Cruz/' . $code . '.jpg';
+            $fullPath = public_path($relativePath);
+    
+            if (file_exists($fullPath)) {
+                $billboardFace
+                    ->addMedia($fullPath)
+                    ->preservingOriginal()
+                    ->toMediaCollection();
+            }
+        }
+    }
+    
+
+    public function faces_()
+    {
+        $billboards = Billboard::all();
         // $billboardFaces = [];
         foreach ($this->sheet as $col) 
         {
@@ -175,31 +206,19 @@ class BillboardMasterSeeder extends Seeder
             $face = trim($col[9]);
             $locationDetail = trim($col[6]);
 
-            // $billboardFaces[] = [
-            //     'code' => $code,
-            //     'face' => $face,
-            //     'location_detail' => $locationDetail,
-            //     'billboard_id' => $billboard->id,
-            // ];
             $billboardFace = BillboardFace::create([
                 'code' => $code,
                 'face' => $face,
                 'location_detail' => $locationDetail,
                 'billboard_id' => $billboard->id,
             ]);
-            $path = 'images/Santa_Cruz/' . $code . '.jpg';
             $relativePath = 'images/Santa_Cruz/' . $code . '.jpg';
             $fullPath = public_path($relativePath);
-            // $billboardFace->addMediaFromUrl(asset($path));
+
             if (file_exists($fullPath)) 
             {
                 $billboardFace->addMediaFromUrl(asset($relativePath))->preservingOriginal()->toMediaCollection();
             } 
-            else 
-            {
-                // Opcional: log, fallback o ignorar
-                Log::warning("Imagen no encontrada: $relativePath");
-            }
         }
     }
 }
