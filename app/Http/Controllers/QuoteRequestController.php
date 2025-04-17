@@ -61,8 +61,15 @@ class QuoteRequestController extends Controller
             $response = Http::post($externalUrl, new RequestResource($request));
             if ($response->failed()) 
             {
-                Log::error('Error pushing data to '.$externalUrl, [
+                Log::error('Error pushed data to '.$externalUrl, [
                     'response' => $response->body(),
+                ]);
+            }
+            else
+            {
+                Log::info ('Pushing data to '.$externalUrl, [
+                    'response' => $response->body(),
+                    'data' => new RequestResource($request)
                 ]);
             }
             $this->systemLogService->logActivity('quoterequest','QuoteRequest registrado',
