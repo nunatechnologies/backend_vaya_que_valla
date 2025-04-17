@@ -38,7 +38,7 @@ class QuoteRequestController extends Controller
      *          @OA\JsonContent(
 	 *             required={"request_id", "quote_id"},
 	 *                 @OA\Property(property="request_id", type="number", maxLength=20),
-	 *                 @OA\Property(property="quote_id", type="number", maxLength=20),
+	 *                 @OA\Property(property="quote_id", type="string", maxLength=20, description="It can be '1' for link only one quote or '1,2' to link two or more quotes"),
      *         )
      *     ),
      *     @OA\Response(response=201, description="QuoteRequest registered successfully"),

@@ -1999,7 +1999,8 @@
                                         "maxLength": 20
                                     },
                                     "quote_id": {
-                                        "type": "number",
+                                        "description": "It can be '1' for link only one quote or '1,2' to link two or more quotes",
+                                        "type": "string",
                                         "maxLength": 20
                                     }
                                 },
@@ -2477,7 +2478,8 @@
                             "schema": {
                                 "required": [
                                     "user_id",
-                                    "status"
+                                    "status",
+                                    "quotes"
                                 ],
                                 "properties": {
                                     "user_id": {
