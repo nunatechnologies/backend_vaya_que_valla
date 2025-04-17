@@ -67,7 +67,7 @@ class QuoteRequestController extends Controller
             }
             else
             {
-                Log::info ('Pushing data to '.$externalUrl, [
+                Log::info ('Pushed data to '.$externalUrl, [
                     'response' => $response->body(),
                     'data' => new RequestResource($request)
                 ]);
