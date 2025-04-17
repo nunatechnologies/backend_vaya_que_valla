@@ -46,13 +46,16 @@ class RequestService
 				->orWhere('status', 'like', '%' . $datos->query('search') . '%')
 				->orWhere('description', 'like', '%' . $datos->query('search') . '%')
 				->orWhere('budget_description', 'like', '%' . $datos->query('search') . '%')
-				->orWhere('tentative_start_date', 'like', '%' . $datos->query('search') . '%')
-				->orWhere('user_id', 'like', '%' . $datos->query('search') . '%');
+				->orWhere('tentative_start_date', 'like', '%' . $datos->query('search') . '%');
 
         }
 
         if ($datos->query('sortBy') && $datos->query('orderBy')) {
             $query->orderBy($datos->query('sortBy'), $datos->query('orderBy'));
+        }
+
+        if ($datos->filled('user_id')) {
+            $query->where('user_id', $datos->query('user_id'));
         }
 
         return $query->paginate($datos->query('itemsPerPage') ?? 10);
