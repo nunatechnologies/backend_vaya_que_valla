@@ -51,10 +51,11 @@ class AuthService
         if (!$user) {
             throw new \Exception(ErrorMessages::USER_NOT_FOUND, 401);
         }
-        // echo json_encode([$user->id,$email,$password, $user->password,Hash::check($password, $user->password)]);exit;
-        // echo json_encode(["12345678", '$2y$12$QVTNWt/HPhh70CUTjUVeEuvm9ZOoQEz3zUKJk/QdC2BRWLxNkkYNW',Hash::check('12345678', '$2y$12$QVTNWt/HPhh70CUTjUVeEuvm9ZOoQEz3zUKJk/QdC2BRWLxNkkYNW')]);exit;
         if (!Hash::check($password, $user->password)) {
             throw new \Exception(ErrorMessages::INVALID_CREDENTIALS, 401);
+        }
+        if (is_null($user->email_verified_at)) {
+            throw new \Exception(ErrorMessages::EMAIL_NOT_VERIFIED ?? 'Correo no verificado', 403);
         }
         return $user;
     }
