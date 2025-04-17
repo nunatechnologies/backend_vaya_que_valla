@@ -66,7 +66,7 @@ class RequestController extends Controller
     }
 
     /**
-     * @OA\Put(
+     * @OA\Post(
      *     path="/api/requests/{id}",
      *     summary="Update request",
      *     tags={"Requests"},
@@ -81,14 +81,19 @@ class RequestController extends Controller
      *         request="PatchRequestRequest",
      *         required=true,
      *         description="Updated request data",
-     *         @OA\JsonContent(
-	 *             required={"user_id", "status"},
-	 *                 @OA\Property(property="user_id", type="number", maxLength=20),
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"user_id", "status"},
+     *                 @OA\Property(property="_method", type="string", default="PUT"),
+     *                 @OA\Property(property="user_id", type="number", maxLength=20),
 	 *                 @OA\Property(property="company", type="string", maxLength=40),
      *                 @OA\Property(property="description", type="string", maxLength=200),
      *                 @OA\Property(property="budget_description", type="string", maxLength=200),
      *                 @OA\Property(property="status", type="string", enum={"pending","approved","in_progress","rejected"}),
      *                 @OA\Property(property="tentative_start_date", type="date", example="2025-04-14"),
+     *                 @OA\Property(property="file", type="string", format="binary", description="Optional pdf upload")
+     *             )
      *         )
      *     ),
      *     @OA\Response(response=200, description="Request updated successfully"),
@@ -100,6 +105,12 @@ class RequestController extends Controller
     {
         try {
             $request = $this->requestService->updateRequest($id, $requestRequest->validated());
+            if (request()->hasFile('file')) 
+            {
+                $request
+                    ->addMediaFromRequest('file')
+                    ->toMediaCollection();
+            }
             $this->systemLogService->logActivity(
                 'request',
                 'Request actualizado',

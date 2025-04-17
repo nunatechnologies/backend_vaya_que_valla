@@ -2573,12 +2573,12 @@
                     }
                 }
             },
-            "put": {
+            "post": {
                 "tags": [
                     "Requests"
                 ],
                 "summary": "Update request",
-                "operationId": "bf1ee7f1de06e9446225fd36a2f0254e",
+                "operationId": "b7cae31046699f0ce8b89a82781d55eb",
                 "parameters": [
                     {
                         "name": "id",
@@ -2594,13 +2594,17 @@
                     "description": "Updated request data",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "user_id",
                                     "status"
                                 ],
                                 "properties": {
+                                    "_method": {
+                                        "type": "string",
+                                        "default": "PUT"
+                                    },
                                     "user_id": {
                                         "type": "number",
                                         "maxLength": 20
@@ -2630,6 +2634,11 @@
                                         "type": "string",
                                         "format": "date",
                                         "example": "2025-04-14"
+                                    },
+                                    "file": {
+                                        "description": "Optional pdf upload",
+                                        "type": "string",
+                                        "format": "binary"
                                     }
                                 },
                                 "type": "object"

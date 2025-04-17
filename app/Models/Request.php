@@ -37,4 +37,9 @@ class Request extends Model implements HasMedia
         return $this->belongsToMany(Quote::class, 'quote_requests')
                     ->withTimestamps();
     }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('default');
+    }
 }
