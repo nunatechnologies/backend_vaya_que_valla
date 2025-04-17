@@ -47,10 +47,12 @@ class AuthService
 
     public function authUser($email, $password)
     {
-        $user = $this->userRepository->findByEmail($email)->with(['organization', 'person'])->first();
+        $user = $this->userRepository->findByEmail($email);
         if (!$user) {
             throw new \Exception(ErrorMessages::USER_NOT_FOUND, 401);
         }
+        // echo json_encode([$user->id,$email,$password, $user->password,Hash::check($password, $user->password)]);exit;
+        // echo json_encode(["12345678", '$2y$12$QVTNWt/HPhh70CUTjUVeEuvm9ZOoQEz3zUKJk/QdC2BRWLxNkkYNW',Hash::check('12345678', '$2y$12$QVTNWt/HPhh70CUTjUVeEuvm9ZOoQEz3zUKJk/QdC2BRWLxNkkYNW')]);exit;
         if (!Hash::check($password, $user->password)) {
             throw new \Exception(ErrorMessages::INVALID_CREDENTIALS, 401);
         }
@@ -65,7 +67,7 @@ class AuthService
             'cod_phone' => $data['cod_phone'] ?? '',
             'phone' => $data['phone'] ?? '',
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'password' => Hash::make($data['password']),
             'user_type' => $data['user_type'],
         ]);
     
