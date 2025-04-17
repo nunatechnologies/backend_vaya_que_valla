@@ -38,7 +38,7 @@ class RequestController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *          @OA\JsonContent(
-	 *             required={"user_id", "status"},
+	 *             required={"user_id", "status", "quotes"},
 	 *                 @OA\Property(property="user_id", type="number", maxLength=20),
 	 *                 @OA\Property(property="company", type="string", maxLength=40),
      *                 @OA\Property(property="description", type="string", maxLength=200),
@@ -56,19 +56,18 @@ class RequestController extends Controller
     {
         try {
             $data = $this->requestService->createRequest($RequestRequest->all());
-            if (app()->environment('local')) {
-                $externalUrl = 'http://vayaquevalla.test/api/authen/externals/receive-request';
-            } else {
-                $externalUrl = 'https://crm-back.vayaquevalla.com/api/requests';
-            }
-            
-            $response = Http::post($externalUrl, new RequestResource($data));
-            if ($response->failed()) 
-            {
-                Log::error('Error pushing data to '.$externalUrl, [
-                    'response' => $response->body(),
-                ]);
-            }
+            // if (app()->environment('local')) {
+            //     $externalUrl = 'http://vayaquevalla.test/api/authen/externals/receive-request';
+            // } else {
+            //     $externalUrl = 'https://crm-back.vayaquevalla.com/api/requests';
+            // }
+            // $response = Http::post($externalUrl, new RequestResource($data));
+            // if ($response->failed()) 
+            // {
+            //     Log::error('Error pushing data to '.$externalUrl, [
+            //         'response' => $response->body(),
+            //     ]);
+            // }
             $this->systemLogService->logActivity('request','Request registrado',
                 SeveritySystemLog::info->name,
                 $data

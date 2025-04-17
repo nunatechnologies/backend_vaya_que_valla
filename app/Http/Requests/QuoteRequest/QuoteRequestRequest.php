@@ -27,7 +27,7 @@ class QuoteRequestRequest extends FormRequest
     {
         return [
 			'request_id' => ['required','integer'],
-			'quote_id' => ['required','integer']
+			'quote_id' => ['required']
 		];
     }
 

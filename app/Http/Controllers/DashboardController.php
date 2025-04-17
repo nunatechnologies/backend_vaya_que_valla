@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Messages\ErrorMessages;
 use App\Http\Messages\SuccessMessages;
+use App\Http\Requests\Dashboard\DashboardRequest;
 use App\Http\Responses\ApiResponse;
 use App\Services\Dashboard\DashboardService;
 
@@ -28,7 +29,7 @@ class DashboardController extends Controller
      * )
      */
 
-    public function getGeneralStatistics()
+    public function getGeneralStatistics(DashboardRequest $filter)
     {
         try {
             $datos = $this->dashboardService->getKeyReports();

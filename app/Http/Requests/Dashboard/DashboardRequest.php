@@ -26,7 +26,7 @@ class DashboardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' =>'nullable|string',
+            'user_id' =>'nullable',
         ];
     }
 

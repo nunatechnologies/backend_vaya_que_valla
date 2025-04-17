@@ -12,6 +12,10 @@ use App\Services\QuoteRequest\QuoteRequestService;
 use App\Services\SystemLogService;
 use App\Http\Requests\QuoteRequest\QuoteRequestRequest;
 use App\Http\Requests\QuoteRequest\PatchQuoteRequestRequest;
+use App\Http\Resources\Request\RequestResource;
+use App\Models\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class QuoteRequestController extends Controller
 {
@@ -45,12 +49,27 @@ class QuoteRequestController extends Controller
     public function register(QuoteRequestRequest $QuoteRequestRequest)
     {
         try {
-            $data = $this->quoterequestService->createQuoteRequest($QuoteRequestRequest->all());
+            $request = Request::find($QuoteRequestRequest->request_id);
+            $quotesIds = explode(',',$QuoteRequestRequest->quote_id);
+            $request->quotes()->syncWithoutDetaching($quotesIds);
+            if (app()->environment('local')) {
+                $externalUrl = 'http://vayaquevalla.test/api/authen/externals/receive-request';
+            } else {
+                $externalUrl = 'https://crm-back.vayaquevalla.com/api/requests';
+            }
+            
+            $response = Http::post($externalUrl, new RequestResource($request));
+            if ($response->failed()) 
+            {
+                Log::error('Error pushing data to '.$externalUrl, [
+                    'response' => $response->body(),
+                ]);
+            }
             $this->systemLogService->logActivity('quoterequest','QuoteRequest registrado',
                 SeveritySystemLog::info->name,
-                $data
+                $request
             );
-            return ApiResponse::success(SuccessMessages::CREATE_SUCCESS, new QuoteRequestResource($data), [], 201);
+            return ApiResponse::success(SuccessMessages::CREATE_SUCCESS, new RequestResource($request), [], 201);
         } catch (\Exception $e) {
             $this->systemLogService->logActivity(
                 'quoterequest',
