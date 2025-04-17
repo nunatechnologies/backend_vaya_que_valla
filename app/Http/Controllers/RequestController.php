@@ -12,6 +12,9 @@ use App\Services\Request\RequestService;
 use App\Services\SystemLogService;
 use App\Http\Requests\Request\RequestRequest;
 use App\Http\Requests\Request\PatchRequestRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class RequestController extends Controller
 {
@@ -22,6 +25,9 @@ class RequestController extends Controller
     {
         $this->requestService = $requestService;
         $this->systemLogService = $systemLogService;
+        // $this->middleware('jwt', ['except' => [
+        //     'receiveExternalRequest'
+        // ]]);
     }
     
     /**
@@ -50,6 +56,19 @@ class RequestController extends Controller
     {
         try {
             $data = $this->requestService->createRequest($RequestRequest->all());
+            if (app()->environment('local')) {
+                $externalUrl = 'http://vayaquevalla.test/api/authen/externals/receive-request';
+            } else {
+                $externalUrl = 'https://crm-back.vayaquevalla.com/api/requests';
+            }
+            
+            $response = Http::post($externalUrl, new RequestResource($data));
+            if ($response->failed()) 
+            {
+                Log::error('Error pushing data to '.$externalUrl, [
+                    'response' => $response->body(),
+                ]);
+            }
             $this->systemLogService->logActivity('request','Request registrado',
                 SeveritySystemLog::info->name,
                 $data
@@ -226,5 +245,15 @@ class RequestController extends Controller
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), $e, [], $e->getCode());
         }
+    }
+
+    public function receiveExternalRequest(Request $request)
+    {
+        Log::info('Datos recibidos en /api/authen/externals/receive-request', $request->all());
+
+        return response()->json([
+            'message' => 'Datos recibidos correctamente',
+            'received' => $request->all(),
+        ]);
     }
 }

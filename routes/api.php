@@ -55,6 +55,7 @@ Route::group(['prefix' => 'authen'], function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('register', [AuthController::class, 'register']);
+    Route::post('externals/receive-request', [RequestController::class, 'receiveExternalRequest']);
     // Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
     // Route::put('reset-password', [ForgotPasswordController::class, 'resetPassword']);
     // Route::get('verify-token/{token}/{email}', [ForgotPasswordController::class, 'verifyTokenResetPassword']);
@@ -138,3 +139,4 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     //Dashboard
     Route::get('/dashboard/general', [DashboardController::class, 'getGeneralStatistics']);
 });
+
