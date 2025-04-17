@@ -248,7 +248,7 @@ class RequestController extends Controller
 
     public function receiveExternalRequest(Request $request)
     {
-        Log::info('Data received in /api/authen/externals/receive-request', $request->all());
+        Log::info('Data received in endpoint', $request->all());
 
         return response()->json([
             'message' => 'Data received successfully',
