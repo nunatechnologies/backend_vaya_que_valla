@@ -12,14 +12,27 @@
         font-family: 'tt-octosquares';
         src: url("/public/fonts/tt_octosquares/TT Octosquares Trial Condensed Regular.ttf");
         }
-        body {
+        body_ {
             background: #D8D8D8 !important;
             font-family: 'Helvetica';
             position: relative;
 
             line-height: 1.5;
         }
-
+        body{
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            color: #333333;
+            font-size: 21px;
+            line-height: 1.6;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+        }
+        h1{
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a1a1a;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+        }
         .h3,
         h3 {
             font-size: 1.75rem;
@@ -32,7 +45,7 @@
             color: #4E4E4E;
             font-weight: 100 !important;
             margin-top: 0;
-            font-size: 14px;
+            font-size: 17px!important;
         }
 
         .mt-30 {
