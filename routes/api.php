@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\BillboardController;
 use App\Http\Controllers\BillboardFaceController;
 use App\Http\Controllers\BillboardTypeController;
@@ -19,14 +20,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-
-// Route::middleware(['api', 'jwt.auth'])->get('/me', function (Request $request) {
-//     return response()->json(auth()->user());
-// });
-
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
 
 Route::get('/email/verify/{id}/{hash}', function (Request $request) {
     // Cargar el usuario manualmente mediante el id de la URL
@@ -56,13 +49,14 @@ Route::group(['prefix' => 'authen'], function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('register', [AuthController::class, 'register']);
     Route::post('externals/receive-request', [RequestController::class, 'receiveExternalRequest']);
-    // Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
+    Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
     // Route::put('reset-password', [ForgotPasswordController::class, 'resetPassword']);
     // Route::get('verify-token/{token}/{email}', [ForgotPasswordController::class, 'verifyTokenResetPassword']);
 });
 
 Route::group(['middleware' => ['api', 'jwt.auth']], function () {
-    
+    Route::put('/change_password', [ForgotPasswordController::class, 'changePassword']);
+    //Users
     Route::post('/users', [UserController::class, 'register']);
     Route::post('/users/{id}/rol', [UserController::class, 'update_rol']);
     Route::put('/users/{id}', [UserController::class, 'update_user']);
