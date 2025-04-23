@@ -13,6 +13,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Notifications\VerifyApiEmail;
+use App\Notifications\ResetPasswordCustom;
 
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
@@ -84,4 +85,8 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         $this->notify(new VerifyApiEmail());
     }
 
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordCustom($token));
+    }
 }

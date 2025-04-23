@@ -9,6 +9,9 @@ use App\Http\Requests\User\ChangePasswordRequest;
 use App\Http\Responses\ApiResponse;
 use App\Services\SystemLogService;
 use App\Services\User\AuthService;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Request;
 
 class ForgotPasswordController extends Controller
 {
@@ -26,7 +29,7 @@ class ForgotPasswordController extends Controller
     /**
      * @OA\Put(
      *     path="/api/change_password",
-     *     summary="Cambiar la contraseña del usuario autenticado",
+     *     summary="Change password of authenticated user",
      *     tags={"Authentication"},
      *   security={{ "bearerAuth": {} }},
      *     @OA\RequestBody(
@@ -67,5 +70,53 @@ class ForgotPasswordController extends Controller
             );
              return ApiResponse::error($e->getMessage(), $e, [], 500);
          }
-     }
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/authen/forgot-password",
+     *     summary="Request link for reset password",
+     *     tags={"Authentication"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email"},
+     *             @OA\Property(property="email", type="string", format="email", example="usuario@correo.com")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Link enviado correctamente"),
+     *     @OA\Response(response=422, description="Validación fallida"),
+     *     @OA\Response(response=500, description="Error del servidor"),
+     * )
+     */
+    public function sendResetLinkEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ]);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        if ($status === Password::RESET_LINK_SENT) {
+            $this->SystemLogService->logActivity(
+                'Contraseña',
+                'Solicitud de link de recuperación',
+                SeveritySystemLog::info->name,
+            );
+
+            return ApiResponse::success('Link de recuperación enviado al correo.', [], []);
+        }
+
+        $this->SystemLogService->logActivity(
+            'Contraseña',
+            'Fallo al solicitar link de recuperación',
+            SeveritySystemLog::warning->name,
+        );
+
+        throw ValidationException::withMessages([
+            'email' => [__($status)],
+        ]);
+    }
 }

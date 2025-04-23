@@ -193,7 +193,7 @@
                 "tags": [
                     "Authentication"
                 ],
-                "summary": "Cambiar la contraseña del usuario autenticado",
+                "summary": "Change password of authenticated user",
                 "operationId": "adaf31390a12865485f4857c514bad62",
                 "requestBody": {
                     "required": true,
@@ -246,6 +246,46 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        },
+        "/api/authen/forgot-password": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Request link for reset password",
+                "operationId": "b2ca2a3d7f76e6b43dfd9f0f563c66f6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "usuario@correo.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Link enviado correctamente"
+                    },
+                    "422": {
+                        "description": "Validación fallida"
+                    },
+                    "500": {
+                        "description": "Error del servidor"
+                    }
+                }
             }
         },
         "/api/billboards": {

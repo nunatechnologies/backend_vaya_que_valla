@@ -22,15 +22,14 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Route::get('/email/verify/{id}/{hash}', function (Request $request) {
-    // Cargar el usuario manualmente mediante el id de la URL
     $user = User::findOrFail($request->route('id'));
-
-    // Validar que el hash concuerde con el email del usuario
-    if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) {
+    if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) 
+    {
         return response()->json(['message' => 'El enlace de verificación es inválido.'], 403);
     }
 
-    if ($user->hasVerifiedEmail()) {
+    if ($user->hasVerifiedEmail()) 
+    {
         return response()->json(['message' => 'El email ya fue verificado.'], 200);
     }
 
@@ -48,9 +47,8 @@ Route::group(['prefix' => 'authen'], function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('register', [AuthController::class, 'register']);
-    Route::post('externals/receive-request', [RequestController::class, 'receiveExternalRequest']);
+    // Route::post('externals/receive-request', [RequestController::class, 'receiveExternalRequest']);
     Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
-    // Route::put('reset-password', [ForgotPasswordController::class, 'resetPassword']);
     // Route::get('verify-token/{token}/{email}', [ForgotPasswordController::class, 'verifyTokenResetPassword']);
 });
 
