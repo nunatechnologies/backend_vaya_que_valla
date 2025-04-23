@@ -12,6 +12,7 @@ class Organization extends Model
     protected $fillable = [
 		'user_id',
 		'social_reason',
+		'nit',
 		'name_contact',
 		'phone_contact',
 		'commision_percentage',

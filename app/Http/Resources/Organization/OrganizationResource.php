@@ -19,6 +19,7 @@ class OrganizationResource extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'social_reason' => $this->social_reason,
+            'nit' => $this->nit,
             'name_contact' => $this->name_contact,
             'phone_contact' => $this->phone_contact,
             'commision_percentage' => $this->commision_percentage,

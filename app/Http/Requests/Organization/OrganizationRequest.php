@@ -28,6 +28,7 @@ class OrganizationRequest extends FormRequest
         return [
 			'user_id' => ['required','integer'],
 			'social_reason' => ['required','string','max:100'],
+            'nit' => ['required','string','max:30'],
 			'name_contact' => ['required','string','max:100'],
 			'phone_contact' => ['required','string','max:20'],
 			'commision_percentage' => ['required','numeric','between:0,999999.99']

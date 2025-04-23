@@ -17,6 +17,7 @@ class OrganizationSeeder extends Seeder
             [
                 'user_id' => 1,
                 'social_reason' => 'Coca cola',
+                'nit' => '121213131',
                 'name_contact' => 'cocacolacontact',
                 'phone_contact' => '1234567',
                 'commision_percentage' => 5,
@@ -24,6 +25,7 @@ class OrganizationSeeder extends Seeder
             [
                 'user_id' => 2,
                 'social_reason' => 'Fridolin',
+                'nit' => '344432323',
                 'name_contact' => 'fridolincontact',
                 'phone_contact' => '654789',
                 'commision_percentage' => 6,

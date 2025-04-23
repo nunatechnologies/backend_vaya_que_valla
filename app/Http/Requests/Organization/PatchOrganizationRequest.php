@@ -28,6 +28,7 @@ class PatchOrganizationRequest extends FormRequest
         return [
 			'user_id' => ['sometimes','integer'],
 			'social_reason' => ['sometimes','string','max:100'],
+            'nit' => ['sometimes','string','max:30'],
 			'name_contact' => ['sometimes','string','max:100'],
 			'phone_contact' => ['sometimes','string','max:20'],
 			'commision_percentage' => ['sometimes','numeric','between:0,999999.99']
