@@ -37,24 +37,20 @@ class ResetPasswordCustom extends Notification
      */
     public function toMail($notifiable)
     {
-        if (env('APP_ENV') == 'production') 
-        {
+        if (env('APP_ENV') == 'production') {
             $frontendUrl = 'https://panel.vayaquevalla.com';
-        }
-        else
-        {
+        } else {
             $frontendUrl = 'http://localhost:5173';
         }
-        
 
-        $url = $frontendUrl . '/authentication/reset-password/' . $this->token;
+        $url = $frontendUrl . '/authentication/reset-password/' . $this->token . '?email=' . urlencode($notifiable->email);
 
         return (new MailMessage)
-        ->subject('Restablece tu contraseña')
-        ->view('emails.password-reset', [
-            'url' => $url,
-            'user' => $notifiable,
-        ]);
+            ->subject('Restablece tu contraseña')
+            ->view('emails.password-reset', [
+                'url' => $url,
+                'user' => $notifiable,
+            ]);
     }
 
     /**
