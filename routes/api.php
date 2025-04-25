@@ -50,10 +50,11 @@ Route::group(['prefix' => 'authen'], function () {
     // Route::post('externals/receive-request', [RequestController::class, 'receiveExternalRequest']);
     Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
     // Route::get('verify-token/{token}/{email}', [ForgotPasswordController::class, 'verifyTokenResetPassword']);
+    Route::post('reset-password', [ForgotPasswordController::class, 'resetPassword']);
 });
 
 Route::group(['middleware' => ['api', 'jwt.auth']], function () {
-    Route::put('/change_password', [ForgotPasswordController::class, 'changePassword']);
+    Route::put('/change_password/{id}', [ForgotPasswordController::class, 'changePassword']);
     //Users
     Route::post('/users', [UserController::class, 'register']);
     Route::post('/users/{id}/rol', [UserController::class, 'update_rol']);

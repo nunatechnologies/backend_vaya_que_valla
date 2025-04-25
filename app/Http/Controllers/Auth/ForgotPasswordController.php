@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Messages\SuccessMessages;
 use App\Http\Requests\User\ChangePasswordRequest;
 use App\Http\Responses\ApiResponse;
+use App\Models\User;
 use App\Services\SystemLogService;
 use App\Services\User\AuthService;
 use Illuminate\Support\Facades\Password;
@@ -28,10 +29,20 @@ class ForgotPasswordController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/change_password",
+     *     path="/api/change_password/{id}",
      *     summary="Change password of authenticated user",
      *     tags={"Authentication"},
-     *   security={{ "bearerAuth": {} }},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the user",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         )
+     *     ),
+     *     security={{ "bearerAuth": {} }},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -49,10 +60,10 @@ class ForgotPasswordController extends Controller
      * )
      */
 
-     public function changePassword(ChangePasswordRequest $request)
+     public function changePassword(ChangePasswordRequest $request, $id)
      {
          try {
-             $user = $this->authService->getAuthenticatedUser();
+             $user = User::find($id);
              $currentPassword = $request->input('current_password');
              $newPassword = $request->input('new_password');
              $this->authService->changePassword($user, $currentPassword, $newPassword);
@@ -112,6 +123,66 @@ class ForgotPasswordController extends Controller
         $this->SystemLogService->logActivity(
             'Contraseña',
             'Fallo al solicitar link de recuperación',
+            SeveritySystemLog::warning->name,
+        );
+
+        throw ValidationException::withMessages([
+            'email' => [__($status)],
+        ]);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/authen/reset-password",
+     *     summary="Reset password by given token in email",
+     *     tags={"Authentication"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"token", "email", "password", "password_confirmation"},
+     *             @OA\Property(property="token", type="string", example="abc123token"),
+     *             @OA\Property(property="email", type="string", format="email", example="usuario@correo.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="nuevaContraseñaSegura"),
+     *             @OA\Property(property="password_confirmation", type="string", format="password", example="nuevaContraseñaSegura")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Contraseña restablecida correctamente"),
+     *     @OA\Response(response=422, description="Error de validación o token inválido"),
+     *     @OA\Response(response=500, description="Error interno del servidor")
+     * )
+     */
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => bcrypt($password),
+                ])->save();
+
+                // Si tienes que guardar logs adicionales del usuario, puedes hacerlo aquí.
+            }
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
+            $this->SystemLogService->logActivity(
+                'Contraseña',
+                'Restablecimiento de contraseña exitoso',
+                SeveritySystemLog::info->name,
+            );
+
+            return ApiResponse::success('La contraseña ha sido restablecida correctamente.', [], []);
+        }
+
+        $this->SystemLogService->logActivity(
+            'Contraseña',
+            'Intento fallido de restablecimiento de contraseña',
             SeveritySystemLog::warning->name,
         );
 

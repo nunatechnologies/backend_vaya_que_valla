@@ -188,13 +188,25 @@
                 }
             }
         },
-        "/api/change_password": {
+        "/api/change_password/{id}": {
             "put": {
                 "tags": [
                     "Authentication"
                 ],
                 "summary": "Change password of authenticated user",
-                "operationId": "adaf31390a12865485f4857c514bad62",
+                "operationId": "9a86fd14af889b5dd1cd12028c0ae321",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -284,6 +296,63 @@
                     },
                     "500": {
                         "description": "Error del servidor"
+                    }
+                }
+            }
+        },
+        "/api/authen/reset-password": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Reset password by given token in email",
+                "operationId": "7f38f7f481bafda9503c5a53479fa79d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "token",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "token": {
+                                        "type": "string",
+                                        "example": "abc123token"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "usuario@correo.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "nuevaContraseñaSegura"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "nuevaContraseñaSegura"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Contraseña restablecida correctamente"
+                    },
+                    "422": {
+                        "description": "Error de validación o token inválido"
+                    },
+                    "500": {
+                        "description": "Error interno del servidor"
                     }
                 }
             }
