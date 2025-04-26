@@ -2,11 +2,13 @@
 
 namespace App\Http\Requests\BillboardFace;
 
+use App\Enums\BillboardFaceStatus;
 use App\Http\Messages\ErrorMessages;
 use App\Http\Responses\ApiResponse;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rules\Enum;
 
 class PatchBillboardFaceRequest extends FormRequest
 {
@@ -30,6 +32,7 @@ class PatchBillboardFaceRequest extends FormRequest
 			'billboard_id' => ['sometimes','integer','exists:billboards,id'],
 			'face' => ['sometimes','string','max:10'],
 			'location_detail' => ['sometimes','string','max:255'],
+            'status'=>['required', new Enum(BillboardFaceStatus::class)],
             'image' => ['nullable','image','max:2048']
 		];
     }

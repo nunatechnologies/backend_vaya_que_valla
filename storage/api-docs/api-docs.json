@@ -773,7 +773,8 @@
                                     "code",
                                     "billboard_id",
                                     "face",
-                                    "location_detail"
+                                    "location_detail",
+                                    "status"
                                 ],
                                 "properties": {
                                     "code": {
@@ -790,6 +791,14 @@
                                     "location_detail": {
                                         "type": "string",
                                         "maxLength": 255
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "ROJO",
+                                            "AMARILLO",
+                                            "VERDE"
+                                        ]
                                     },
                                     "image": {
                                         "description": "Optional image upload",
@@ -883,10 +892,7 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "code",
-                                    "billboard_id",
-                                    "face",
-                                    "location_detail"
+                                    "_method"
                                 ],
                                 "properties": {
                                     "_method": {
@@ -907,6 +913,14 @@
                                     "location_detail": {
                                         "type": "string",
                                         "maxLength": 255
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "ROJO",
+                                            "AMARILLO",
+                                            "VERDE"
+                                        ]
                                     },
                                     "image": {
                                         "description": "Optional image upload",

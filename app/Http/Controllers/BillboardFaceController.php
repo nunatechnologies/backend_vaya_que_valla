@@ -37,11 +37,12 @@ class BillboardFaceController extends Controller
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"code", "billboard_id", "face", "location_detail"},
+     *                 required={"code", "billboard_id", "face", "location_detail", "status"},
      *                 @OA\Property(property="code", type="string", maxLength=10),
      *                 @OA\Property(property="billboard_id", type="integer"),
      *                 @OA\Property(property="face", type="string", maxLength=10),
      *                 @OA\Property(property="location_detail", type="string", maxLength=255),
+     *                 @OA\Property(property="status", type="string", enum={"ROJO", "AMARILLO", "VERDE"}),
      *                 @OA\Property(property="image", type="string", format="binary", description="Optional image upload")
      *             )
      *         )
@@ -95,12 +96,13 @@ class BillboardFaceController extends Controller
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"code", "billboard_id", "face", "location_detail"},
+     *                 required={"_method"},
      *                 @OA\Property(property="_method", type="string", default="PUT"),
      *                 @OA\Property(property="code", type="string", maxLength=10),
      *                 @OA\Property(property="billboard_id", type="integer"),
      *                 @OA\Property(property="face", type="string", maxLength=10),
      *                 @OA\Property(property="location_detail", type="string", maxLength=255),
+     *                 @OA\Property(property="status", type="string", enum={"ROJO", "AMARILLO", "VERDE"}),
      *                 @OA\Property(property="image", type="string", format="binary", description="Optional image upload")
      *             )
      *         )

@@ -13,7 +13,7 @@ class BillboardFace extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
 
-    protected $fillable = ['code','face', 'location_detail', 'billboard_id'];
+    protected $fillable = ['code','face', 'location_detail', 'status', 'billboard_id'];
 
     public function billboard()
     {
