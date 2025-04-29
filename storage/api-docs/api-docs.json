@@ -1589,12 +1589,8 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "user_id",
                                     "social_reason",
-                                    "nit",
-                                    "name_contact",
-                                    "phone_contact",
-                                    "commision_percentage"
+                                    "nit"
                                 ],
                                 "properties": {
                                     "user_id": {
@@ -2791,10 +2787,6 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "required": [
-                                    "user_id",
-                                    "status"
-                                ],
                                 "properties": {
                                     "_method": {
                                         "type": "string",

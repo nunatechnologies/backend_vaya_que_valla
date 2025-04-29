@@ -82,7 +82,7 @@ class OrganizationController extends Controller
      *         required=true,
      *         description="Updated organization data",
      *         @OA\JsonContent(
-	 *             required={"user_id", "social_reason", "nit", "name_contact", "phone_contact", "commision_percentage"},
+	 *             required={"social_reason", "nit"},
 	 *                 @OA\Property(property="user_id", type="number", maxLength=20),
 	 *                 @OA\Property(property="social_reason", type="string", maxLength=100),
 	 *                 @OA\Property(property="nit", type="string", maxLength=30),

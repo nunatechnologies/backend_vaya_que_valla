@@ -102,7 +102,6 @@ class RequestController extends Controller
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"user_id", "status"},
      *                 @OA\Property(property="_method", type="string", default="PUT"),
      *                 @OA\Property(property="user_id", type="number", maxLength=20),
 	 *                 @OA\Property(property="company", type="string", maxLength=40),
