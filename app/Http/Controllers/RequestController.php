@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\SeveritySystemLog;
 use App\Http\Messages\SuccessMessages;
 use App\Http\Requests\PaginationRequest;
+use App\Http\Requests\Request\PatchPdfRequestRequest;
 use App\Http\Resources\Request\RequestResource;
 use App\Http\Resources\PaginacionResource;
 use App\Http\Responses\ApiResponse;
@@ -15,6 +16,7 @@ use App\Http\Requests\Request\PatchRequestRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class RequestController extends Controller
 {
@@ -144,6 +146,55 @@ class RequestController extends Controller
             return ApiResponse::error($e->getMessage(), null, [], $e->getCode());
         }
     }
+
+    /**
+     * @OA\Put(
+     *     path="/api/requests_pdf/{id}",
+     *     summary="Update pdf request",
+     *     tags={"Requests"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="ID of the pdf file to update",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         request="PatchPdfRequestRequest",
+     *         required=true,
+     *         description="Updated pdf file status",
+     *         @OA\JsonContent(
+	 *             required={"status"},
+     *                 @OA\Property(property="status", type="string", enum={"ACEPTADO", "RECHAZADO"}),
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Pdf file status updated successfully"),
+     *     @OA\Response(response=500, description="Internal server error")
+     * )
+     */
+
+     public function update_pdf(PatchPdfRequestRequest $requestRequest, $id)
+     {
+         try {
+            $media = Media::find($id);
+            $media->setCustomProperty('pdf_status', $requestRequest->status);
+            $media->save();
+             $this->systemLogService->logActivity(
+                 'request',
+                 'Request actualizado',
+                 SeveritySystemLog::info->name,
+                 $media
+             );
+             return ApiResponse::success(SuccessMessages::UPDATE_SUCCESS, ['id' => $media->id, 'status' => $media->getCustomProperty('pdf_status')], [], 200);
+         } catch (\Exception $e) {
+             $this->systemLogService->logActivity(
+                 'media',
+                 'Actualización de pdf media file Fallida',
+                 SeveritySystemLog::error->name,
+             );
+             return ApiResponse::error($e->getMessage(), null, [], $e->getCode());
+         }
+     }
 
     /**
      * @OA\Get(

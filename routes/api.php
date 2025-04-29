@@ -122,6 +122,7 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     Route::post('/requests', [RequestController::class, 'register']);
     Route::get('/requests/{id}', [RequestController::class, 'get_request']);
     Route::put('/requests/{id}', [RequestController::class, 'update_request']);
+    Route::put('/requests_pdf/{id}', [RequestController::class, 'update_pdf']);
 
     //Quote requests
     Route::get('/quote_request', [QuoteRequestController::class, 'list_quoterequest_pagination']);

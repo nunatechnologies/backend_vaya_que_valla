@@ -26,7 +26,14 @@ class RequestResource extends JsonResource
             'budget_description' => $this->budget_description,
             'tentative_start_date' => $this->tentative_start_date,
             'files' => $this->getMedia()->map(function ($media) {
-                return $media->getFullUrl(); // o ->getUrl() si usás local disk
+                return [
+                    'id' => $media->id,
+                    'name' => $media->name,
+                    'file_name' => $media->file_name,
+                    'url' => $media->getFullUrl(),
+                    'status' => $media->getCustomProperty('pdf_status'),
+                    'created_at' => $media->created_at,
+                ];
             })->toArray(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

@@ -26,7 +26,6 @@ class BillboardResource extends JsonResource
             'price_per_month' => $this->price_per_month,
             'status' => $this->status,
             'traffic_data' => $this->traffic_data,
-            'image' => $this->image,
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'billboard_type' => new BillboardTypeResource($this->billboardType),
