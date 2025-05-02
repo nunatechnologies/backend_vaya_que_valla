@@ -800,6 +800,14 @@
                                             "VERDE"
                                         ]
                                     },
+                                    "rented_from": {
+                                        "description": "Date format: yyyy-mm-dd",
+                                        "type": "string"
+                                    },
+                                    "available_from": {
+                                        "description": "Date format: yyyy-mm-dd",
+                                        "type": "string"
+                                    },
                                     "image": {
                                         "description": "Optional image upload",
                                         "type": "string",
@@ -921,6 +929,14 @@
                                             "AMARILLO",
                                             "VERDE"
                                         ]
+                                    },
+                                    "rented_from": {
+                                        "description": "Date format: yyyy-mm-dd",
+                                        "type": "string"
+                                    },
+                                    "available_from": {
+                                        "description": "Date format: yyyy-mm-dd",
+                                        "type": "string"
                                     },
                                     "image": {
                                         "description": "Optional image upload",

@@ -43,6 +43,8 @@ class BillboardFaceController extends Controller
      *                 @OA\Property(property="face", type="string", maxLength=10),
      *                 @OA\Property(property="location_detail", type="string", maxLength=255),
      *                 @OA\Property(property="status", type="string", enum={"ROJO", "AMARILLO", "VERDE"}),
+     *                 @OA\Property(property="rented_from", type="string", description="Date format: yyyy-mm-dd"),
+     *                 @OA\Property(property="available_from", type="string", description="Date format: yyyy-mm-dd"),
      *                 @OA\Property(property="image", type="string", format="binary", description="Optional image upload")
      *             )
      *         )
@@ -103,6 +105,8 @@ class BillboardFaceController extends Controller
      *                 @OA\Property(property="face", type="string", maxLength=10),
      *                 @OA\Property(property="location_detail", type="string", maxLength=255),
      *                 @OA\Property(property="status", type="string", enum={"ROJO", "AMARILLO", "VERDE"}),
+     *                 @OA\Property(property="rented_from", type="string", description="Date format: yyyy-mm-dd"),
+     *                 @OA\Property(property="available_from", type="string", description="Date format: yyyy-mm-dd"),
      *                 @OA\Property(property="image", type="string", format="binary", description="Optional image upload")
      *             )
      *         )

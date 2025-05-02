@@ -13,7 +13,11 @@ class BillboardFace extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
 
-    protected $fillable = ['code','face', 'location_detail', 'status', 'billboard_id'];
+    protected $fillable = ['code','face', 'location_detail', 'status', 'rented_from', 'available_from', 'billboard_id'];
+    protected $casts = [
+        'rented_from' => 'date:Y-m-d',
+        'available_from' => 'date:Y-m-d'
+    ];
 
     public function billboard()
     {

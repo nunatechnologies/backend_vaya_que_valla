@@ -8,6 +8,7 @@ use App\Http\Responses\ApiResponse;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
 class PatchBillboardFaceRequest extends FormRequest
@@ -33,6 +34,8 @@ class PatchBillboardFaceRequest extends FormRequest
 			'face' => ['sometimes','string','max:10'],
 			'location_detail' => ['sometimes','string','max:255'],
             'status'=>['required', new Enum(BillboardFaceStatus::class)],
+            'rented_from' => ['sometimes',Rule::date()->format('Y-m-d')],
+            'available_from' => ['sometimes',Rule::date()->format('Y-m-d')],
             'image' => ['nullable','image','max:2048']
 		];
     }
