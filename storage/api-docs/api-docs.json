@@ -1376,6 +1376,18 @@
                 ],
                 "summary": "General info",
                 "operationId": "a1549e7521b3c3b78dd58066a750cfc1",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "Define user to filter results",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful operation"
