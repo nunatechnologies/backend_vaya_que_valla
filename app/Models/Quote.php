@@ -18,6 +18,11 @@ class Quote extends Model
         'months'
     ];
 
+    protected $casts = [
+        'start_date' => 'date:Y-m-d',
+        'end_date' => 'date:Y-m-d'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

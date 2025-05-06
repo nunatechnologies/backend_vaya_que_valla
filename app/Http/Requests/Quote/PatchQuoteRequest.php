@@ -29,7 +29,6 @@ class PatchQuoteRequest extends FormRequest
 			'billboard_face_id' => ['sometimes','integer'],
 			'status' => ['sometimes'],
 			'start_date' => ['sometimes'],
-			'end_date' => ['sometimes'],
 			'total_amount' => ['sometimes','numeric','between:0,999999.99'],
 			'months' => ['sometimes','integer']
 		];

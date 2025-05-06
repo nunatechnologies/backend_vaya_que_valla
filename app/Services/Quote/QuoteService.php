@@ -5,6 +5,7 @@ namespace App\Services\Quote;
 use Illuminate\Support\Facades\DB;
 use App\Http\Messages\ErrorMessages;
 use App\Repositories\Quote\QuoteRepositoryInterface;
+use Carbon\Carbon;
 
 class QuoteService
 {
@@ -28,6 +29,9 @@ class QuoteService
     public function createQuote($data)
     {
         return DB::transaction(function () use ($data) {
+            $startDate = Carbon::parse($data['start_date']);
+            $endDate = $startDate->copy()->addMonths($data['months'])->toDateString();
+            $data['end_date'] = $endDate;
             return $this->quoteRepository->create($data);
         });
     }

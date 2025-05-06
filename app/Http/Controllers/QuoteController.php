@@ -12,16 +12,20 @@ use App\Services\Quote\QuoteService;
 use App\Services\SystemLogService;
 use App\Http\Requests\Quote\QuoteRequest;
 use App\Http\Requests\Quote\PatchQuoteRequest;
+use App\Services\BillboardFace\BillboardFaceService;
+use Carbon\Carbon;
 
 class QuoteController extends Controller
 {
     protected $quoteService;
     protected $systemLogService;
+    protected $billboardFaceService;
 
-    public function __construct(QuoteService $quoteService, SystemLogService $systemLogService)
+    public function __construct(QuoteService $quoteService, BillboardFaceService $billboardFaceService, SystemLogService $systemLogService)
     {
         $this->quoteService = $quoteService;
         $this->systemLogService = $systemLogService;
+        $this->billboardFaceService = $billboardFaceService;
     }
     
     /**
@@ -36,7 +40,6 @@ class QuoteController extends Controller
 	 *                 @OA\Property(property="billboard_face_id", type="number", maxLength=20),
 	 *                 @OA\Property(property="status", type="string", enum={"pending", "approved", "rejected"}),
 	 *                 @OA\Property(property="start_date", type="string"),
-	 *                 @OA\Property(property="end_date", type="string"),
 	 *                 @OA\Property(property="total_amount", type="number", maxLength=8, format="float"),
      *                 @OA\Property(property="months", type="number"),
      *         )
@@ -86,7 +89,6 @@ class QuoteController extends Controller
 	 *                 @OA\Property(property="billboard_face_id", type="number", maxLength=20),
 	 *                 @OA\Property(property="status", type="string", enum={"pending", "approved", "rejected"}),
 	 *                 @OA\Property(property="start_date", type="string"),
-	 *                 @OA\Property(property="end_date", type="string"),
 	 *                 @OA\Property(property="total_amount", type="number", maxLength=8, format="float"),
      *                 @OA\Property(property="months", type="number"),
      *         )
@@ -100,6 +102,20 @@ class QuoteController extends Controller
     {
         try {
             $quote = $this->quoteService->updateQuote($id, $quoteRequest->validated());
+            if ($quoteRequest->has('status') && $quoteRequest->get('status') == 'approved') 
+            {
+                $startDate = $quote->start_date;
+                $endDateObj = $startDate->copy()->addMonths($quote->months);
+                $daysRemaining = now()->diffInDays($endDateObj, false);
+
+                $status = $daysRemaining > 30 ? 'ROJO' : 'AMARILLO';
+
+                $rentedFrom = $startDate->toDateString();
+                $availableFrom = $endDateObj->copy()->addDay()->toDateString();
+
+                $this->billboardFaceService->updateBillboardFace($quote->billboard_face_id, ['status' => $status, 'rented_from' => $rentedFrom, 'available_from' => $availableFrom]);
+            }
+            
             $this->systemLogService->logActivity(
                 'quote',
                 'Quote actualizado',

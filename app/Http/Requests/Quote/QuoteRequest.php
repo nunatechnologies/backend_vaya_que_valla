@@ -30,7 +30,6 @@ class QuoteRequest extends FormRequest
 			'billboard_face_id' => ['required','integer'],
 			'status' => ['required',Rule::in(['pending','approved','rejected'])],
 			'start_date' => ['required', Rule::date()->format('Y-m-d')],
-			'end_date' => ['nullable', Rule::date()->format('Y-m-d')],
 			'total_amount' => ['required','numeric','between:0,999999.99'],
 			'months' => ['required','integer']
 		];
