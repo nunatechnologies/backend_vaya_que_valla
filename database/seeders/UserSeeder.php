@@ -24,12 +24,13 @@ class UserSeeder extends Seeder
             'cod_phone' => '+591',
             'user_type' => UserType::ORGANIZATION->name,
             'password' => Hash::make('12345678'),
+            'email_verified_at' => now()
         ]);
         $user->organization()->create([
             'social_reason' => 'Empresa A',
             'name_contact' => 'Juan Pérez',
             'phone_contact' => '77885544',
-            'commision_percentage' => 10,
+            'commision_percentage' => 10
         ]);
         $user->assignRole(RolSpatie::ADMINISTRADOR->name);
 
@@ -41,12 +42,13 @@ class UserSeeder extends Seeder
             'cod_phone' => '+591',
             'user_type' => UserType::ORGANIZATION->name,
             'password' => Hash::make('12345678'),
+            'email_verified_at' => now()
         ]);
         $user->organization()->create([
             'social_reason' => 'Empresa B',
             'name_contact' => 'Sultano',
             'phone_contact' => '87822549',
-            'commision_percentage' => 10,
+            'commision_percentage' => 10
         ]);
         $user->assignRole(RolSpatie::OPERADOR->name);
 
@@ -58,6 +60,7 @@ class UserSeeder extends Seeder
             'cod_phone' => '+591',
             'user_type' => UserType::PERSON->name,
             'password' => Hash::make('12345678'),
+            'email_verified_at' => now()
         ]);
         $user->person()->create([
             'ci' => '1234567',
@@ -72,6 +75,7 @@ class UserSeeder extends Seeder
             'cod_phone' => '+591',
             'user_type' => UserType::ORGANIZATION->name,
             'password' => Hash::make('12345678'),
+            'email_verified_at' => now()
         ]);
         $user->organization()->create([
             'social_reason' => 'Empresa C',
@@ -89,6 +93,7 @@ class UserSeeder extends Seeder
             'cod_phone' => '+591',
             'user_type' => UserType::ORGANIZATION->name,
             'password' => Hash::make('12345678'),
+            'email_verified_at' => now()
         ]);
         $user->organization()->create([
             'social_reason' => 'Empresa D',

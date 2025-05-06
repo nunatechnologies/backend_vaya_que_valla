@@ -26,7 +26,7 @@ class BillboardMasterSeeder extends Seeder
     public function run(): void
     {
         $import = new BillboardsImport();
-        $this->sheet = Excel::toArray($import, public_path('UbicacionesVallas.xlsx'))[0];  // Obtiene la primera hoja directamente.
+        $this->sheet = Excel::toArray($import, public_path('UbicacionesVallasV2.xlsx'))[0];  // Obtiene la primera hoja directamente.
         array_shift($this->sheet);
         $this->provinces();
         $this->cities();
@@ -126,10 +126,18 @@ class BillboardMasterSeeder extends Seeder
         $cities = City::all();
 
         $billboards = [];
-        foreach ($this->sheet as $col) 
+        foreach ($this->sheet as $key => $col) 
         {
+            if ($col[0] == null && $col[1] == null && $col[2] == null) {
+                continue;
+            }
             $slug = Str::slug(trim($col[5]));
             $city = $cities->firstWhere('name', trim($col[3]));
+            // if(is_null($city))
+            // {
+            //     dd(count($this->sheet),$key, $col);
+            // }
+            
             $location = trim($col[5]);
             $name = trim($col[7]) == ""?$location:trim($col[7]);
             $size = $col[8];
@@ -167,10 +175,21 @@ class BillboardMasterSeeder extends Seeder
     {
         $billboards = Billboard::all();
     
-        foreach ($this->sheet as $col) {
+        foreach ($this->sheet as $key => $col) {
+            if ($col[0] == null && $col[1] == null && $col[2] == null) {
+                continue;
+            }
+            $department = trim($col[2]);
+            $department = strtolower($department);
+            $department = str_replace(' ', '_',$department);
+            $status = trim($col[13]) == "DISPONIBLE"?"VERDE":"ROJO";
             $code = trim($col[4]);
             $location = trim($col[5]);
             $billboard = $billboards->firstWhere('location', trim($location));
+            if(is_null($billboard))
+            {
+                dd(count($this->sheet),$key, $col);
+            }
             $face = trim($col[9]);
             $locationDetail = trim($col[6]);
     
@@ -179,9 +198,10 @@ class BillboardMasterSeeder extends Seeder
                 'face' => $face,
                 'location_detail' => $locationDetail,
                 'billboard_id' => $billboard->id,
+                'status' => $status
             ]);
     
-            $relativePath = 'images/Santa_Cruz/' . $code . '.jpg';
+            $relativePath = 'images/billboard_faces_photos/'.$department.'/' . $code . '.jpg';
             $fullPath = public_path($relativePath);
     
             if (file_exists($fullPath)) {
