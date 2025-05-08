@@ -23,6 +23,7 @@ class AdminUserSeeder extends Seeder
             'cod_phone' => '+591',
             'user_type' => UserType::PERSON->name,
             'password' => Hash::make('12345678'),
+            'email_verified_at' => now()
         ]);
         $user->person()->create([
             'ci' => '0000000',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Billboard;
 
+use App\Http\Resources\BillboardStructure\BillboardStructureResource;
 use App\Http\Resources\BillboardType\BillboardTypeResource;
 use App\Http\Resources\City\CityResource;
 use App\Http\Resources\User\UserResource;
@@ -29,6 +30,7 @@ class BillboardResource extends JsonResource
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'billboard_type' => new BillboardTypeResource($this->billboardType),
+            'billboard_structure' => new BillboardStructureResource($this->billboardStructure),
             'city' => new CityResource($this->city),
             'advertiser' => new UserResource($this->advertiser)
         ];

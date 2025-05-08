@@ -25,6 +25,11 @@ class Billboard extends Model
         return $this->belongsTo(BillboardType::class);
     }
 
+    public function billboardStructure()
+    {
+        return $this->belongsTo(BillboardStructure::class);
+    }
+
     public function advertiser()
     {
         return $this->belongsTo(User::class, 'advertiser_id');
