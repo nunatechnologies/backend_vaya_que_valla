@@ -11,7 +11,7 @@ class Billboard extends Model
 
     protected $fillable = [
         'entity_status', 'name', 'location', 'size', 'price_per_month',
-        'status', 'traffic_data', 'image', 'latitude', 'longitude',
+        'status', 'traffic_data', 'latitude', 'longitude',
         'billboard_type_id','billboard_structure_id', 'city_id', 'advertiser_id',
     ];
 

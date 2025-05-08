@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\BillboardController;
 use App\Http\Controllers\BillboardFaceController;
+use App\Http\Controllers\BillboardStructureController;
 use App\Http\Controllers\BillboardTypeController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\DashboardController;
@@ -94,10 +95,10 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     Route::put('/rentals/{id}', [RentalController::class, 'update_rental']);
 
     //Billboard types
-    Route::get('/billboard_types', [BillboardTypeController::class, 'list_billboardtype_pagination']);
-    Route::post('/billboard_types', [BillboardTypeController::class, 'register']);
-    Route::get('/billboard_types/{id}', [BillboardTypeController::class, 'get_billboardtype']);
-    Route::put('/billboard_types/{id}', [BillboardTypeController::class, 'update_billboardtype']);
+    // Route::get('/billboard_types', [BillboardTypeController::class, 'list_billboardtype_pagination']);
+    // Route::post('/billboard_types', [BillboardTypeController::class, 'register']);
+    // Route::get('/billboard_types/{id}', [BillboardTypeController::class, 'get_billboardtype']);
+    // Route::put('/billboard_types/{id}', [BillboardTypeController::class, 'update_billboardtype']);
 
     //Billboards
     Route::get('/billboards', [BillboardController::class, 'list_billboard_pagination']);
@@ -132,5 +133,10 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
 
     //Dashboard
     Route::get('/dashboard/general', [DashboardController::class, 'getGeneralStatistics']);
+
+    Route::get('/billboard_structures', [BillboardStructureController::class, 'list_billboardstructure_pagination']);
+    Route::post('/billboard_structures', [BillboardStructureController::class, 'register']);
+    Route::get('/billboard_structures/{id}', [BillboardStructureController::class, 'get_billboardstructure']);
+    Route::put('/billboard_structures/{id}', [BillboardStructureController::class, 'update_billboardstructure']);
 });
 

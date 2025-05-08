@@ -37,7 +37,6 @@ class BillboardRequest extends FormRequest
 			'size' => ['required','string','max:255'],
 			'price_per_month' => ['required','numeric','between:0,99999999.99'],
 			'traffic_data' => ['required'],
-			'image' => ['required','string','max:255'],
 			'longitude' => ['required','numeric','between:0,999.9999999'],
 			'latitude' => ['required','numeric','between:0,999.9999999']
 		];

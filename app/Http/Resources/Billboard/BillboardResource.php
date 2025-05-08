@@ -29,7 +29,6 @@ class BillboardResource extends JsonResource
             'traffic_data' => $this->traffic_data,
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
-            'billboard_type' => new BillboardTypeResource($this->billboardType),
             'billboard_structure' => new BillboardStructureResource($this->billboardStructure),
             'city' => new CityResource($this->city),
             'advertiser' => new UserResource($this->advertiser)

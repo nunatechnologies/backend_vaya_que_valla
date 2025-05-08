@@ -24,24 +24,6 @@ class BillboardTypeController extends Controller
         $this->systemLogService = $systemLogService;
     }
     
-    /**
-     * @OA\Post(
-     *     path="/api/billboard_types",
-     *     summary="Register billboardtype",
-     *     tags={"Billboard_types"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *          @OA\JsonContent(
-	 *             required={"name", "category"},
-	 *                 @OA\Property(property="name", type="string", maxLength=255),
-	 *                 @OA\Property(property="category", type="string"),
-     *         )
-     *     ),
-     *     @OA\Response(response=201, description="BillboardType registered successfully"),
-     *     @OA\Response(response=400, description="Invalid request")
-     * )
-     */
-
     public function register(BillboardTypeRequest $BillboardTypeRequest)
     {
         try {
@@ -60,33 +42,6 @@ class BillboardTypeController extends Controller
             return ApiResponse::error($e->getMessage(), $e, [], 500);
         }
     }
-
-    /**
-     * @OA\Put(
-     *     path="/api/billboard_types/{id}",
-     *     summary="Update billboardtype",
-     *     tags={"Billboard_types"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="ID of the billboardtype to update",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         request="PatchBillboardTypeRequest",
-     *         required=true,
-     *         description="Updated billboardtype data",
-     *         @OA\JsonContent(
-	 *             required={"name", "category"},
-	 *                 @OA\Property(property="name", type="string", maxLength=255),
-	 *                 @OA\Property(property="category", type="string"),
-     *         )
-     *     ),
-     *     @OA\Response(response=200, description="BillboardType updated successfully"),
-     *     @OA\Response(response=500, description="Internal server error")
-     * )
-     */
 
     public function update_billboardtype(PatchBillboardTypeRequest $billboardtypeRequest, $id)
     {
@@ -109,34 +64,6 @@ class BillboardTypeController extends Controller
         }
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/billboard_types/{id}",
-     *     summary="Get billboardtype by ID",
-     *     tags={"Billboard_types"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="ID of the billboardtype",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="BillboardType found",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="BillboardType found"),
-     *             @OA\Property(property="organization", type="object")
-     *         )
-     *     ),
-     *     @OA\Response(response=404, description="BillboardType not found"),
-     *     @OA\Response(response=500, description="Internal server error"),
-     * )
-     */
-
     public function get_billboardtype($id)
     {
         try {
@@ -147,50 +74,6 @@ class BillboardTypeController extends Controller
         }
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/billboard_types",
-     *     summary="List billboard_types with pagination",
-     *     tags={"Billboard_types"},
-     *     @OA\Parameter(
-     *         name="search",
-     *         in="query",
-     *         description="Search query",
-     *         required=false,
-     *         @OA\Schema(type="string", maxLength=255)
-     *     ),
-     *     @OA\Parameter(
-     *         name="itemsPerPage",
-     *         in="query",
-     *         description="Items per page",
-     *         required=true,
-     *         @OA\Schema(type="integer", minimum=1)
-     *     ),
-     *     @OA\Parameter(
-     *         name="page",
-     *         in="query",
-     *         description="Page number",
-     *         required=true,
-     *         @OA\Schema(type="integer", minimum=1)
-     *     ),
-     *     @OA\Parameter(
-     *         name="sortBy",
-     *         in="query",
-     *         description="Sort by field",
-     *         required=false,
-     *         @OA\Schema(type="string", maxLength=255)
-     *     ),
-     *     @OA\Parameter(
-     *         name="orderBy",
-     *         in="query",
-     *         description="Sort order",
-     *         required=false,
-     *         @OA\Schema(type="string", enum={"asc", "desc"})
-     *     ),
-     *     @OA\Response(response=200, description="Successful operation"),
-     *     @OA\Response(response=500, description="Internal server error")
-     * )
-     */
     public function list_billboardtype_pagination(PaginationRequest $pagerequest)
     {
         try {

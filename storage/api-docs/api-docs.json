@@ -959,13 +959,13 @@
                 }
             }
         },
-        "/api/billboard_types": {
+        "/api/billboard_structures": {
             "get": {
                 "tags": [
-                    "Billboard_types"
+                    "Billboard_structures"
                 ],
-                "summary": "List billboard_types with pagination",
-                "operationId": "c83b2a684087ef2e8d08f47d75078e4f",
+                "summary": "List billboard_structures with pagination",
+                "operationId": "ddbaf364d6344ba8bf98b42d3e374690",
                 "parameters": [
                     {
                         "name": "search",
@@ -1032,26 +1032,22 @@
             },
             "post": {
                 "tags": [
-                    "Billboard_types"
+                    "Billboard_structures"
                 ],
-                "summary": "Register billboardtype",
-                "operationId": "cd6ef06c1cb1af49009181645b4409c8",
+                "summary": "Register billboardstructure",
+                "operationId": "8d58b1b620d21c762ebaab5c1a4b90b3",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name",
-                                    "category"
+                                    "name"
                                 ],
                                 "properties": {
                                     "name": {
                                         "type": "string",
                                         "maxLength": 255
-                                    },
-                                    "category": {
-                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -1061,7 +1057,7 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "BillboardType registered successfully"
+                        "description": "BillboardStructure registered successfully"
                     },
                     "400": {
                         "description": "Invalid request"
@@ -1069,18 +1065,18 @@
                 }
             }
         },
-        "/api/billboard_types/{id}": {
+        "/api/billboard_structures/{id}": {
             "get": {
                 "tags": [
-                    "Billboard_types"
+                    "Billboard_structures"
                 ],
-                "summary": "Get billboardtype by ID",
-                "operationId": "14709583a89649638c37fd2824b303ff",
+                "summary": "Get billboardstructure by ID",
+                "operationId": "040c87f7e99762c68d8fa5bc656cd581",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID of the billboardtype",
+                        "description": "ID of the billboardstructure",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -1090,14 +1086,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "BillboardType found",
+                        "description": "BillboardStructure found",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
                                             "type": "string",
-                                            "example": "BillboardType found"
+                                            "example": "BillboardStructure found"
                                         },
                                         "organization": {
                                             "type": "object"
@@ -1109,7 +1105,7 @@
                         }
                     },
                     "404": {
-                        "description": "BillboardType not found"
+                        "description": "BillboardStructure not found"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -1118,15 +1114,15 @@
             },
             "put": {
                 "tags": [
-                    "Billboard_types"
+                    "Billboard_structures"
                 ],
-                "summary": "Update billboardtype",
-                "operationId": "607a43dadd870a368f9b3417e0c728fb",
+                "summary": "Update billboardstructure",
+                "operationId": "65a291e125fff08d22e37001b237c5cd",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID of the billboardtype to update",
+                        "description": "ID of the billboardstructure to update",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1134,22 +1130,18 @@
                     }
                 ],
                 "requestBody": {
-                    "description": "Updated billboardtype data",
+                    "description": "Updated billboardstructure data",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name",
-                                    "category"
+                                    "name"
                                 ],
                                 "properties": {
                                     "name": {
                                         "type": "string",
                                         "maxLength": 255
-                                    },
-                                    "category": {
-                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -1159,7 +1151,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "BillboardType updated successfully"
+                        "description": "BillboardStructure updated successfully"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -3364,8 +3356,8 @@
             "description": "Billboard_faces"
         },
         {
-            "name": "Billboard_types",
-            "description": "Billboard_types"
+            "name": "Billboard_structures",
+            "description": "Billboard_structures"
         },
         {
             "name": "Cities",

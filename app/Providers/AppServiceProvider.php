@@ -8,6 +8,8 @@ use App\Repositories\BillboardType\BillboardTypeRepository;
 use App\Repositories\BillboardType\BillboardTypeRepositoryInterface;
 use App\Repositories\BillboardFace\BillboardFaceRepository;
 use App\Repositories\BillboardFace\BillboardFaceRepositoryInterface;
+use App\Repositories\BillboardStructure\BillboardStructureRepository;
+use App\Repositories\BillboardStructure\BillboardStructureRepositoryInterface;
 use App\Repositories\City\CityRepository;
 use App\Repositories\City\CityRepositoryInterface;
 use App\Repositories\Dashboard\DashboardRepository;
@@ -105,6 +107,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             DashboardRepositoryInterface::class,
             DashboardRepository::class
+        );
+
+        $this->app->bind(
+            BillboardStructureRepositoryInterface::class,
+            BillboardStructureRepository::class
         );
     }
 

@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('size');
             $table->decimal('price_per_month', 10, 2);
             $table->text('traffic_data')->nullable();
-            $table->string('image')->nullable();
             $table->decimal('longitude', 10, 7);
             $table->decimal('latitude', 10, 7);
 
