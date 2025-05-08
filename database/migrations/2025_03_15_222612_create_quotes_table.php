@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->decimal('total_amount');
             $table->integer('months');
+            $table->foreignId('digital_billboard_plan_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

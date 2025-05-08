@@ -8,6 +8,7 @@ use App\Http\Controllers\BillboardStructureController;
 use App\Http\Controllers\BillboardTypeController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DigitalBillboardPlanController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PeopleController;
 use App\Http\Controllers\PersonController;
@@ -138,5 +139,11 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     Route::post('/billboard_structures', [BillboardStructureController::class, 'register']);
     Route::get('/billboard_structures/{id}', [BillboardStructureController::class, 'get_billboardstructure']);
     Route::put('/billboard_structures/{id}', [BillboardStructureController::class, 'update_billboardstructure']);
+
+    //DigitalBillboardPlan
+    Route::get('/digital_billboard_plans', [DigitalBillboardPlanController::class, 'list_digitalbillboardplan_pagination']);
+    Route::post('/digital_billboard_plans', [DigitalBillboardPlanController::class, 'register']);
+    Route::get('/digital_billboard_plans/{id}', [DigitalBillboardPlanController::class, 'get_digitalbillboardplan']);
+    Route::put('/digital_billboard_plans/{id}', [DigitalBillboardPlanController::class, 'update_digitalbillboardplan']);
 });
 

@@ -14,6 +14,8 @@ use App\Repositories\City\CityRepository;
 use App\Repositories\City\CityRepositoryInterface;
 use App\Repositories\Dashboard\DashboardRepository;
 use App\Repositories\Dashboard\DashboardRepositoryInterface;
+use App\Repositories\DigitalBillboardPlan\DigitalBillboardPlanRepository;
+use App\Repositories\DigitalBillboardPlan\DigitalBillboardPlanRepositoryInterface;
 use App\Repositories\Organization\OrganizationRepository;
 use App\Repositories\Organization\OrganizationRepositoryInterface;
 use App\Repositories\People\PeopleRepository;
@@ -112,6 +114,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             BillboardStructureRepositoryInterface::class,
             BillboardStructureRepository::class
+        );
+
+        $this->app->bind(
+            DigitalBillboardPlanRepositoryInterface::class,
+            DigitalBillboardPlanRepository::class
         );
     }
 

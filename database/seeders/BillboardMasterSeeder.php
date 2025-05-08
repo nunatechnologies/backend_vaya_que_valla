@@ -11,6 +11,7 @@ use App\Models\BillboardType;
 use App\Models\City;
 use App\Models\Province;
 use App\Models\User;
+use App\Models\DigitalBillboardPlan;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
@@ -30,6 +31,7 @@ class BillboardMasterSeeder extends Seeder
         array_shift($this->sheet);
         $this->provinces();
         $this->cities();
+        $this->digitalBillboardPlans();
         $this->structures();
         $this->types();
         $this->billboards();
@@ -72,13 +74,29 @@ class BillboardMasterSeeder extends Seeder
         }
     }
 
+    public function digitalBillboardPlans()
+    {
+        $plans = [
+            ['name' => 'Plus', 'passes_per_hour' => 33],
+            ['name' => 'Corporativo', 'passes_per_hour' => 54],
+            ['name' => 'Premium', 'passes_per_hour' => 72],
+        ];
+
+        foreach ($plans as $plan) {
+            DigitalBillboardPlan::create($plan);
+        }
+    }
+
     public function structures()
     {
         $strucuresToSave = [];
         foreach ($this->sheet as $row) 
         {
             $structureName = trim($row[0]);
-            $strucuresToSave[$structureName] = ['name' => $structureName];
+            if ($structureName != "") 
+            {
+                $strucuresToSave[$structureName] = ['name' => $structureName];
+            }
         }
         
         if (count($strucuresToSave) > 0) 
