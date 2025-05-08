@@ -158,7 +158,6 @@ class BillboardMasterSeeder extends Seeder
                 'price_per_month' => $price,
                 'status' => 'available',
                 'traffic_data' => json_encode(['cars_per_day' => 8000]),
-                'image' => 'billboard2.jpg',
                 'longitude' => $latitude,
                 'latitude' => $longitude,
                 'billboard_type_id' => $billboardTypes->random()->id,
