@@ -52,26 +52,44 @@ class QuoteRequestController extends Controller
             $request = Request::find($QuoteRequestRequest->request_id);
             $quotesIds = explode(',',$QuoteRequestRequest->quote_id);
             $request->quotes()->syncWithoutDetaching($quotesIds);
-            if (app()->environment('local')) {
-                $externalUrl = 'http://vayaquevalla.test/api/authen/externals/receive-request';
-            } else {
-                $externalUrl = 'https://crm-back.vayaquevalla.com/api/requests';
+
+             // 1. Autentication:get token for each request
+            $authUrl = 'https://crm-back.vayaquevalla.com/api/authen/login';
+
+            $loginResponse = Http::post($authUrl, [
+                'email' => 'useradmin@gmail.com',
+                'password' => 'vqvPass2025*',
+            ]);
+
+            if (!$loginResponse->successful()) {
+                Log::error('Error authenticating before to send the request', [
+                    'response' => $loginResponse->body(),
+                ]);
+                return;
             }
-            
-            $response = Http::post($externalUrl, new RequestResource($request));
-            if ($response->failed()) 
-            {
-                Log::error('Error pushed data to '.$externalUrl, [
+
+            $token = $loginResponse->json('meta.accessToken');
+
+            // 2. Send data
+            $externalUrl = app()->environment('local')
+                ? 'http://vayaquevalla.test/api/authen/externals/receive-request'
+                : 'https://crm-back.vayaquevalla.com/api/opportunity/generate-lead-from-request';
+
+            $response = Http::withToken($token)
+                ->post($externalUrl, new RequestResource($request));
+
+            // 3. Result after send data
+            if ($response->failed()) {
+                Log::error('Error pushing data to ' . $externalUrl, [
                     'response' => $response->body(),
                 ]);
-            }
-            else
-            {
-                Log::info ('Pushed data to '.$externalUrl, [
+            } else {
+                Log::info('Pushed data to ' . $externalUrl, [
                     'response' => $response->body(),
                     'data' => new RequestResource($request)
                 ]);
             }
+
             $this->systemLogService->logActivity('quoterequest','QuoteRequest registrado',
                 SeveritySystemLog::info->name,
                 $request
