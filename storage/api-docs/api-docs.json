@@ -2194,6 +2194,11 @@
                                     },
                                     "months": {
                                         "type": "number"
+                                    },
+                                    "digital_billboard_plan_id": {
+                                        "description": "Required only for DIGITAL billboards",
+                                        "type": "number",
+                                        "maxLength": 20
                                     }
                                 },
                                 "type": "object"
@@ -2311,6 +2316,11 @@
                                     },
                                     "months": {
                                         "type": "number"
+                                    },
+                                    "digital_billboard_plan_id": {
+                                        "description": "Required only for DIGITAL billboards",
+                                        "type": "number",
+                                        "maxLength": 20
                                     }
                                 },
                                 "type": "object"

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('location');
             $table->unsignedBigInteger('advertiser_id');
             $table->enum('status', ['available', 'reserved','rented','inactive']);
-            $table->foreignId('billboard_type_id')->constrained();
             $table->foreignId('city_id')->constrained();
             $table->foreignId('billboard_structure_id')->constrained();
             $table->enum('entity_status', ['active', 'inactive']);

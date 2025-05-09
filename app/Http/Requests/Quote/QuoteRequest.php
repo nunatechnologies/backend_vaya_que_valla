@@ -4,6 +4,7 @@ namespace App\Http\Requests\Quote;
 
 use App\Http\Messages\ErrorMessages;
 use App\Http\Responses\ApiResponse;
+use App\Models\BillboardFace;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -27,12 +28,34 @@ class QuoteRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'billboard_face_id' => ['required','integer'],
+			'billboard_face_id' => ['required','integer','exists:billboard_faces,id'],
 			'status' => ['required',Rule::in(['pending','approved','rejected'])],
 			'start_date' => ['required', Rule::date()->format('Y-m-d')],
 			'total_amount' => ['required','numeric','between:0,999999.99'],
-			'months' => ['required','integer']
+			'months' => ['required','integer'],
+            'digital_billboard_plan_id' => ['sometimes','integer','exists:digital_billboard_plans,id']
 		];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $billboardFace = BillboardFace::find($this->input('billboard_face_id'));
+            $billboardStructure = $billboardFace->billboard->billboardStructure->name;
+
+            // if (is_null($billboardFace)) 
+            // {
+            //     $validator->errors()->add('billboard_face_id', 'The billboard_face is required for DIGITAL billboards.');
+            // }
+            if ($billboardStructure == 'DIGITAL' && !$this->filled('digital_billboard_plan_id')) 
+            {
+                $validator->errors()->add('digital_billboard_plan_id', 'The digital_billboard_plan_id is required for DIGITAL billboards.');
+            }
+            elseif ($billboardStructure != 'DIGITAL' && $this->filled('digital_billboard_plan_id')) 
+            {
+                $validator->errors()->add('digital_billboard_plan_id', 'The digital_billboard_plan_id is required ONLY FOR DIGITAL billboards.');
+            }
+        });
     }
 
     protected function failedValidation(Validator $validator)

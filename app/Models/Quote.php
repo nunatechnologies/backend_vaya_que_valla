@@ -15,7 +15,8 @@ class Quote extends Model
         'start_date',
         'end_date',
         'total_amount',
-        'months'
+        'months',
+        'digital_billboard_plan_id'
     ];
 
     protected $casts = [
@@ -31,5 +32,10 @@ class Quote extends Model
     public function billboardFace()
     {
         return $this->belongsTo(BillboardFace::class, 'billboard_face_id');
+    }
+
+    public function digitalBillboardPlan()
+    {
+        return $this->belongsTo(DigitalBillboardPlan::class, 'digital_billboard_plan_id');
     }
 }

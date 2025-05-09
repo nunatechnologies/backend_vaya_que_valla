@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Quote;
 
 use App\Http\Resources\BillboardFace\BillboardFaceResource;
+use App\Http\Resources\DigitalBillboardPlan\DigitalBillboardPlanResource;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -24,6 +25,7 @@ class QuoteResource extends JsonResource
             'end_date' => $this->end_date,
             'total_amount' => $this->total_amount,
             'months' => $this->months,
+            'digital_billboard_plan' => new DigitalBillboardPlanResource($this->digitalBillboardPlan),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

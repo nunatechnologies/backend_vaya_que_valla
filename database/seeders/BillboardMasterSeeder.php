@@ -33,7 +33,6 @@ class BillboardMasterSeeder extends Seeder
         $this->cities();
         $this->digitalBillboardPlans();
         $this->structures();
-        $this->types();
         $this->billboards();
         $this->faces();
     }
@@ -105,42 +104,10 @@ class BillboardMasterSeeder extends Seeder
         }
     }
 
-    public function types()
-    {
-        $rows = [
-            [
-                'name' => 'Digital',
-                'category' => 'A'
-            ],
-            [
-                'name' => 'Digital',
-                'category' => 'B'
-            ],
-            [
-                'name' => 'Digital',
-                'category' => 'C'
-            ],
-            [
-                'name' => 'Estatia',
-                'category' => 'A'
-            ],
-            [
-                'name' => 'Estatica',
-                'category' => 'B'
-            ],
-            [
-                'name' => 'Estatica',
-                'category' => 'C'
-            ],
-        ];
-        BillboardType::insert($rows);
-    }
-
     public function billboards()
     {
         $advertisers = User::role(RolSpatie::ANUNCIANTE->name)->get();
         $billboardStructures = BillboardStructure::all();
-        $billboardTypes = BillboardType::all();
         $cities = City::all();
 
         $billboards = [];
@@ -151,11 +118,9 @@ class BillboardMasterSeeder extends Seeder
             }
             $slug = Str::slug(trim($col[5]));
             $city = $cities->firstWhere('name', trim($col[3]));
-            // if(is_null($city))
-            // {
-            //     dd(count($this->sheet),$key, $col);
-            // }
-            
+
+            $billboardStructure = $billboardStructures->firstWhere('name',trim($col[0]));
+
             $location = trim($col[5]);
             $name = trim($col[7]) == ""?$location:trim($col[7]);
             $size = $col[8];
@@ -178,9 +143,8 @@ class BillboardMasterSeeder extends Seeder
                 'traffic_data' => json_encode(['cars_per_day' => 8000]),
                 'longitude' => $latitude,
                 'latitude' => $longitude,
-                'billboard_type_id' => $billboardTypes->random()->id,
                 'city_id' => $city->id,
-                'billboard_structure_id' => $billboardStructures->random()->id,
+                'billboard_structure_id' => $billboardStructure->id,
                 'entity_status' => 'active',
                 'advertiser_id' => $advertisers->random()->id,
             ];

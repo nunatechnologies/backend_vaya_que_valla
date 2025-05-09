@@ -42,6 +42,7 @@ class QuoteController extends Controller
 	 *                 @OA\Property(property="start_date", type="string"),
 	 *                 @OA\Property(property="total_amount", type="number", maxLength=8, format="float"),
      *                 @OA\Property(property="months", type="number"),
+     *                 @OA\Property(property="digital_billboard_plan_id", type="number", maxLength=20, description="Required only for DIGITAL billboards"),
      *         )
      *     ),
      *     @OA\Response(response=201, description="Quote registered successfully"),
@@ -91,6 +92,7 @@ class QuoteController extends Controller
 	 *                 @OA\Property(property="start_date", type="string"),
 	 *                 @OA\Property(property="total_amount", type="number", maxLength=8, format="float"),
      *                 @OA\Property(property="months", type="number"),
+     *                 @OA\Property(property="digital_billboard_plan_id", type="number", maxLength=20, description="Required only for DIGITAL billboards"),
      *         )
      *     ),
      *     @OA\Response(response=200, description="Quote updated successfully"),

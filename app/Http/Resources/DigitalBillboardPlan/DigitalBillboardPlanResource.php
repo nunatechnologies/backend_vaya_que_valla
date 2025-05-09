@@ -18,9 +18,7 @@ class DigitalBillboardPlanResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'passes_per_hour' => $this->passes_per_hour,
-            'description' => $this->description,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'description' => $this->description
         ];
     }
 }
