@@ -34,8 +34,8 @@ class PatchBillboardFaceRequest extends FormRequest
 			'face' => ['sometimes','string','max:10'],
 			'location_detail' => ['sometimes','string','max:255'],
             'status'=>['required', new Enum(BillboardFaceStatus::class)],
-            'rented_from' => ['sometimes',Rule::date()->format('Y-m-d')],
-            'available_from' => ['sometimes',Rule::date()->format('Y-m-d')],
+            'rented_from' => ['sometimes','nullable',Rule::date()->format('Y-m-d')],
+            'available_from' => ['sometimes','nullable',Rule::date()->format('Y-m-d')],
             'image' => ['nullable','image','max:2048']
 		];
     }
