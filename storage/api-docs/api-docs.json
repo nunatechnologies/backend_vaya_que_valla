@@ -188,25 +188,13 @@
                 }
             }
         },
-        "/api/change_password/{id}": {
+        "/api/change_password": {
             "put": {
                 "tags": [
                     "Authentication"
                 ],
                 "summary": "Change password of authenticated user",
-                "operationId": "9a86fd14af889b5dd1cd12028c0ae321",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID of the user",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64"
-                        }
-                    }
-                ],
+                "operationId": "adaf31390a12865485f4857c514bad62",
                 "requestBody": {
                     "required": true,
                     "content": {

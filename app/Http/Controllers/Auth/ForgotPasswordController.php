@@ -29,20 +29,10 @@ class ForgotPasswordController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/change_password/{id}",
+     *     path="/api/change_password",
      *     summary="Change password of authenticated user",
      *     tags={"Authentication"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="ID of the user",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
-     *         )
-     *     ),
-     *     security={{ "bearerAuth": {} }},
+     *   security={{ "bearerAuth": {} }},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -60,27 +50,47 @@ class ForgotPasswordController extends Controller
      * )
      */
 
-     public function changePassword(ChangePasswordRequest $request, $id)
+     public function changePassword(ChangePasswordRequest $request)
      {
-         try {
-             $user = User::find($id);
-             $currentPassword = $request->input('current_password');
-             $newPassword = $request->input('new_password');
-             $this->authService->changePassword($user, $currentPassword, $newPassword);
-             $this->SystemLogService->logActivity(
-                'Contraseña',
-                'Cambio de Contraseña',
-                SeveritySystemLog::info->name,
-            );
-             return ApiResponse::success(SuccessMessages::PASSWORD_UPDATE_SUCCESS, [], []);
-         } catch (\Exception $e) {
+        //  try {
+        //      $user = User::find($id);
+        //      $currentPassword = $request->input('current_password');
+        //      $newPassword = $request->input('new_password');
+        //      $this->authService->changePassword($user, $currentPassword, $newPassword);
+        //      $this->SystemLogService->logActivity(
+        //         'Contraseña',
+        //         'Cambio de Contraseña',
+        //         SeveritySystemLog::info->name,
+        //     );
+        //      return ApiResponse::success(SuccessMessages::PASSWORD_UPDATE_SUCCESS, [], []);
+        //  } catch (\Exception $e) {
+        //     $this->SystemLogService->logActivity(
+        //         'Contraseña',
+        //         'Cambio de Contraseña fallido',
+        //         SeveritySystemLog::warning->name,
+        //     );
+        //      return ApiResponse::error($e->getMessage(), $e, [], 500);
+        //  }
+
+        try {
+            $user = $this->authService->getAuthenticatedUser();
+            $currentPassword = $request->input('current_password');
+            $newPassword = $request->input('new_password');
+            $this->authService->changePassword($user, $currentPassword, $newPassword);
             $this->SystemLogService->logActivity(
-                'Contraseña',
-                'Cambio de Contraseña fallido',
-                SeveritySystemLog::warning->name,
-            );
-             return ApiResponse::error($e->getMessage(), $e, [], 500);
-         }
+               'Contraseña',
+               'Cambio de Contraseña',
+               SeveritySystemLog::info->name,
+           );
+            return ApiResponse::success(SuccessMessages::PASSWORD_UPDATE_SUCCESS, [], []);
+        } catch (\Exception $e) {
+           $this->SystemLogService->logActivity(
+               'Contraseña',
+               'Cambio de Contraseña fallido',
+               SeveritySystemLog::warning->name,
+           );
+            return ApiResponse::error($e->getMessage(), $e, [], 500);
+        }
     }
 
     /**

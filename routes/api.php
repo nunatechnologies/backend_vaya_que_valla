@@ -56,7 +56,7 @@ Route::group(['prefix' => 'authen'], function () {
 });
 
 Route::group(['middleware' => ['api', 'jwt.auth']], function () {
-    Route::put('/change_password/{id}', [ForgotPasswordController::class, 'changePassword']);
+    Route::put('/change_password', [ForgotPasswordController::class, 'changePassword']);
     //Users
     Route::post('/users', [UserController::class, 'register']);
     Route::post('/users/{id}/rol', [UserController::class, 'update_rol']);
