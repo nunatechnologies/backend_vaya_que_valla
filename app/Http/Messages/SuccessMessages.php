@@ -11,6 +11,7 @@ class SuccessMessages
     public const CREATE_SUCCESS = "CREACIÓN EXITOSA";
     public const SEND_SUCCESS = "ENVIADO EXITOSAMENTE";
     public const PASSWORD_UPDATE_SUCCESS = "Contraseña actualizada exitosamente";
+    public const PROFILE_UPDATE_SUCCESS = "Perfil actualizado exitosamente";
     public const SUCCESSFUL = "CONSULTA EXITOSA";
     public const OPERATION_SUCCESS = "OPERACION EXITOSA";
     public const USER_REGISTER_SUCCESS = 'Usuario registrado exitosamente.';

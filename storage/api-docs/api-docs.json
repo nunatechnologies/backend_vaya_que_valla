@@ -3541,6 +3541,67 @@
                     }
                 }
             }
+        },
+        "/api/users/update_profile": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update profile of authenticated user",
+                "operationId": "ba7e733ce6e4ac71c6c721578d649281",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "last_name",
+                                    "cod_phone",
+                                    "phone"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "cod_phone": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The request was successful."
+                    },
+                    "400": {
+                        "description": "The server could not understand the request due to invalid syntax."
+                    },
+                    "401": {
+                        "description": "Authentication is required or has failed."
+                    },
+                    "422": {
+                        "description": "The server understands the content type and syntax, but the request was semantically invalid (e.g. validation error)."
+                    },
+                    "500": {
+                        "description": "The server encountered an unexpected condition that prevented it from fulfilling the request."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {

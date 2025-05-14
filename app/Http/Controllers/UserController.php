@@ -7,20 +7,28 @@ use App\Http\Messages\SuccessMessages;
 use App\Http\Requests\PaginationRequest;
 use App\Http\Requests\User\PatchUserRequest;
 use App\Http\Requests\User\RolRequest;
+use App\Http\Requests\User\UpdateProfileRequest;
 use App\Http\Requests\User\UserRequest;
 use App\Http\Resources\User\UserResource;
 use App\Http\Resources\PaginacionResource;
 use App\Http\Responses\ApiResponse;
 use App\Services\User\UserService;
 use App\Services\SystemLogService;
+use App\Services\User\AuthService;
 
 class UserController extends Controller
 {
     protected $userService;
     protected $systemLogService;
+    protected $authService;
 
-    public function __construct(UserService $userService, SystemLogService $systemLogService)
+    public function __construct(
+        AuthService $authService,
+        UserService $userService, 
+        SystemLogService $systemLogService
+        )
     {
+        $this->authService = $authService;
         $this->userService = $userService;
         $this->systemLogService = $systemLogService;
     }
@@ -116,7 +124,7 @@ class UserController extends Controller
              return ApiResponse::error($e->getMessage(), $e, [], $e->getCode());
          }
      }
- 
+
      /**
       * @OA\PUT(
       *     path="/api/users/{id}",
@@ -250,6 +258,53 @@ class UserController extends Controller
             return ApiResponse::success(SuccessMessages::SUCCESSFUL,  new PaginacionResource($objects), [], 200);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), $e, [], $e->getCode());
+        }
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/api/users/update_profile",
+     *     summary="Update profile of authenticated user",
+     *     tags={"Users"},
+     *   security={{ "bearerAuth": {} }},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "last_name", "cod_phone","phone"},
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="last_name", type="string"),
+     *             @OA\Property(property="cod_phone", type="string"),
+     *             @OA\Property(property="phone", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="The request was successful."),
+     *     @OA\Response(response=400, description="The server could not understand the request due to invalid syntax."),
+     *     @OA\Response(response=401, description="Authentication is required or has failed."),
+     *     @OA\Response(response=422, description="The server understands the content type and syntax, but the request was semantically invalid (e.g. validation error)."),
+     *     @OA\Response(response=500, description="The server encountered an unexpected condition that prevented it from fulfilling the request."),
+     * )
+     */
+
+     public function update_profile(UpdateProfileRequest $request)
+     {
+        try {
+            
+            $user = $this->authService->getAuthenticatedUser();
+            
+            $user = $this->userService->updateUser($user->id, $request->validated());
+            $this->systemLogService->logActivity(
+               'Profile',
+               'Update profile',
+               SeveritySystemLog::info->name,
+            );
+            return ApiResponse::success(SuccessMessages::PROFILE_UPDATE_SUCCESS, [], []);
+        } catch (\Exception $e) {
+           $this->systemLogService->logActivity(
+               'Profile',
+               'Failed trying to update profile',
+               SeveritySystemLog::warning->name,
+           );
+            return ApiResponse::error($e->getMessage(), $e, [], 500);
         }
     }
 }
