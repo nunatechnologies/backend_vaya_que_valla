@@ -14,11 +14,14 @@ use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Notifications\VerifyApiEmail;
 use App\Notifications\ResetPasswordCustom;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class User extends Authenticatable implements JWTSubject, MustVerifyEmail
+class User extends Authenticatable implements JWTSubject, MustVerifyEmail, HasMedia
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use  HasFactory, Notifiable, HasRoles, SoftDeletes, HasApiTokens;
+    use  HasFactory, Notifiable, HasRoles, SoftDeletes, HasApiTokens, InteractsWithMedia;
 
     public function getJWTIdentifier()
     {
@@ -88,5 +91,27 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordCustom($token));
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('default')
+            ->useFallbackUrl(asset('images/default-avatar.png'))
+            ->useFallbackPath(public_path('images/default-avatar.png'))
+            ->singleFile();
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('md')
+              ->width(480)
+              ->height(360)
+              ->sharpen(10)->nonQueued();
+
+        $this->addMediaConversion('sm')
+              ->width(240)
+              ->height(180)
+              ->sharpen(10)->nonQueued();
     }
 }

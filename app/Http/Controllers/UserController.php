@@ -15,6 +15,7 @@ use App\Http\Responses\ApiResponse;
 use App\Services\User\UserService;
 use App\Services\SystemLogService;
 use App\Services\User\AuthService;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -262,19 +263,34 @@ class UserController extends Controller
     }
 
     /**
-     * @OA\Put(
+     * @OA\Post(
      *     path="/api/users/update_profile",
      *     summary="Update profile of authenticated user",
      *     tags={"Users"},
      *   security={{ "bearerAuth": {} }},
      *     @OA\RequestBody(
      *         required=true,
+     *         description="Update user profile",
      *         @OA\JsonContent(
-     *             required={"name", "last_name", "cod_phone","phone"},
+     *             required={"_method","name", "last_name", "cod_phone","phone"},
+     *             @OA\Property(property="_method", type="string", default="PUT"),
      *             @OA\Property(property="name", type="string"),
      *             @OA\Property(property="last_name", type="string"),
      *             @OA\Property(property="cod_phone", type="string"),
      *             @OA\Property(property="phone", type="string")
+     *         ),
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"_method"},
+     *                 required={"name", "last_name", "cod_phone","phone"},
+     *                 @OA\Property(property="_method", type="string", default="PUT"),
+     *                 @OA\Property(property="name", type="string"),
+     *                 @OA\Property(property="last_name", type="string"),
+     *                 @OA\Property(property="cod_phone", type="string"),
+     *                 @OA\Property(property="phone", type="string"),
+     *                 @OA\Property(property="image", type="string", format="binary", description="Optional image upload")
+     *             )
      *         )
      *     ),
      *     @OA\Response(response=200, description="The request was successful."),
@@ -292,6 +308,20 @@ class UserController extends Controller
             $user = $this->authService->getAuthenticatedUser();
             
             $user = $this->userService->updateUser($user->id, $request->validated());
+            // Log::info('Testing: '.json_encode($request->all()));
+            if (request()->hasFile('image')) 
+            {
+                // Verificación rápida
+                $file = request()->file('image');
+                // Log::info('Imagen recibida:', [
+                //     'original_name' => $file->getClientOriginalName(),
+                //     'mime_type' => $file->getMimeType(),
+                //     'size' => $file->getSize(),
+                // ]);
+                $user
+                    ->addMediaFromRequest('image')
+                    ->toMediaCollection();
+            }
             $this->systemLogService->logActivity(
                'Profile',
                'Update profile',

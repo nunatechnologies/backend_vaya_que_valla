@@ -23,7 +23,7 @@ class BillboardFaceResource extends JsonResource
             'status' => $this->status,
             'rented_from' => $this->rented_from,
             'available_from' => $this->available_from,
-            'images' => ['md' => $this->getFirstMediaUrl('default','md'),
+            'images' => [
                 'original' => $this->getFirstMediaUrl('default'),
                 'md' => $this->getFirstMediaUrl('default','md'),
                 'sm' => $this->getFirstMediaUrl('default','sm')

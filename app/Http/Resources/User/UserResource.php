@@ -26,6 +26,11 @@ class UserResource extends JsonResource
             'user_type' => $this->user_type,
             'roles' => $this->getRoleNames(),
             'organization' => new OrganizationResource($this->whenLoaded('organization')),
+            'avatar' => [
+                'original' => $this->getFirstMediaUrl('default'),
+                'md' => $this->getFirstMediaUrl('default','md'),
+                'sm' => $this->getFirstMediaUrl('default','sm')
+            ],
             'person' => new PersonResource($this->whenLoaded('person')),
         ];
     }

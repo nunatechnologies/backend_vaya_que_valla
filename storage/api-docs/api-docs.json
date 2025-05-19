@@ -3543,16 +3543,17 @@
             }
         },
         "/api/users/update_profile": {
-            "put": {
+            "post": {
                 "tags": [
                     "Users"
                 ],
                 "summary": "Update profile of authenticated user",
-                "operationId": "ba7e733ce6e4ac71c6c721578d649281",
+                "operationId": "b25c6c724a7c1205c07681ae3a960d0c",
                 "requestBody": {
+                    "description": "Update user profile",
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "name",
@@ -3561,6 +3562,45 @@
                                     "phone"
                                 ],
                                 "properties": {
+                                    "_method": {
+                                        "type": "string",
+                                        "default": "PUT"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "cod_phone": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "description": "Optional image upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "name",
+                                    "last_name",
+                                    "cod_phone",
+                                    "phone"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "type": "string",
+                                        "default": "PUT"
+                                    },
                                     "name": {
                                         "type": "string"
                                     },

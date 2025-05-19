@@ -30,6 +30,7 @@ class UpdateProfileRequest extends FormRequest
             'last_name' => 'sometimes|string|max:255',
             'cod_phone' => 'nullable|string',
             // 'phone' => 'nullable|string|unique:users,phone,'. $this->input('id'),
+            'image' => ['nullable','image','max:2048']
         ];
     }
     protected function failedValidation(Validator $validator)
