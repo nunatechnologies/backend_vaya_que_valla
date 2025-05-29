@@ -32,13 +32,14 @@ class OrganizationController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *          @OA\JsonContent(
-	 *             required={"user_id", "social_reason", "nit", "name_contact", "phone_contact", "commision_percentage"},
+	 *             required={"user_id", "social_reason", "nit", "name_contact", "phone_contact", "commision_percentage","category_id"},
 	 *                 @OA\Property(property="user_id", type="number", maxLength=20),
 	 *                 @OA\Property(property="social_reason", type="string", maxLength=100),
      *                 @OA\Property(property="nit", type="string", maxLength=30),
 	 *                 @OA\Property(property="name_contact", type="string", maxLength=100),
 	 *                 @OA\Property(property="phone_contact", type="string", maxLength=20),
 	 *                 @OA\Property(property="commision_percentage", type="number", maxLength=8, format="float"),
+     *                 @OA\Property(property="category_id", type="number")
      *         )
      *     ),
      *     @OA\Response(response=201, description="Organization registered successfully"),
@@ -89,6 +90,7 @@ class OrganizationController extends Controller
      *                 @OA\Property(property="name_contact", type="string", maxLength=100),
 	 *                 @OA\Property(property="phone_contact", type="string", maxLength=20),
 	 *                 @OA\Property(property="commision_percentage", type="number", maxLength=8, format="float"),
+     *                 @OA\Property(property="category_id", type="number")
      *         )
      *     ),
      *     @OA\Response(response=200, description="Organization updated successfully"),

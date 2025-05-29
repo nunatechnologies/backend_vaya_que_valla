@@ -6,6 +6,7 @@ use App\Http\Controllers\BillboardController;
 use App\Http\Controllers\BillboardFaceController;
 use App\Http\Controllers\BillboardStructureController;
 use App\Http\Controllers\BillboardTypeController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DigitalBillboardPlanController;
@@ -154,5 +155,10 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     Route::post('/zones', [ZoneController::class, 'register']);
     Route::get('/zones/{id}', [ZoneController::class, 'get_zone']);
     Route::put('/zones/{id}', [ZoneController::class, 'update_zone']);
-});
 
+    //Categories
+    Route::get('/categories', [CategoryController::class, 'list_category_pagination']);
+    Route::post('/categories', [CategoryController::class, 'register']);
+    Route::get('/categories/{id}', [CategoryController::class, 'get_category']);
+    Route::put('/categories/{id}', [CategoryController::class, 'update_category']);
+});

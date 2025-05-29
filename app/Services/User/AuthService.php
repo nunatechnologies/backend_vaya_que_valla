@@ -88,6 +88,8 @@ class AuthService
                 'name_contact' => $data['name_contact']??"",
                 'phone_contact' => $data['phone_contact']??"",
                 'commision_percentage' => $data['commision_percentage'],
+                'category_id' => $data['category_id'],
+                'nit' => $data['nit']
             ]);
             $user->assignRole($data['role']);
         }

@@ -123,7 +123,7 @@ class AuthController extends Controller
      *             @OA\Property(property="password", type="string", format="password", example="12345678"),
      *             @OA\Property(property="password_confirmation", type="string", format="password", example="12345678"),
      *             @OA\Property(property="user_type", type="string", enum={"PERSON", "ORGANIZATION"}, example="PERSON"),
-     *            @OA\Property(property="role", type="string",enum={"ADMINISTRADOR", "OPERADOR", "ANUNCIANTE","AGENCIA","CLIENTE"}),
+     *             @OA\Property(property="role", type="string",enum={"ADMINISTRADOR", "OPERADOR", "ANUNCIANTE","AGENCIA","CLIENTE"}),
      *             
      *             @OA\Property(
      *                 property="ci",
@@ -135,6 +135,11 @@ class AuthController extends Controller
      *                 property="social_reason",
      *                 type="string",
      *                 example="Mi Empresa SRL",
+     *                 description="Required if user_type is ORGANIZATION"
+     *             ),
+     *             @OA\Property(
+     *                 property="category_id",
+     *                 type="number",
      *                 description="Required if user_type is ORGANIZATION"
      *             ),
      *             @OA\Property(
@@ -153,6 +158,11 @@ class AuthController extends Controller
      *                 property="commision_percentage",
      *                 type="number",
      *                 example="10",
+     *                 description="Required if user_type is ORGANIZATION"
+     *             ),
+     *             @OA\Property(
+     *                 property="nit",
+     *                 type="string",
      *                 description="Required if user_type is ORGANIZATION"
      *             ),
      *         )

@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             RolSeeder::class,
             UserSeeder::class,
             AdminUserSeeder::class,
+            CategorySeeder::class,
             OrganizationSeeder::class,
             BillboardMasterSeeder::class
         ]);

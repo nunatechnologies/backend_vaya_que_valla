@@ -10,6 +10,8 @@ use App\Repositories\BillboardFace\BillboardFaceRepository;
 use App\Repositories\BillboardFace\BillboardFaceRepositoryInterface;
 use App\Repositories\BillboardStructure\BillboardStructureRepository;
 use App\Repositories\BillboardStructure\BillboardStructureRepositoryInterface;
+use App\Repositories\Category\CategoryRepository;
+use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Repositories\City\CityRepository;
 use App\Repositories\City\CityRepositoryInterface;
 use App\Repositories\Dashboard\DashboardRepository;
@@ -126,6 +128,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             ZoneRepositoryInterface::class,
             ZoneRepository::class
+        );
+
+        $this->app->bind(
+            CategoryRepositoryInterface::class,
+            CategoryRepository::class
         );
     }
 

@@ -39,6 +39,8 @@ class RegisterRequest extends FormRequest
             'name_contact' => ['nullable', 'string','max:30'],
             'phone_contact' => ['nullable', 'string','max:15'],
             'commision_percentage' => ['nullable', 'numeric','min:0','max:100'],
+            'nit' => ['nullable', 'string','min:1','max:20'],
+            'category_id' => ['nullable', 'exists:categories,id']
         ];
     }
 
@@ -59,6 +61,13 @@ class RegisterRequest extends FormRequest
                 }
                 if (!$this->filled('commision_percentage')) {
                     $validator->errors()->add('commision_percentage', 'The commision_percentage is required for user type ORGANIZATION.');
+                }
+                if (!$this->filled('nit')) {
+                    $validator->errors()->add('nit', 'The nit is required for user type ORGANIZATION.');
+                }
+                
+                if (!$this->filled('category_id')) {
+                    $validator->errors()->add('category_id', 'The category is required for user type ORGANIZATION.');
                 }
             }
         });

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Organization;
+namespace App\Http\Requests\Category;
 
 use App\Http\Messages\ErrorMessages;
 use App\Http\Responses\ApiResponse;
@@ -8,7 +8,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class OrganizationRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,13 +26,7 @@ class OrganizationRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'user_id' => ['required','integer'],
-			'social_reason' => ['required','string','max:100'],
-            'nit' => ['required','string','max:30'],
-			'name_contact' => ['required','string','max:100'],
-			'phone_contact' => ['required','string','max:20'],
-			'commision_percentage' => ['required','numeric','between:0,999999.99'],
-            'category_id' => ['required', 'exists:categories,id']
+			'name' => ['required','string','max:50']
 		];
     }
 

@@ -154,6 +154,10 @@
                                         "type": "string",
                                         "example": "Mi Empresa SRL"
                                     },
+                                    "category_id": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "number"
+                                    },
                                     "name_contact": {
                                         "description": "Required if user_type is ORGANIZATION",
                                         "type": "string",
@@ -168,6 +172,10 @@
                                         "description": "Required if user_type is ORGANIZATION",
                                         "type": "number",
                                         "example": "10"
+                                    },
+                                    "nit": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -1157,6 +1165,206 @@
                 }
             }
         },
+        "/api/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "List categories with pagination",
+                "operationId": "fa13869da27eeda9a3d7f4ddf2831fc1",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "itemsPerPage",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "description": "Sort by field",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
+                        "name": "orderBy",
+                        "in": "query",
+                        "description": "Sort order",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Register category",
+                "operationId": "59322f7ea7cca047856eee9352f210a8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 50
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Category registered successfully"
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
+        "/api/categories/{id}": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Get category by ID",
+                "operationId": "845fb48b310067ac7b170cc4942524fe",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the category",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Category found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Category found"
+                                        },
+                                        "organization": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Category not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Update category",
+                "operationId": "dbca17a10ed77e16fd0805474a3d07de",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the category to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Updated category data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 50
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Category updated successfully"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/api/cities": {
             "get": {
                 "tags": [
@@ -1710,7 +1918,8 @@
                                     "nit",
                                     "name_contact",
                                     "phone_contact",
-                                    "commision_percentage"
+                                    "commision_percentage",
+                                    "category_id"
                                 ],
                                 "properties": {
                                     "user_id": {
@@ -1737,6 +1946,9 @@
                                         "type": "number",
                                         "format": "float",
                                         "maxLength": 8
+                                    },
+                                    "category_id": {
+                                        "type": "number"
                                     }
                                 },
                                 "type": "object"
@@ -1853,6 +2065,9 @@
                                         "type": "number",
                                         "format": "float",
                                         "maxLength": 8
+                                    },
+                                    "category_id": {
+                                        "type": "number"
                                     }
                                 },
                                 "type": "object"
@@ -3885,6 +4100,10 @@
         {
             "name": "Billboard_structures",
             "description": "Billboard_structures"
+        },
+        {
+            "name": "Categories",
+            "description": "Categories"
         },
         {
             "name": "Cities",

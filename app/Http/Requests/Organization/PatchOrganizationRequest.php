@@ -31,7 +31,8 @@ class PatchOrganizationRequest extends FormRequest
             'nit' => ['required','string','max:30'],
 			'name_contact' => ['sometimes','string','max:100'],
 			'phone_contact' => ['sometimes','string','max:20'],
-			'commision_percentage' => ['sometimes','numeric','between:0,999999.99']
+			'commision_percentage' => ['sometimes','numeric','between:0,999999.99'],
+            'category_id' => ['sometimes', 'exists:categories,id']
 		];
     }
 

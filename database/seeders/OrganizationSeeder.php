@@ -21,6 +21,7 @@ class OrganizationSeeder extends Seeder
                 'name_contact' => 'cocacolacontact',
                 'phone_contact' => '1234567',
                 'commision_percentage' => 5,
+                'category_id' => 2
             ],
             [
                 'user_id' => 2,
@@ -29,6 +30,7 @@ class OrganizationSeeder extends Seeder
                 'name_contact' => 'fridolincontact',
                 'phone_contact' => '654789',
                 'commision_percentage' => 6,
+                'category_id' => 3
             ],
         ];
 
