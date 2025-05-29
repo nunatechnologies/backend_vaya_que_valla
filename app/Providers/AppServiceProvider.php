@@ -34,6 +34,8 @@ use App\Repositories\Role\RoleRepository;
 use App\Repositories\Role\RoleRepositoryInterface;
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryInterface;
+use App\Repositories\Zone\ZoneRepository;
+use App\Repositories\Zone\ZoneRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Carbon;
@@ -119,6 +121,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             DigitalBillboardPlanRepositoryInterface::class,
             DigitalBillboardPlanRepository::class
+        );
+
+        $this->app->bind(
+            ZoneRepositoryInterface::class,
+            ZoneRepository::class
         );
     }
 

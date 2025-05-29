@@ -14,12 +14,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $subDirectories = Storage::allDirectories('public');
+        $subDirectories = Storage::disk('public')->allDirectories('/');
         foreach ($subDirectories as $value) 
         {
-            Storage::deleteDirectory($value);
+            Storage::disk('public')->deleteDirectory($value);
         }
-
         $this->call([
             RolSeeder::class,
             UserSeeder::class,

@@ -53,6 +53,10 @@ class BillboardService
             $query->orderBy($datos->query('sortBy'), $datos->query('orderBy'));
         }
 
+        if ($datos->filled('zone_id')) {
+            $query->where('zone_id', $datos->query('zone_id'));
+        }
+
         return $query->paginate($datos->query('itemsPerPage') ?? 10);
     }
 }

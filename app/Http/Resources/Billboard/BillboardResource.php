@@ -6,6 +6,7 @@ use App\Http\Resources\BillboardStructure\BillboardStructureResource;
 use App\Http\Resources\BillboardType\BillboardTypeResource;
 use App\Http\Resources\City\CityResource;
 use App\Http\Resources\User\UserResource;
+use App\Http\Resources\Zone\ZoneResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,6 +24,7 @@ class BillboardResource extends JsonResource
             'name' => $this->name,
             'entity_status' => $this->entity_status,
             'location' => $this->location,
+            'zone' => new ZoneResource($this->zone),
             'size' => $this->size,
             'price_per_month' => $this->price_per_month,
             'status' => $this->status,

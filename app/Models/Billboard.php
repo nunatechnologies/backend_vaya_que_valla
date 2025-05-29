@@ -12,12 +12,17 @@ class Billboard extends Model
     protected $fillable = [
         'entity_status', 'name', 'location', 'size', 'price_per_month',
         'status', 'traffic_data', 'latitude', 'longitude',
-        'billboard_type_id','billboard_structure_id', 'city_id', 'advertiser_id',
+        'billboard_type_id','billboard_structure_id', 'city_id', 'advertiser_id', 'zone_id'
     ];
 
     public function city()
     {
         return $this->belongsTo(City::class);
+    }
+
+    public function zone()
+    {
+        return $this->belongsTo(Zone::class);
     }
 
     public function billboardType()

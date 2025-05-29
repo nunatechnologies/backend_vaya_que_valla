@@ -18,6 +18,7 @@ use App\Http\Controllers\RentalController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ZoneController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -147,5 +148,11 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     Route::post('/digital_billboard_plans', [DigitalBillboardPlanController::class, 'register']);
     Route::get('/digital_billboard_plans/{id}', [DigitalBillboardPlanController::class, 'get_digitalbillboardplan']);
     Route::put('/digital_billboard_plans/{id}', [DigitalBillboardPlanController::class, 'update_digitalbillboardplan']);
+
+    //Zones
+    Route::get('/zones', [ZoneController::class, 'list_zone_pagination']);
+    Route::post('/zones', [ZoneController::class, 'register']);
+    Route::get('/zones/{id}', [ZoneController::class, 'get_zone']);
+    Route::put('/zones/{id}', [ZoneController::class, 'update_zone']);
 });
 

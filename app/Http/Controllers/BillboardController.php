@@ -184,6 +184,13 @@ class BillboardController extends Controller
      *         @OA\Schema(type="string", maxLength=255)
      *     ),
      *     @OA\Parameter(
+     *         name="zone_id",
+     *         in="query",
+     *         description="Filter by zone_id",
+     *         required=false,
+     *         @OA\Schema(type="integer", maxLength=255)
+     *     ),
+     *     @OA\Parameter(
      *         name="itemsPerPage",
      *         in="query",
      *         description="Items per page",

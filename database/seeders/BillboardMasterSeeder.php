@@ -12,11 +12,13 @@ use App\Models\City;
 use App\Models\Province;
 use App\Models\User;
 use App\Models\DigitalBillboardPlan;
+use App\Models\Zone;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\DiskCannotBeAccessed;
 
 class BillboardMasterSeeder extends Seeder
 {
@@ -33,6 +35,7 @@ class BillboardMasterSeeder extends Seeder
         $this->cities();
         $this->digitalBillboardPlans();
         $this->structures();
+        $this->zones();
         $this->billboards();
         $this->faces();
     }
@@ -73,6 +76,36 @@ class BillboardMasterSeeder extends Seeder
         }
     }
 
+    public function zones()
+    {
+        $zonesToSave = [];
+        foreach ($this->sheet as $row) 
+        {
+            $cityName = trim($row[3]);
+            $zoneName = trim($row[17]);
+            $key = str_replace(' ','',$cityName.$zoneName);
+            $key = strtolower($key);
+            if ($zoneName != "") 
+            {
+                $zonesToSave[$key] = ['zone' => $zoneName, 'city' => $cityName];
+            }
+        }
+
+        foreach ($zonesToSave as $zone) 
+        {
+            $newZone = Zone::create(['name' => $zone['zone']]);
+            $relativePath = 'images/zones/'.$zone['city'].'/' . $zone['zone'] . '.png';
+            $fullPath = public_path($relativePath);
+    
+            if (file_exists($fullPath)) {
+                $newZone
+                    ->addMedia($fullPath)
+                    ->preservingOriginal()
+                    ->toMediaCollection();
+            }
+        }
+    }
+
     public function digitalBillboardPlans()
     {
         $plans = [
@@ -109,7 +142,7 @@ class BillboardMasterSeeder extends Seeder
         $advertisers = User::role(RolSpatie::ANUNCIANTE->name)->get();
         $billboardStructures = BillboardStructure::all();
         $cities = City::all();
-
+        $zones = Zone::all();
         $billboards = [];
         foreach ($this->sheet as $key => $col) 
         {
@@ -118,6 +151,7 @@ class BillboardMasterSeeder extends Seeder
             }
             $slug = Str::slug(trim($col[5]));
             $city = $cities->firstWhere('name', trim($col[3]));
+            $zone = $zones->firstWhere('name', trim($col[17]));
 
             $billboardStructure = $billboardStructures->firstWhere('name',trim($col[0]));
 
@@ -137,6 +171,7 @@ class BillboardMasterSeeder extends Seeder
             $billboards[$slug] = [
                 'name' => $name,
                 'location' => $location,
+                'zone_id' => is_null($zone)?NULL:$zone->id,
                 'size' => $size,
                 'price_per_month' => $price,
                 'status' => 'available',
@@ -167,10 +202,6 @@ class BillboardMasterSeeder extends Seeder
             $code = trim($col[4]);
             $location = trim($col[5]);
             $billboard = $billboards->firstWhere('location', trim($location));
-            if(is_null($billboard))
-            {
-                dd(count($this->sheet),$key, $col);
-            }
             $face = trim($col[9]);
             $locationDetail = trim($col[6]);
     
@@ -186,10 +217,14 @@ class BillboardMasterSeeder extends Seeder
             $fullPath = public_path($relativePath);
     
             if (file_exists($fullPath)) {
-                $billboardFace
+                try {
+                    $billboardFace
                     ->addMedia($fullPath)
                     ->preservingOriginal()
                     ->toMediaCollection();
+                } catch (DiskCannotBeAccessed $e) {
+                    dd($department, $code);
+                }
             }
         }
     }
