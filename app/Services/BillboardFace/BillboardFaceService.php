@@ -5,6 +5,7 @@ namespace App\Services\BillboardFace;
 use Illuminate\Support\Facades\DB;
 use App\Http\Messages\ErrorMessages;
 use App\Repositories\BillboardFace\BillboardFaceRepositoryInterface;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class BillboardFaceService
 {
@@ -42,12 +43,22 @@ class BillboardFaceService
         $query = $this->billboardfaceRepository->allquery();
 
         if ($datos->filled('search')) {
+            $search = $datos->query('search');
             $query->where('code', 'like', '%' . $datos->query('search') . '%')
 				->orWhere('face', 'like', '%' . $datos->query('search') . '%')
-				->orWhere('location_detail', 'like', '%' . $datos->query('search') . '%');
+				->orWhere('location_detail', 'like', '%' . $datos->query('search') . '%')
+                ->orWhereHas('billboard', function(Builder $q)use($search){
+                    $q->where('location','like','%'.$search.'%')
+                    ->orWhere('name','like','%'.$search.'%');
+                });
 
         }
-
+        if ($datos->filled('city_id')) {
+            $cityId = $datos->query('city_id');
+            $query->whereHas('billboard', function(Builder $q)use($cityId){
+                $q->where('city_id', $cityId);
+            });
+        }
         if ($datos->query('sortBy') && $datos->query('orderBy')) {
             $query->orderBy($datos->query('sortBy'), $datos->query('orderBy'));
         }

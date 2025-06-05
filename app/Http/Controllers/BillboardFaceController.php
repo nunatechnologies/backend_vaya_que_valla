@@ -194,6 +194,13 @@ class BillboardFaceController extends Controller
      *         @OA\Schema(type="string", maxLength=255)
      *     ),
      *     @OA\Parameter(
+     *         name="city_id",
+     *         in="query",
+     *         description="Filter by city_id",
+     *         required=false,
+     *         @OA\Schema(type="integer", maxLength=255)
+     *     ),
+     *     @OA\Parameter(
      *         name="itemsPerPage",
      *         in="query",
      *         description="Items per page",
