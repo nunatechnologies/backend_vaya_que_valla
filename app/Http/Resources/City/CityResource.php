@@ -19,6 +19,7 @@ class CityResource extends JsonResource
             'name' => $this->name,
             'province_id' => $this->province_id,
             'department' => $this->department,
+            'total_billboards' => $this->billboards->count(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

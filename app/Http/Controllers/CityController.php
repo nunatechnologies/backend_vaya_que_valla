@@ -12,6 +12,7 @@ use App\Services\City\CityService;
 use App\Services\SystemLogService;
 use App\Http\Requests\City\CityRequest;
 use App\Http\Requests\City\PatchCityRequest;
+use Illuminate\Support\Facades\DB;
 
 class CityController extends Controller
 {
@@ -199,6 +200,30 @@ class CityController extends Controller
             $objects= $this->cityService->getAllCityPagination($pagerequest);
             $objects->data = CityResource::collection($objects->getCollection());
             return ApiResponse::success(SuccessMessages::SUCCESSFUL,  new PaginacionResource($objects), [], 200);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), $e, [], $e->getCode());
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/cities/departments",
+     *     summary="List departments with billboards quantity",
+     *     tags={"Cities"},
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=500, description="Internal server error")
+     * )
+     */
+    public function departments()
+    {
+        try {
+            $departments = DB::table('billboards')
+                ->join('cities', 'billboards.city_id', '=', 'cities.id')
+                ->select('cities.department', DB::raw('COUNT(billboards.id) as billboard_count'))
+                ->groupBy('cities.department')
+                ->get();
+
+            return ApiResponse::success(SuccessMessages::SUCCESSFUL, $departments, [], 200);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), $e, [], $e->getCode());
         }

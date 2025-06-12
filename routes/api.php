@@ -70,6 +70,7 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     // Route::get('/roles', [UserController::class, 'all_roles']);
     
     //Cities
+    Route::get('/cities/departments', [CityController::class, 'departments']);
     Route::get('/cities', [CityController::class, 'list_city_pagination']);
     Route::post('/cities', [CityController::class, 'register']);
     Route::get('/cities/{id}', [CityController::class, 'get_city']);

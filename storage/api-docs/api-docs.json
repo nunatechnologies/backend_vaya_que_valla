@@ -1593,6 +1593,23 @@
                 }
             }
         },
+        "/api/cities/departments": {
+            "get": {
+                "tags": [
+                    "Cities"
+                ],
+                "summary": "List departments with billboards quantity",
+                "operationId": "2189bb903f80d8ef50415e8ce94ceede",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
         "/api/dashboard/general": {
             "get": {
                 "tags": [
