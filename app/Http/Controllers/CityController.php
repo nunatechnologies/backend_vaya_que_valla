@@ -36,7 +36,7 @@ class CityController extends Controller
 	 *             required={"name", "province_id", "department"},
 	 *                 @OA\Property(property="name", type="string", maxLength=255),
 	 *                 @OA\Property(property="province_id", type="number", maxLength=20),
-	 *                 @OA\Property(property="department", type="string"),
+	 *                 @OA\Property(property="department", type="string", enum={"Beni","La Paz","Santa Cruz","Cochabamba","Pando","Tarija","Chuquisaca","Oruro","Potosí"}),
      *         )
      *     ),
      *     @OA\Response(response=201, description="City registered successfully"),

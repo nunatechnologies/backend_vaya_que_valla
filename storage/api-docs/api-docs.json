@@ -1472,7 +1472,18 @@
                                         "maxLength": 20
                                     },
                                     "department": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "enum": [
+                                            "Beni",
+                                            "La Paz",
+                                            "Santa Cruz",
+                                            "Cochabamba",
+                                            "Pando",
+                                            "Tarija",
+                                            "Chuquisaca",
+                                            "Oruro",
+                                            "Potosí"
+                                        ]
                                     }
                                 },
                                 "type": "object"
