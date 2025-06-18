@@ -58,7 +58,7 @@ class QuoteRequestController extends Controller
 
             $loginResponse = Http::post($authUrl, [
                 'email' => 'backend@vayaquevalla.com',
-                'password' => '2£0#{6I8Lea{*',
+                'password' => '2£0#{6I8Lea{',
             ]);
 
             if (!$loginResponse->successful()) {
