@@ -217,67 +217,125 @@ class CityController extends Controller
     public function departments()
     {
         try {
-            // $departments = DB::table('billboards')
-            //     ->join('cities', 'billboards.city_id', '=', 'cities.id')
-            //     ->select('cities.department', DB::raw('COUNT(billboards.id) as billboard_count'))
-            //     ->groupBy('cities.department')
-            //     ->get();
             // Consulta para obtener todos los conteos por ciudad con sus relaciones
+            // $data = DB::table('billboards')
+            //     ->join('cities', 'billboards.city_id', '=', 'cities.id')
+            //     ->join('provinces', 'cities.province_id', '=', 'provinces.id')
+            //     ->select(
+            //         'cities.name as city',
+            //         'cities.department',
+            //         'provinces.name as province',
+            //         'cities.id as city_id',
+            //         'provinces.id as province_id'
+            //     )
+            //     ->selectRaw('COUNT(billboards.id) as billboard_count')
+            //     ->groupBy('cities.id', 'cities.name', 'cities.department', 'provinces.id', 'provinces.name')
+            //     ->get();
+
+            // // Structure results
+            // $result = [];
+
+            // foreach ($data as $row) 
+            // {
+            //     $department = $row->department;
+            //     $province = $row->province;
+            //     $city = $row->city;
+
+            //     // Let's make sure tha department exists
+            //     if (!isset($result[$department])) 
+            //     {
+            //         $result[$department] = [
+            //             'department' => $department,
+            //             'billboard_count' => 0,
+            //             'provinces' => []
+            //         ];
+            //     }
+
+            //     // Let's make sure that provice exists
+            //     if (!isset($result[$department]['provinces'][$row->province_id])) 
+            //     {
+            //         $result[$department]['provinces'][$row->province_id] = [
+            //             'province' => $province,
+            //             'billboard_count' => 0,
+            //             'cities' => []
+            //         ];
+            //     }
+
+            //     // Add city
+            //     $result[$department]['provinces'][$row->province_id]['cities'][] = [
+            //         'city' => $city,
+            //         'billboard_count' => $row->billboard_count
+            //     ];
+
+            //     // Increase count
+            //     $result[$department]['provinces'][$row->province_id]['billboard_count'] += $row->billboard_count;
+            //     $result[$department]['billboard_count'] += $row->billboard_count;
+            // }
+
+            // // Convertir provincias de asociativo a array
+            // foreach ($result as &$dep) 
+            // {
+            //     $dep['provinces'] = array_values($dep['provinces']);
+            // }
             $data = DB::table('billboards')
-                ->join('cities', 'billboards.city_id', '=', 'cities.id')
-                ->join('provinces', 'cities.province_id', '=', 'provinces.id')
-                ->select(
-                    'cities.name as city',
-                    'cities.department',
-                    'provinces.name as province',
-                    'cities.id as city_id',
-                    'provinces.id as province_id'
-                )
-                ->selectRaw('COUNT(billboards.id) as billboard_count')
-                ->groupBy('cities.id', 'cities.name', 'cities.department', 'provinces.id', 'provinces.name')
-                ->get();
-
-            // Structure results
+            ->join('cities', 'billboards.city_id', '=', 'cities.id')
+            ->join('provinces', 'cities.province_id', '=', 'provinces.id')
+            ->leftJoin('billboard_faces', 'billboards.id', '=', 'billboard_faces.billboard_id')
+            ->select(
+                'cities.name as city',
+                'cities.department',
+                'provinces.name as province',
+                'cities.id as city_id',
+                'provinces.id as province_id'
+            )
+            ->selectRaw('COUNT(DISTINCT billboards.id) as billboard_count')
+            ->selectRaw('COUNT(billboard_faces.id) as billboard_face_count')
+            ->groupBy('cities.id', 'cities.name', 'cities.department', 'provinces.id', 'provinces.name')
+            ->get();
+        
+            // Estructurar resultados
             $result = [];
-
+            
             foreach ($data as $row) 
             {
                 $department = $row->department;
                 $province = $row->province;
                 $city = $row->city;
-
-                // Let's make sure tha department exists
-                if (!isset($result[$department])) 
-                {
+            
+                if (!isset($result[$department])) {
                     $result[$department] = [
                         'department' => $department,
                         'billboard_count' => 0,
+                        'billboard_face_count' => 0,
                         'provinces' => []
                     ];
                 }
-
-                // Let's make sure that provice exists
-                if (!isset($result[$department]['provinces'][$row->province_id])) 
-                {
+            
+                if (!isset($result[$department]['provinces'][$row->province_id])) {
                     $result[$department]['provinces'][$row->province_id] = [
                         'province' => $province,
                         'billboard_count' => 0,
+                        'billboard_face_count' => 0,
                         'cities' => []
                     ];
                 }
-
-                // Add city
+            
+                // Agregar ciudad
                 $result[$department]['provinces'][$row->province_id]['cities'][] = [
                     'city' => $city,
-                    'billboard_count' => $row->billboard_count
+                    'billboard_count' => $row->billboard_count,
+                    'billboard_face_count' => $row->billboard_face_count,
                 ];
-
-                // Increase count
+            
+                // Acumular totales
                 $result[$department]['provinces'][$row->province_id]['billboard_count'] += $row->billboard_count;
+                $result[$department]['provinces'][$row->province_id]['billboard_face_count'] += $row->billboard_face_count;
+            
                 $result[$department]['billboard_count'] += $row->billboard_count;
+                $result[$department]['billboard_face_count'] += $row->billboard_face_count;
             }
-
-            // Convertir provincias de asociativo a array
+            
+            // Convertir provincias a array
             foreach ($result as &$dep) 
             {
                 $dep['provinces'] = array_values($dep['provinces']);
