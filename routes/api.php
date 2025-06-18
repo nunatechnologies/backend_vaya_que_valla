@@ -27,21 +27,25 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Route::get('/email/verify/{id}/{hash}', function (Request $request) {
     $user = User::findOrFail($request->route('id'));
+    $message = 'Email verificado correctamente';
     if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) 
     {
-        return response()->json(['message' => 'El enlace de verificación es inválido.'], 403);
+        $message = "El enlace de verificación es inválido.";
+        // return response()->json(['message' => 'El enlace de verificación es inválido.'], 403);
     }
 
     if ($user->hasVerifiedEmail()) 
     {
-        return response()->json(['message' => 'El email ya fue verificado.'], 200);
+        $message = 'El email ya fue verificado.';
+        // return response()->json(['message' => 'El email ya fue verificado.'], 200);
     }
 
     $user->markEmailAsVerified();
+    return view('emails/email-verified', compact('message'));
+    // return response()->json(['message' => 'Email verificado correctamente'], 200);
 
-    return response()->json(['message' => 'Email verificado correctamente'], 200);
-    
 })->middleware(['signed'])->name('verification.verify');
+//})->name('verification.verify');
 
 Route::post('/email/resend', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
