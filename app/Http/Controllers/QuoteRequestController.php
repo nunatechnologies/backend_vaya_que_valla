@@ -57,8 +57,8 @@ class QuoteRequestController extends Controller
             $authUrl = 'https://crm-back.vayaquevalla.com/api/authen/login';
 
             $loginResponse = Http::post($authUrl, [
-                'email' => 'useradmin@gmail.com',
-                'password' => 'vqvPass2025*',
+                'email' => 'backend@vayaquevalla.com',
+                'password' => '2£0#{6I8Lea{*',
             ]);
 
             if (!$loginResponse->successful()) {
