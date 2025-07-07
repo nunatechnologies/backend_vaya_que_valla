@@ -13,6 +13,7 @@ use App\Services\SystemLogService;
 use App\Http\Requests\BillboardFace\BillboardFaceRequest;
 use App\Http\Requests\BillboardFace\PatchBillboardFaceRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 // use Illuminate\Support\Facades\Request;
 
@@ -201,6 +202,13 @@ class BillboardFaceController extends Controller
      *         @OA\Schema(type="integer", maxLength=255)
      *     ),
      *     @OA\Parameter(
+     *         name="face",
+     *         in="query",
+     *         description="Filter by face",
+     *         required=false,
+     *         @OA\Schema(type="string", maxLength=5)
+     *     ),
+     *     @OA\Parameter(
      *         name="itemsPerPage",
      *         in="query",
      *         description="Items per page",
@@ -238,6 +246,32 @@ class BillboardFaceController extends Controller
             $objects= $this->billboardfaceService->getAllBillboardFacePagination($pagerequest);
             $objects->data = BillboardFaceResource::collection($objects->getCollection());
             return ApiResponse::success(SuccessMessages::SUCCESSFUL,  new PaginacionResource($objects), [], 200);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), $e, [], $e->getCode());
+        }
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/available_faces",
+     *     summary="List all available faces registered in all billboard_faces",
+     *     tags={"Billboard_faces"},
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=500, description="Internal server error")
+     * )
+     */
+    public function available_faces()
+    {
+        try {
+            $data = DB::table('billboard_faces')
+            ->select(
+                'face'
+            )
+            ->where('face','!=','')
+            ->groupBy('face')
+            ->get()->toArray();
+
+            return ApiResponse::success(SuccessMessages::SUCCESSFUL, $data, [], 200);
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), $e, [], $e->getCode());
         }

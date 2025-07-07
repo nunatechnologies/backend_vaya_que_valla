@@ -722,6 +722,16 @@
                         }
                     },
                     {
+                        "name": "face",
+                        "in": "query",
+                        "description": "Filter by face",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 5
+                        }
+                    },
+                    {
                         "name": "itemsPerPage",
                         "in": "query",
                         "description": "Items per page",
@@ -968,6 +978,23 @@
                 "responses": {
                     "200": {
                         "description": "BillboardFace updated successfully"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/api/available_faces": {
+            "get": {
+                "tags": [
+                    "Billboard_faces"
+                ],
+                "summary": "List all available faces registered in all billboard_faces",
+                "operationId": "7f15c6c3ce6ceb149638503c94f87212",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
                     },
                     "500": {
                         "description": "Internal server error"
