@@ -3,10 +3,10 @@
     <h1 style="font-size: 25px">¡Hola! 👋</h1>
     
     <p>
-        {{$message}}
+        El usuario **{{ $newUser->name }}** ({{ $newUser->email }}) se ha registrado y requiere activación.
     </p>
     <p style="text-align: center">
-        <a href="{{config('vayaquevalla.panel_url')}}" class="custom_button">Ir al inicio de sesi&oacute;n</a>
+        <a href="{{$accountConfirmationUrl}}" class="custom_button">Activar</a>
     </p>
     <p>
         Saludos cordiales<br>

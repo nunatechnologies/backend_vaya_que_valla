@@ -13,6 +13,9 @@
         Si no creaste una cuenta, no es necesario hacer nada.
     </p>
     <p>
+        Luego de que hayas verificado tu correo, nuestro equipo har&aacute; una verificaci&oacute;n para activar tu cuenta, ser&aacute;s notificado a trav&eacute;s de un correo cuando eso ocurra. 
+    </p>
+    <p>
         Saludos cordiales<br>
         {{env('APP_NAME')}}
     </p>

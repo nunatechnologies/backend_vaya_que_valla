@@ -29,16 +29,16 @@ class PatchBillboardRequest extends FormRequest
 			'name' => ['sometimes','string','max:255'],
 			'location' => ['sometimes','string','max:255'],
 			'advertiser_id' => ['sometimes','integer'],
-			'status' => ['sometimes'],
-			'billboard_type_id' => ['sometimes','integer'],
+			// 'status' => ['sometimes'],
 			'city_id' => ['sometimes','integer'],
+            'zone_id' => ['sometimes','integer'],
 			'billboard_structure_id' => ['sometimes','integer'],
-			'entity_status' => ['sometimes'],
+			// 'entity_status' => ['sometimes'],
 			'size' => ['sometimes','string','max:255'],
 			'price_per_month' => ['sometimes','numeric','between:0,99999999.99'],
-			'traffic_data' => ['sometimes'],
-			'longitude' => ['sometimes','numeric','between:0,999.9999999'],
-			'latitude' => ['sometimes','numeric','between:0,999.9999999']
+			// 'traffic_data' => ['sometimes'],
+			'longitude' => ['sometimes','numeric'],
+			'latitude' => ['sometimes','numeric']
 		];
     }
 

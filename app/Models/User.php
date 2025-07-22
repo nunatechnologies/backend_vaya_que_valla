@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Notifications\AccountActived;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -47,7 +48,8 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, HasMe
         'phone',
         'email',
         'password',
-        'user_type'
+        'user_type',
+        'entity_status'
     ];
 
     /**
@@ -71,6 +73,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, HasMe
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getFullNameAttribute()
+    {
+        return ucwords($this->name.' '.$this->last_name);
     }
 
     public function person()
@@ -113,5 +120,12 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, HasMe
               ->width(240)
               ->height(180)
               ->sharpen(10)->nonQueued();
+    }
+
+    public function markAccountAsVerified()
+    {
+        $this->entity_status = 'active';
+        $this->save();
+        $this->notify(new AccountActived());
     }
 }

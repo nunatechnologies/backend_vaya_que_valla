@@ -449,15 +449,11 @@
                                     "name",
                                     "location",
                                     "advertiser_id",
-                                    "status",
-                                    "billboard_type_id",
                                     "city_id",
+                                    "zone_id",
                                     "billboard_structure_id",
-                                    "entity_status",
                                     "size",
                                     "price_per_month",
-                                    "traffic_data",
-                                    "image",
                                     "longitude",
                                     "latitude"
                                 ],
@@ -474,23 +470,17 @@
                                         "type": "number",
                                         "maxLength": 20
                                     },
-                                    "status": {
-                                        "type": "string"
-                                    },
-                                    "billboard_type_id": {
+                                    "city_id": {
                                         "type": "number",
                                         "maxLength": 20
                                     },
-                                    "city_id": {
+                                    "zone_id": {
                                         "type": "number",
                                         "maxLength": 20
                                     },
                                     "billboard_structure_id": {
                                         "type": "number",
                                         "maxLength": 20
-                                    },
-                                    "entity_status": {
-                                        "type": "string"
                                     },
                                     "size": {
                                         "type": "string",
@@ -500,13 +490,6 @@
                                         "type": "number",
                                         "format": "float",
                                         "maxLength": 10
-                                    },
-                                    "traffic_data": {
-                                        "type": "string"
-                                    },
-                                    "image": {
-                                        "type": "string",
-                                        "maxLength": 255
                                     },
                                     "longitude": {
                                         "type": "number",
@@ -608,15 +591,11 @@
                                     "name",
                                     "location",
                                     "advertiser_id",
-                                    "status",
-                                    "billboard_type_id",
                                     "city_id",
+                                    "zone_id",
                                     "billboard_structure_id",
-                                    "entity_status",
                                     "size",
                                     "price_per_month",
-                                    "traffic_data",
-                                    "image",
                                     "longitude",
                                     "latitude"
                                 ],
@@ -633,23 +612,17 @@
                                         "type": "number",
                                         "maxLength": 20
                                     },
-                                    "status": {
-                                        "type": "string"
-                                    },
-                                    "billboard_type_id": {
+                                    "city_id": {
                                         "type": "number",
                                         "maxLength": 20
                                     },
-                                    "city_id": {
+                                    "zone_id": {
                                         "type": "number",
                                         "maxLength": 20
                                     },
                                     "billboard_structure_id": {
                                         "type": "number",
                                         "maxLength": 20
-                                    },
-                                    "entity_status": {
-                                        "type": "string"
                                     },
                                     "size": {
                                         "type": "string",
@@ -659,13 +632,6 @@
                                         "type": "number",
                                         "format": "float",
                                         "maxLength": 10
-                                    },
-                                    "traffic_data": {
-                                        "type": "string"
-                                    },
-                                    "image": {
-                                        "type": "string",
-                                        "maxLength": 255
                                     },
                                     "longitude": {
                                         "type": "number",
@@ -3594,6 +3560,22 @@
                                 "desc"
                             ]
                         }
+                    },
+                    {
+                        "name": "role",
+                        "in": "query",
+                        "description": "Filter by role",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "ADMINISTRADOR",
+                                "OPERADOR",
+                                "ANUNCIANTE",
+                                "AGENCIA",
+                                "CLIENTE"
+                            ]
+                        }
                     }
                 ],
                 "responses": {
@@ -3710,9 +3692,11 @@
                                     "rol": {
                                         "type": "string",
                                         "enum": [
-                                            "ASESOR",
-                                            "EJECUTIVO",
-                                            "ADMINISTRADOR"
+                                            "ADMINISTRADOR",
+                                            "OPERADOR",
+                                            "ANUNCIANTE",
+                                            "AGENCIA",
+                                            "CLIENTE"
                                         ]
                                     }
                                 },

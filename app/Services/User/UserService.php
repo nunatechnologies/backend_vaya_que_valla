@@ -69,19 +69,21 @@ class UserService
             $searchTerm = $datos->query('search');
             $query->where(function ($query) use ($searchTerm) {
                 $query->where('name', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('lastname', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('last_name', 'like', '%' . $searchTerm . '%')
                     ->orWhere('email', 'like', '%' . $searchTerm . '%');
             });
         }
 
-        if ($datos->query('rol')) {
-            $role = $datos->query('rol');
+        if ($datos->query('role')) 
+        {
+            $role = $datos->query('role');
             $query->whereHas('roles', function ($query) use ($role) {
                 $query->where('name', $role);
             });
         }
 
-        if ($datos->query('sortBy') && $datos->query('orderBy')) {
+        if ($datos->query('sortBy') && $datos->query('orderBy')) 
+        {
             $sortBy = $datos->query('sortBy');
             $orderBy = $datos->query('orderBy');
             $query->orderBy($sortBy, $orderBy);

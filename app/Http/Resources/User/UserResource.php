@@ -20,6 +20,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'last_name' => $this->last_name,
+            'full_name' => $this->fullName,
             'email' => $this->email,
             'phone' => $this->phone,
             'cod_phone' => $this->cod_phone,
@@ -31,6 +32,7 @@ class UserResource extends JsonResource
                 'md' => $this->getFirstMediaUrl('default','md'),
                 'sm' => $this->getFirstMediaUrl('default','sm')
             ],
+            'entity_status' => $this->entity_status,
             'person' => new PersonResource($this->whenLoaded('person')),
         ];
     }

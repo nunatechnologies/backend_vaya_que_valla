@@ -27,25 +27,45 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Route::get('/email/verify/{id}/{hash}', function (Request $request) {
     $user = User::findOrFail($request->route('id'));
-    $message = 'Email verificado correctamente';
+    $isActive = $user->entity_status == 'active';
+    $activeMessage = $isActive?" y tu cuenta ya ha sido activada.":", te notificaremos a traves de un correo cuando tu cuenta haya sido activada.";
+    $message = 'El email ha sido verificado correctamente'.$activeMessage;
+
     if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) 
     {
         $message = "El enlace de verificación es inválido.";
-        // return response()->json(['message' => 'El enlace de verificación es inválido.'], 403);
     }
 
     if ($user->hasVerifiedEmail()) 
     {
-        $message = 'El email ya fue verificado.';
-        // return response()->json(['message' => 'El email ya fue verificado.'], 200);
+        $message = 'El email ya fue verificado'.$activeMessage;
     }
 
     $user->markEmailAsVerified();
     return view('emails/email-verified', compact('message'));
-    // return response()->json(['message' => 'Email verificado correctamente'], 200);
 
 })->middleware(['signed'])->name('verification.verify');
-//})->name('verification.verify');
+
+Route::get('/account/activation/{id}/{hash}', function (Request $request) {
+    $user = User::findOrFail($request->route('id'));
+    $isActive = $user->entity_status == 'active';
+
+    $message = 'La cuenta del usuario '.$user->name.' ('.$user->email.') ha sido activada exitosamente';
+
+    if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) 
+    {
+        $message = "El enlace de verificación es inválido.";
+    }
+
+    if ($isActive) 
+    {
+        $message = 'La cuenta del usuario '.$user->name.' ('.$user->email.') ya ha sido activada';
+    }
+
+    $user->markAccountAsVerified();
+    return view('emails/user-account-actived', compact('message'));
+
+})->middleware(['signed'])->name('account.activation');
 
 Route::post('/email/resend', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();

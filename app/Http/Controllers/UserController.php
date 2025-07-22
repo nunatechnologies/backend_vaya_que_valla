@@ -96,7 +96,7 @@ class UserController extends Controller
       *         required=true,
       *         @OA\JsonContent(
       *             required={ "rol"},
-      *             @OA\Property(property="rol", type="string", enum={"ASESOR", "EJECUTIVO", "ADMINISTRADOR"}),
+      *             @OA\Property(property="rol", type="string", enum={"ADMINISTRADOR", "OPERADOR", "ANUNCIANTE","AGENCIA","CLIENTE"}),
       *         )
       *     ),
       *     @OA\Response(response=200, description="Successful operation"),
@@ -246,6 +246,13 @@ class UserController extends Controller
      *         description="Sort order",
      *         required=false,
      *         @OA\Schema(type="string", enum={"asc", "desc"})
+     *     ),
+     *     @OA\Parameter(
+     *         name="role",
+     *         in="query",
+     *         description="Filter by role",
+     *         required=false,
+     *         @OA\Schema(type="string", enum={"ADMINISTRADOR", "OPERADOR", "ANUNCIANTE","AGENCIA","CLIENTE"})
      *     ),
      *     @OA\Response(response=200, description="Successful operation"),
      *     @OA\Response(response=500, description="Internal server error")
