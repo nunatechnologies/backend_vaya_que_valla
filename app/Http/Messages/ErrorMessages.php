@@ -18,6 +18,7 @@ class ErrorMessages
     public const INVALID_PASSWORD = 'El password actual es incorrecto';
     public const USER_NOT_HAVE_PASSWORD = 'El usuario no se registro con contraseña';
     public const EMAIL_NOT_VERIFIED = 'Correo no verificado';
+    public const ACCOUNT_INACTIVE = 'Cuenta inactiva';
 
     const USER_NOT_FOUND = 'Usuario no encontrado';
 

@@ -59,6 +59,9 @@ class AuthService
         if (is_null($user->email_verified_at)) {
             throw new \Exception(ErrorMessages::EMAIL_NOT_VERIFIED ?? 'Correo no verificado', 403);
         }
+        if ($user->entity_status != 'active') {
+            throw new \Exception(ErrorMessages::ACCOUNT_INACTIVE ?? 'Cuenta inactiva', 403);
+        }
         return $user;
     }
 
