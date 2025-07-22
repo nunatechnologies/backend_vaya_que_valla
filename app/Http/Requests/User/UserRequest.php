@@ -4,11 +4,13 @@ namespace App\Http\Requests\User;
 
 use App\Enums\GenderType;
 use App\Enums\RolSpatie;
+use App\Enums\UserType;
 use App\Http\Messages\ErrorMessages;
 use App\Http\Responses\ApiResponse;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
 class UserRequest extends FormRequest
@@ -36,6 +38,10 @@ class UserRequest extends FormRequest
             'phone' => 'nullable|string|unique:users,phone',
             'password' => 'required|string|min:8',
             'rol'=>['required', new Enum(RolSpatie::class)],
+            'user_type' => ['required', 'string', Rule::in([
+                UserType::ORGANIZATION->name,
+                UserType::PERSON->name
+            ])],
         ];
     }
 

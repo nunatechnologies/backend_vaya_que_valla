@@ -50,6 +50,7 @@ class UserController extends Controller
      *            @OA\Property(property="cod_phone", type="string", maxLength=255, example="+591"),
      *            @OA\Property(property="password", type="string", minLength=8),
      *            @OA\Property(property="rol", enum={"ADMINISTRADOR", "OPERADOR", "ANUNCIANTE","AGENCIA","CLIENTE"}, description="Allowed values: ADMINISTRADOR, OPERADOR, ANUNCIANTE, AGENCIA, CLIENTE"),
+     *            @OA\Property(property="user_type", type="string", enum={"PERSON", "ORGANIZATION"}, example="PERSON"),
      *         )
      *     ),
      *     @OA\Response(response=201, description="Successful operation"),
@@ -148,6 +149,7 @@ class UserController extends Controller
       *                 @OA\Property(property="email", type="string", format="email", example="eduardo@gmail.com"),
       *                 @OA\Property(property="phone", type="string", maxLength=255, example="77835516"),
       *                 @OA\Property(property="cod_phone", type="string", maxLength=255, example="+591"),
+      *                 @OA\Property(property="user_type", type="string", enum={"PERSON", "ORGANIZATION"}, example="PERSON"),
       *         )
       *     ),
       *     @OA\Response(response=200, description="Successful operation"),

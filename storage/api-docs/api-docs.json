@@ -3644,6 +3644,14 @@
                                             "AGENCIA",
                                             "CLIENTE"
                                         ]
+                                    },
+                                    "user_type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "PERSON",
+                                            "ORGANIZATION"
+                                        ],
+                                        "example": "PERSON"
                                     }
                                 },
                                 "type": "object"
@@ -3799,6 +3807,14 @@
                                         "type": "string",
                                         "maxLength": 255,
                                         "example": "+591"
+                                    },
+                                    "user_type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "PERSON",
+                                            "ORGANIZATION"
+                                        ],
+                                        "example": "PERSON"
                                     }
                                 },
                                 "type": "object"
