@@ -49,11 +49,11 @@ class QuoteRequest extends FormRequest
             // }
             if ($billboardStructure == 'DIGITAL' && !$this->filled('digital_billboard_plan_id')) 
             {
-                $validator->errors()->add('digital_billboard_plan_id', 'The digital_billboard_plan_id is required for DIGITAL billboards.');
+                $validator->errors()->add('digital_billboard_plan_id', 'El plan de valla digital es requerido cuando la valla es de tipo digital.');
             }
             elseif ($billboardStructure != 'DIGITAL' && $this->filled('digital_billboard_plan_id')) 
             {
-                $validator->errors()->add('digital_billboard_plan_id', 'The digital_billboard_plan_id is required ONLY FOR DIGITAL billboards.');
+                $validator->errors()->add('digital_billboard_plan_id', 'El plan de valla digital es requerida solo para las vallas digitales.');
             }
         });
     }

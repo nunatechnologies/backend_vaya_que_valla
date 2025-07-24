@@ -37,10 +37,14 @@ class PatchUserRequest extends FormRequest
             'cod_phone' => 'nullable|string',
             'phone' => 'nullable|string|unique:users,phone,'. $this->route('id'),
             'rol'=>['sometimes', new Enum(RolSpatie::class)],
-            'user_type' => ['required', 'string', Rule::in([
+            'user_type' => ['sometimes', 'string', Rule::in([
                 UserType::ORGANIZATION->name,
                 UserType::PERSON->name
             ])],
+            'entity_status' => ['sometimes', 'string', Rule::in([
+                'active',
+                'inactive'
+            ])]
         ];
     }
 

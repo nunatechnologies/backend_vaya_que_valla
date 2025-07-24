@@ -51,23 +51,23 @@ class RegisterRequest extends FormRequest
 
             if ($userType === UserType::PERSON->name) {
                 if (!$this->filled('ci')) {
-                    $validator->errors()->add('ci', 'The CI is required for user type PERSON.');
+                    $validator->errors()->add('ci', 'El CI es requerido cuando el tipo de usuario es PERSON.');
                 }
             }
 
             if ($userType === UserType::ORGANIZATION->name) {
                 if (!$this->filled('social_reason')) {
-                    $validator->errors()->add('social_reason', 'The social_reason is required for user type ORGANIZATION.');
+                    $validator->errors()->add('social_reason', 'La razon social para el tipo de usuario ORGANIZATION.');
                 }
                 if (!$this->filled('commision_percentage')) {
-                    $validator->errors()->add('commision_percentage', 'The commision_percentage is required for user type ORGANIZATION.');
+                    $validator->errors()->add('commision_percentage', 'El porcentage de comision es requerido para el tipo de usuario ORGANIZATION.');
                 }
                 if (!$this->filled('nit')) {
-                    $validator->errors()->add('nit', 'The nit is required for user type ORGANIZATION.');
+                    $validator->errors()->add('nit', 'El nit es requerido para el tipo de usuario ORGANIZATION.');
                 }
                 
                 if (!$this->filled('category_id')) {
-                    $validator->errors()->add('category_id', 'The category is required for user type ORGANIZATION.');
+                    $validator->errors()->add('category_id', 'La categoria es requerida para el tipo de usuario ORGANIZATION.');
                 }
             }
         });

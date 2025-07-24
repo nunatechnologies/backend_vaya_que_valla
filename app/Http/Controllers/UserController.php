@@ -41,7 +41,7 @@ class UserController extends Controller
      *     tags={"Users"},
      *     @OA\RequestBody(
      *         required=true,
-     *          @OA\JsonContent(
+     *         @OA\JsonContent(
      *            required={"name", "last_name", "email","password","rol"},
      *            @OA\Property(property="name", type="string", maxLength=255, example="Eduardo"),
      *            @OA\Property(property="last_name", type="string", maxLength=255, example="Sanchez"),
@@ -51,6 +51,19 @@ class UserController extends Controller
      *            @OA\Property(property="password", type="string", minLength=8),
      *            @OA\Property(property="rol", enum={"ADMINISTRADOR", "OPERADOR", "ANUNCIANTE","AGENCIA","CLIENTE"}, description="Allowed values: ADMINISTRADOR, OPERADOR, ANUNCIANTE, AGENCIA, CLIENTE"),
      *            @OA\Property(property="user_type", type="string", enum={"PERSON", "ORGANIZATION"}, example="PERSON"),
+     *         ),
+     *         @OA\MediaType(
+     *            mediaType="multipart/form-data",
+     *            @OA\Schema(
+     *              required={"name", "last_name", "email","password","rol"},
+     *              @OA\Property(property="name", type="string"),
+     *              @OA\Property(property="last_name", type="string"),
+     *              @OA\Property(property="email", type="string", format="email"),
+     *              @OA\Property(property="cod_phone", type="string"),
+     *              @OA\Property(property="phone", type="string"),
+     *              @OA\Property(property="password", type="string", minLength=8),
+     *              @OA\Property(property="image", type="string", format="binary", description="Optional image upload")
+     *            )
      *         )
      *     ),
      *     @OA\Response(response=201, description="Successful operation"),
@@ -60,13 +73,17 @@ class UserController extends Controller
 
      public function register(UserRequest $UserRequest)
      {
-         try {
-             $userData = $this->userService->createUser($UserRequest->all());
-             $this->systemLogService->logActivity('usuario','Usuario registrado',
+        try {
+            $userData = $this->userService->createUser($UserRequest->all());
+            $this->systemLogService->logActivity('usuario','Usuario registrado',
                  SeveritySystemLog::info->name,
                  $userData
-             );
-             $userData->sendEmailVerificationNotification();
+            );
+            $userData->sendEmailVerificationNotification();
+            if (request()->hasFile('image')) 
+            {
+                $userData->addMediaFromRequest('image')->toMediaCollection();
+            }
              return ApiResponse::success(SuccessMessages::CREATE_SUCCESS, new UserResource($userData), [], 201);
          } catch (\Exception $e) {
              $this->systemLogService->logActivity(
@@ -143,13 +160,28 @@ class UserController extends Controller
       *         required=true,
       *         description="Updated user data",
       *         @OA\JsonContent(
-      *             required={ "email", "phone" , "cod_phone"},
+      *             required={"name", "last_name", "cod_phone","phone"},
       *                 @OA\Property(property="name", type="string", maxLength=255, example="Eduardo"),
       *                 @OA\Property(property="last_name", type="string", maxLength=255, example="Sanchez"),
       *                 @OA\Property(property="email", type="string", format="email", example="eduardo@gmail.com"),
       *                 @OA\Property(property="phone", type="string", maxLength=255, example="77835516"),
       *                 @OA\Property(property="cod_phone", type="string", maxLength=255, example="+591"),
       *                 @OA\Property(property="user_type", type="string", enum={"PERSON", "ORGANIZATION"}, example="PERSON"),
+      *                 @OA\Property(property="entity_status", type="string", enum={"active", "inactive"}, example="active"), 
+      *         )
+      *        @OA\MediaType(
+      *            mediaType="multipart/form-data",
+      *            @OA\Schema(
+      *                required={"name", "last_name", "cod_phone","phone"},
+      *                @OA\Property(property="_method", type="string", default="PUT"),
+      *                @OA\Property(property="name", type="string"),
+      *                @OA\Property(property="last_name", type="string"),
+      *                @OA\Property(property="email", type="string", format="email", example="eduardo@gmail.com"), 
+      *                @OA\Property(property="cod_phone", type="string"),
+      *                @OA\Property(property="phone", type="string"),
+      *                @OA\Property(property="image", type="string", format="binary", description="Optional image upload")
+      *                 @OA\Property(property="entity_status", type="string", enum={"active", "inactive"}, example="active"), 
+      *             )
       *         )
       *     ),
       *     @OA\Response(response=200, description="Successful operation"),
@@ -160,14 +192,18 @@ class UserController extends Controller
      public function update_user(PatchUserRequest $userRequest, $id)
      {
          try {
-             $user = $this->userService->updateUser($id, $userRequest->validated());
-             $this->systemLogService->logActivity(
-                 'user',
-                 'Usuario actualizado',
-                 SeveritySystemLog::info->name,
-                 $user
-             );
-             return ApiResponse::success(SuccessMessages::UPDATE_SUCCESS, new UserResource($user), [], 200);
+            $user = $this->userService->updateUser($id, $userRequest->validated());
+            if (request()->hasFile('image')) 
+            {
+                $user->addMediaFromRequest('image')->toMediaCollection();
+            }
+            $this->systemLogService->logActivity(
+                'user',
+                'Usuario actualizado',
+                SeveritySystemLog::info->name,
+                $user
+            );
+            return ApiResponse::success(SuccessMessages::UPDATE_SUCCESS, new UserResource($user), [], 200);
          } catch (\Exception $e) {
              $this->systemLogService->logActivity(
                  'user',
@@ -317,19 +353,9 @@ class UserController extends Controller
             $user = $this->authService->getAuthenticatedUser();
             
             $user = $this->userService->updateUser($user->id, $request->validated());
-            // Log::info('Testing: '.json_encode($request->all()));
             if (request()->hasFile('image')) 
             {
-                // Verificación rápida
-                $file = request()->file('image');
-                // Log::info('Imagen recibida:', [
-                //     'original_name' => $file->getClientOriginalName(),
-                //     'mime_type' => $file->getMimeType(),
-                //     'size' => $file->getSize(),
-                // ]);
-                $user
-                    ->addMediaFromRequest('image')
-                    ->toMediaCollection();
+                $user->addMediaFromRequest('image')->toMediaCollection();
             }
             $this->systemLogService->logActivity(
                'Profile',
