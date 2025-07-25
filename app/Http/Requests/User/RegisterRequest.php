@@ -26,7 +26,7 @@ class RegisterRequest extends FormRequest
             'last_name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'email', 'max:100', 'unique:users,email'],
             'cod_phone' => ['nullable', 'string', 'max:5'],
-            'phone' => ['nullable', 'string', 'max:10'],
+            'phone' => ['nullable', 'string', 'max:10','unique:users,phone'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
             'user_type' => ['required', 'string', Rule::in([
                 UserType::ORGANIZATION->name,
