@@ -49,7 +49,7 @@ class PatchQuoteRequest extends FormRequest
                 $billboardFace = Quote::find($this->id)->billboardFace;
             }
             
-            $billboardStructure = $billboardFace->billboard->billboardStructure->name;
+            $billboardStructure = $billboardFace->billboardStructure->name;
 
             if ($billboardStructure == 'DIGITAL' && !$this->filled('digital_billboard_plan_id')) 
             {
