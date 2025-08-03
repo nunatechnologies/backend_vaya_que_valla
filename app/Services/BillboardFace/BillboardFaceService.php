@@ -47,10 +47,8 @@ class BillboardFaceService
             $query->where('code', 'like', '%' . $datos->query('search') . '%')
 				->orWhere('face', 'like', '%' . $datos->query('search') . '%')
 				->orWhere('location_detail', 'like', '%' . $datos->query('search') . '%')
-                ->orWhereHas('billboard', function(Builder $q)use($search){
-                    $q->where('location','like','%'.$search.'%')
-                    ->orWhere('name','like','%'.$search.'%');
-                });
+                ->orWhere('location', 'like', '%' . $datos->query('search') . '%')
+                ->orWhere('name', 'like', '%' . $datos->query('search') . '%');
 
         }
         if ($datos->filled('city_id')) 
