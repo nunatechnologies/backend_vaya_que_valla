@@ -892,7 +892,23 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "_method"
+                                    "_method",
+                                    "code",
+                                    "face",
+                                    "location_detail",
+                                    "status",
+                                    "rented_from",
+                                    "available_from",
+                                    "name",
+                                    "location",
+                                    "advertiser_id",
+                                    "city_id",
+                                    "zone_id",
+                                    "billboard_structure_id",
+                                    "size",
+                                    "price_per_month",
+                                    "longitude",
+                                    "latitude"
                                 ],
                                 "properties": {
                                     "_method": {
@@ -902,9 +918,6 @@
                                     "code": {
                                         "type": "string",
                                         "maxLength": 10
-                                    },
-                                    "billboard_id": {
-                                        "type": "integer"
                                     },
                                     "face": {
                                         "type": "string",
@@ -934,6 +947,49 @@
                                         "description": "Optional image upload",
                                         "type": "string",
                                         "format": "binary"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "advertiser_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "city_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "zone_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "billboard_structure_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "size": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "price_per_month": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 10
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 10
+                                    },
+                                    "latitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 10
                                     }
                                 },
                                 "type": "object"
@@ -3596,6 +3652,45 @@
                 "requestBody": {
                     "required": true,
                     "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "last_name",
+                                    "email",
+                                    "password",
+                                    "rol"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "cod_phone": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "minLength": 8
+                                    },
+                                    "image": {
+                                        "description": "Optional image upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
                         "application/json": {
                             "schema": {
                                 "required": [
@@ -3775,12 +3870,60 @@
                     "description": "Updated user data",
                     "required": true,
                     "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "last_name",
+                                    "cod_phone",
+                                    "phone"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "type": "string",
+                                        "default": "PUT"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "eduardo@gmail.com"
+                                    },
+                                    "cod_phone": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "description": "Optional image upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "entity_status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "active",
+                                            "inactive"
+                                        ],
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "email",
-                                    "phone",
-                                    "cod_phone"
+                                    "name",
+                                    "last_name",
+                                    "cod_phone",
+                                    "phone"
                                 ],
                                 "properties": {
                                     "name": {
@@ -3815,6 +3958,14 @@
                                             "ORGANIZATION"
                                         ],
                                         "example": "PERSON"
+                                    },
+                                    "entity_status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "active",
+                                            "inactive"
+                                        ],
+                                        "example": "active"
                                     }
                                 },
                                 "type": "object"

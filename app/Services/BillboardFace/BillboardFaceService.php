@@ -56,9 +56,7 @@ class BillboardFaceService
         if ($datos->filled('city_id')) 
         {
             $cityId = $datos->query('city_id');
-            $query->whereHas('billboard', function(Builder $q)use($cityId){
-                $q->where('city_id', $cityId);
-            });
+            $query->where('city_id', $cityId);
         }
         if ($datos->filled('face')) 
         {

@@ -3,7 +3,6 @@
 namespace App\Http\Resources\Billboard;
 
 use App\Http\Resources\BillboardStructure\BillboardStructureResource;
-use App\Http\Resources\BillboardType\BillboardTypeResource;
 use App\Http\Resources\City\CityResource;
 use App\Http\Resources\User\UserResource;
 use App\Http\Resources\Zone\ZoneResource;

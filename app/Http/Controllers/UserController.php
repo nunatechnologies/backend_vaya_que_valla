@@ -167,8 +167,8 @@ class UserController extends Controller
       *                 @OA\Property(property="phone", type="string", maxLength=255, example="77835516"),
       *                 @OA\Property(property="cod_phone", type="string", maxLength=255, example="+591"),
       *                 @OA\Property(property="user_type", type="string", enum={"PERSON", "ORGANIZATION"}, example="PERSON"),
-      *                 @OA\Property(property="entity_status", type="string", enum={"active", "inactive"}, example="active"), 
-      *         )
+      *                 @OA\Property(property="entity_status", type="string", enum={"active", "inactive"}, example="active") 
+      *         ),
       *        @OA\MediaType(
       *            mediaType="multipart/form-data",
       *            @OA\Schema(
@@ -179,8 +179,8 @@ class UserController extends Controller
       *                @OA\Property(property="email", type="string", format="email", example="eduardo@gmail.com"), 
       *                @OA\Property(property="cod_phone", type="string"),
       *                @OA\Property(property="phone", type="string"),
-      *                @OA\Property(property="image", type="string", format="binary", description="Optional image upload")
-      *                 @OA\Property(property="entity_status", type="string", enum={"active", "inactive"}, example="active"), 
+      *                @OA\Property(property="image", type="string", format="binary", description="Optional image upload"),
+      *                @OA\Property(property="entity_status", type="string", enum={"active", "inactive"}, example="active") 
       *             )
       *         )
       *     ),
