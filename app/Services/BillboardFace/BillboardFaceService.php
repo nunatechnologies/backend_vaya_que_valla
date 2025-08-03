@@ -4,8 +4,10 @@ namespace App\Services\BillboardFace;
 
 use Illuminate\Support\Facades\DB;
 use App\Http\Messages\ErrorMessages;
+use App\Imports\BillboardsImport;
 use App\Repositories\BillboardFace\BillboardFaceRepositoryInterface;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BillboardFaceService
 {
@@ -36,6 +38,19 @@ class BillboardFaceService
     public function updateBillboardFace($id, $data)
     {
         return $this->billboardfaceRepository->update($id, $data);
+    }
+
+    public function billboardFaceBulkUpsert($data)
+    {
+        // if (request()->hasFile('file')) 
+        // {
+            // return response()->json($data);
+        // }
+        $import = new BillboardsImport();
+        $sheet = Excel::toArray($import, $data['file'])[0];
+        array_shift($sheet);
+        // return response()->json(['toc toc']);
+        return $sheet;
     }
 
     public function getAllBillboardFacePagination($datos)

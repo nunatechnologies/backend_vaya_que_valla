@@ -41,7 +41,7 @@ class QuoteRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             $billboardFace = BillboardFace::find($this->input('billboard_face_id'));
-            $billboardStructure = $billboardFace->billboard->billboardStructure->name;
+            $billboardStructure = $billboardFace->billboardStructure->name;
 
             // if (is_null($billboardFace)) 
             // {

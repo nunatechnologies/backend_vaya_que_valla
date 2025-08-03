@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\SeveritySystemLog;
 use App\Http\Messages\SuccessMessages;
+use App\Http\Requests\BillboardFace\BillboardFaceBulkUpsertRequest;
 use App\Http\Requests\PaginationRequest;
 use App\Http\Resources\BillboardFace\BillboardFaceResource;
 use App\Http\Resources\PaginacionResource;
@@ -303,26 +304,20 @@ class BillboardFaceController extends Controller
         }
     }
 
-    public function upload_file(BillboardFaceRequest $BillboardFaceRequest)
+    public function upload_file(BillboardFaceBulkUpsertRequest $billboardFaceBulkUpsertRequest)
     {
         try {
-            $data = $this->billboardfaceService->createBillboardFace($BillboardFaceRequest->all());
-            if (request()->hasFile('image')) 
-            {
-                $data
-                    ->addMediaFromRequest('image')
-                    ->toMediaCollection();
-            }
+            $data = $this->billboardfaceService->billboardFaceBulkUpsert($billboardFaceBulkUpsertRequest->all());
             
-            $this->systemLogService->logActivity('billboardface','BillboardFace registrado',
+            $this->systemLogService->logActivity('billboardface','Inserción masiva ejecutada exitosamente',
                 SeveritySystemLog::info->name,
                 $data
             );
-            return ApiResponse::success(SuccessMessages::CREATE_SUCCESS, new BillboardFaceResource($data), [], 201);
+            return ApiResponse::success(SuccessMessages::UPDATE_SUCCESS, $data, [], 201);
         } catch (\Exception $e) {
             $this->systemLogService->logActivity(
                 'billboardface',
-                'Registro de BillboardFace Fallido',
+                'Inserción masiva fallida',
                 SeveritySystemLog::error->name,
             );
             return ApiResponse::error($e->getMessage(), $e, [], 500);
