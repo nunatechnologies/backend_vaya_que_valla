@@ -688,6 +688,16 @@
                         }
                     },
                     {
+                        "name": "ids",
+                        "in": "query",
+                        "description": "Filter by Ids separated by comma: 1,2,3",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 255
+                        }
+                    },
+                    {
                         "name": "face",
                         "in": "query",
                         "description": "Filter by face",
@@ -763,10 +773,19 @@
                             "schema": {
                                 "required": [
                                     "code",
-                                    "billboard_id",
                                     "face",
                                     "location_detail",
-                                    "status"
+                                    "status",
+                                    "name",
+                                    "location",
+                                    "advertiser_id",
+                                    "city_id",
+                                    "zone_id",
+                                    "billboard_structure_id",
+                                    "size",
+                                    "price_per_month",
+                                    "longitude",
+                                    "latitude"
                                 ],
                                 "properties": {
                                     "code": {
@@ -804,6 +823,49 @@
                                         "description": "Optional image upload",
                                         "type": "string",
                                         "format": "binary"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "advertiser_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "city_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "zone_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "billboard_structure_id": {
+                                        "type": "number",
+                                        "maxLength": 20
+                                    },
+                                    "size": {
+                                        "type": "string",
+                                        "maxLength": 255
+                                    },
+                                    "price_per_month": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 10
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 10
+                                    },
+                                    "latitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "maxLength": 10
                                     }
                                 },
                                 "type": "object"

@@ -38,7 +38,7 @@ class BillboardFaceController extends Controller
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"code", "billboard_id", "face", "location_detail", "status"},
+     *                 required={"code", "face", "location_detail", "status", "name", "location", "advertiser_id", "city_id", "zone_id", "billboard_structure_id", "size", "price_per_month", "longitude", "latitude"},
      *                 @OA\Property(property="code", type="string", maxLength=10),
      *                 @OA\Property(property="billboard_id", type="integer"),
      *                 @OA\Property(property="face", type="string", maxLength=10),
@@ -46,7 +46,17 @@ class BillboardFaceController extends Controller
      *                 @OA\Property(property="status", type="string", enum={"ROJO", "AMARILLO", "VERDE"}),
      *                 @OA\Property(property="rented_from", type="string", description="Date format: yyyy-mm-dd"),
      *                 @OA\Property(property="available_from", type="string", description="Date format: yyyy-mm-dd"),
-     *                 @OA\Property(property="image", type="string", format="binary", description="Optional image upload")
+     *                 @OA\Property(property="image", type="string", format="binary", description="Optional image upload"),
+     *                 @OA\Property(property="name", type="string", maxLength=255),
+	 *                 @OA\Property(property="location", type="string", maxLength=255),
+	 *                 @OA\Property(property="advertiser_id", type="number", maxLength=20),
+	 *                 @OA\Property(property="city_id", type="number", maxLength=20),
+     *                 @OA\Property(property="zone_id", type="number", maxLength=20),
+	 *                 @OA\Property(property="billboard_structure_id", type="number", maxLength=20),
+	 *                 @OA\Property(property="size", type="string", maxLength=255),
+	 *                 @OA\Property(property="price_per_month", type="number", maxLength=10, format="float"),
+	 *                 @OA\Property(property="longitude", type="number", maxLength=10, format="float"),
+	 *                 @OA\Property(property="latitude", type="number", maxLength=10, format="float")
      *             )
      *         )
      *     ),
@@ -209,6 +219,13 @@ class BillboardFaceController extends Controller
      *         description="Filter by city_id",
      *         required=false,
      *         @OA\Schema(type="integer", maxLength=255)
+     *     ),
+     *     @OA\Parameter(
+     *         name="ids",
+     *         in="query",
+     *         description="Filter by Ids separated by comma: 1,2,3",
+     *         required=false,
+     *         @OA\Schema(type="string", maxLength=255)
      *     ),
      *     @OA\Parameter(
      *         name="face",

@@ -30,13 +30,26 @@ class BillboardFaceRequest extends FormRequest
     {
         return [
 			'code' => ['required','string','max:10','unique:billboard_faces,code'],
-			'billboard_id' => ['required','integer','exists:billboards,id'],
+			// 'billboard_id' => ['required','integer','exists:billboards,id'],
 			'face' => ['required','string','max:10'],
 			'location_detail' => ['required','string','max:255'],
             'status'=>['required', new Enum(BillboardFaceStatus::class)],
             'rented_from' => ['sometimes',Rule::date()->format('Y-m-d')],
             'available_from' => ['sometimes',Rule::date()->format('Y-m-d')],
-            'image' => ['nullable', 'image', 'max:2048']
+            'image' => ['nullable', 'image', 'max:2048'],
+            'name' => ['required','string','max:255'],
+			'location' => ['required','string','max:255'],
+			'advertiser_id' => ['required','integer'],
+			// 'status' => ['required'],
+			'city_id' => ['required','integer'],
+            'zone_id' => ['required','integer'],
+			'billboard_structure_id' => ['required','integer'],
+			// 'entity_status' => ['required'],
+			'size' => ['required','string','max:255'],
+			'price_per_month' => ['required','numeric','between:0,99999999.99'],
+			// 'traffic_data' => ['required'],
+			'longitude' => ['required','numeric'],
+			'latitude' => ['required','numeric']
 		];
     }
 

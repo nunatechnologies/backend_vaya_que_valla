@@ -63,6 +63,16 @@ class BillboardFaceService
             $face = $datos->query('face');
             $query->where('face', $face);
         }
+        if ($datos->filled('ids')) {
+            $ids = collect(explode(',', $datos->query('ids')))
+                    ->filter(fn($id) => is_numeric($id))
+                    ->map(fn($id) => (int) $id)
+                    ->toArray();
+
+            if (!empty($ids)) {
+                $query->whereIn('id', $ids);
+            }
+        }
         if ($datos->query('sortBy') && $datos->query('orderBy')) {
             $query->orderBy($datos->query('sortBy'), $datos->query('orderBy'));
         }
