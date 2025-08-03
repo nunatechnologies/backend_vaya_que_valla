@@ -141,6 +141,7 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     Route::get('/available_faces', [BillboardFaceController::class, 'available_faces']);
     Route::get('/billboard_faces', [BillboardFaceController::class, 'list_billboardface_pagination']);
     Route::post('/billboard_faces', [BillboardFaceController::class, 'register']);
+    Route::post('/billboard_faces/upload_file', [BillboardFaceController::class, 'upload_file']);
     Route::get('/billboard_faces/{id}', [BillboardFaceController::class, 'get_billboardface']);
     Route::put('/billboard_faces/{id}', [BillboardFaceController::class, 'update_billboardface']);
     

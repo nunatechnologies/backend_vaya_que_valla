@@ -109,7 +109,7 @@ class BillboardFaceController extends Controller
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
-     *                 required={"_method","code","face","location_detail","status","rented_from","available_from","name", "location", "advertiser_id", "city_id", "zone_id", "billboard_structure_id", "size", "price_per_month", "longitude", "latitude"},
+     *                 required={"_method"},
      *                 @OA\Property(property="_method", type="string", default="PUT"),
      *                 @OA\Property(property="code", type="string", maxLength=10),
      *                 @OA\Property(property="face", type="string", maxLength=10),
@@ -301,5 +301,31 @@ class BillboardFaceController extends Controller
         } catch (\Exception $e) {
             return ApiResponse::error($e->getMessage(), $e, [], $e->getCode());
         }
+    }
+
+    public function upload_file(BillboardFaceRequest $BillboardFaceRequest)
+    {
+        try {
+            $data = $this->billboardfaceService->createBillboardFace($BillboardFaceRequest->all());
+            if (request()->hasFile('image')) 
+            {
+                $data
+                    ->addMediaFromRequest('image')
+                    ->toMediaCollection();
+            }
+            
+            $this->systemLogService->logActivity('billboardface','BillboardFace registrado',
+                SeveritySystemLog::info->name,
+                $data
+            );
+            return ApiResponse::success(SuccessMessages::CREATE_SUCCESS, new BillboardFaceResource($data), [], 201);
+        } catch (\Exception $e) {
+            $this->systemLogService->logActivity(
+                'billboardface',
+                'Registro de BillboardFace Fallido',
+                SeveritySystemLog::error->name,
+            );
+            return ApiResponse::error($e->getMessage(), $e, [], 500);
+        }        
     }
 }

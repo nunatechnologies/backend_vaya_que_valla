@@ -954,23 +954,7 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "_method",
-                                    "code",
-                                    "face",
-                                    "location_detail",
-                                    "status",
-                                    "rented_from",
-                                    "available_from",
-                                    "name",
-                                    "location",
-                                    "advertiser_id",
-                                    "city_id",
-                                    "zone_id",
-                                    "billboard_structure_id",
-                                    "size",
-                                    "price_per_month",
-                                    "longitude",
-                                    "latitude"
+                                    "_method"
                                 ],
                                 "properties": {
                                     "_method": {
