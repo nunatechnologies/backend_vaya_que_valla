@@ -24,8 +24,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             AdminUserSeeder::class,
             CategorySeeder::class,
-            OrganizationSeeder::class,
-            BillboardMasterSeeder::class
+            // OrganizationSeeder::class,
+            // BillboardMasterSeeder::class
         ]);
     }
 }

@@ -307,11 +307,11 @@ class BillboardFaceController extends Controller
     public function upload_file(BillboardFaceBulkUpsertRequest $billboardFaceBulkUpsertRequest)
     {
         try {
-            $data = $this->billboardfaceService->billboardFaceBulkUpsert($billboardFaceBulkUpsertRequest->all());
+            $data = $this->billboardfaceService->billboardFaceBulkUpsert($billboardFaceBulkUpsertRequest);
             
             $this->systemLogService->logActivity('billboardface','Inserción masiva ejecutada exitosamente',
                 SeveritySystemLog::info->name,
-                $data
+                null
             );
             return ApiResponse::success(SuccessMessages::UPDATE_SUCCESS, $data, [], 201);
         } catch (\Exception $e) {
