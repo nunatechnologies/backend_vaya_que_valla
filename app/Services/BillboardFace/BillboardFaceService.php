@@ -53,7 +53,7 @@ class BillboardFaceService
         foreach ($sheet as $index => $row) 
         {
             [$structure, $province, $department, $city, $code, $location, $locationDetail, $reference,
-            $size, $face, $pricePerMonth, $gmapUrl, $coordinates, $availability, $availableFrom, $energy, $provider, $zoneName] = $row;
+            $size, $face, $pricePerMonth, $gmapUrl, $coordinates, $availability, $availableFrom, $energy, $providerId, $zoneName] = $row;
 
             if ($index === 0 || $code == "" || $code === null) continue; // Jump headers and empty codes
 
@@ -66,6 +66,17 @@ class BillboardFaceService
             {
                 $zone = Zone::firstOrCreate(['name' => $zoneName]);
                 $zoneId = $zone->id;
+            }
+
+            
+            if ($providerId != "" && !is_null($providerId)) 
+            {
+                $user = User::find($providerId);
+                $providerId = $user?$user->id:NULL;
+            }
+            else
+            {
+                $providerId = NULL;
             }
             
             $availableFrom = null;
@@ -101,7 +112,7 @@ class BillboardFaceService
                     'billboard_structure_id' => $structure->id,
                     'zone_id' => $zoneId,
                     'city_id' => $city->id,
-                    // 'advertiser_id' => null,
+                    'advertiser_id' => $providerId
                 ]
             );
         }
