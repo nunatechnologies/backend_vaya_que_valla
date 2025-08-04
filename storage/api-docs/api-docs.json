@@ -3732,6 +3732,57 @@
                                         "description": "Optional image upload",
                                         "type": "string",
                                         "format": "binary"
+                                    },
+                                    "rol": {
+                                        "description": "Allowed values: ADMINISTRADOR, OPERADOR, ANUNCIANTE, AGENCIA, CLIENTE",
+                                        "enum": [
+                                            "ADMINISTRADOR",
+                                            "OPERADOR",
+                                            "ANUNCIANTE",
+                                            "AGENCIA",
+                                            "CLIENTE"
+                                        ]
+                                    },
+                                    "user_type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "PERSON",
+                                            "ORGANIZATION"
+                                        ],
+                                        "example": "PERSON"
+                                    },
+                                    "ci": {
+                                        "description": "Required if user_type is PERSON",
+                                        "type": "string",
+                                        "example": "12345678"
+                                    },
+                                    "social_reason": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string",
+                                        "example": "Mi Empresa SRL"
+                                    },
+                                    "category_id": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "number"
+                                    },
+                                    "name_contact": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string",
+                                        "example": "Carlos Méndez"
+                                    },
+                                    "phone_contact": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string",
+                                        "example": "76789987"
+                                    },
+                                    "commision_percentage": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "number",
+                                        "example": "10"
+                                    },
+                                    "nit": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -3793,6 +3844,39 @@
                                             "ORGANIZATION"
                                         ],
                                         "example": "PERSON"
+                                    },
+                                    "ci": {
+                                        "description": "Required if user_type is PERSON",
+                                        "type": "string",
+                                        "example": "12345678"
+                                    },
+                                    "social_reason": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string",
+                                        "example": "Mi Empresa SRL"
+                                    },
+                                    "category_id": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "number"
+                                    },
+                                    "name_contact": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string",
+                                        "example": "Carlos Méndez"
+                                    },
+                                    "phone_contact": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string",
+                                        "example": "76789987"
+                                    },
+                                    "commision_percentage": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "number",
+                                        "example": "10"
+                                    },
+                                    "nit": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -3958,6 +4042,39 @@
                                             "inactive"
                                         ],
                                         "example": "active"
+                                    },
+                                    "ci": {
+                                        "description": "Required if user_type is PERSON",
+                                        "type": "string",
+                                        "example": "12345678"
+                                    },
+                                    "social_reason": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string",
+                                        "example": "Mi Empresa SRL"
+                                    },
+                                    "category_id": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "number"
+                                    },
+                                    "name_contact": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string",
+                                        "example": "Carlos Méndez"
+                                    },
+                                    "phone_contact": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string",
+                                        "example": "76789987"
+                                    },
+                                    "commision_percentage": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "number",
+                                        "example": "10"
+                                    },
+                                    "nit": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -4012,6 +4129,39 @@
                                             "inactive"
                                         ],
                                         "example": "active"
+                                    },
+                                    "ci": {
+                                        "description": "Required if user_type is PERSON",
+                                        "type": "string",
+                                        "example": "12345678"
+                                    },
+                                    "social_reason": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string",
+                                        "example": "Mi Empresa SRL"
+                                    },
+                                    "category_id": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "number"
+                                    },
+                                    "name_contact": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string",
+                                        "example": "Carlos Méndez"
+                                    },
+                                    "phone_contact": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string",
+                                        "example": "76789987"
+                                    },
+                                    "commision_percentage": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "number",
+                                        "example": "10"
+                                    },
+                                    "nit": {
+                                        "description": "Required if user_type is ORGANIZATION",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"

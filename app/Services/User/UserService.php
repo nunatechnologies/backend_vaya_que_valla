@@ -2,6 +2,8 @@
 
 namespace App\Services\User;
 
+use App\Enums\RolSpatie;
+use App\Enums\UserType;
 use Illuminate\Support\Facades\DB;
 use App\Http\Messages\ErrorMessages;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +29,27 @@ class UserService
         return DB::transaction(function () use ($data) {
             $user = $this->userRepository->create($data);
             $user->assignRole($data['rol']);
+            
+            if ($data['user_type'] === UserType::PERSON->name) {
+                $user->person()->create([
+                    'user_id' => $user->id,
+                    'ci' => $data['ci'],
+                ]);
+                $user->assignRole(RolSpatie::ANUNCIANTE->name);
+            }
+        
+            if ($data['user_type'] === UserType::ORGANIZATION->name) {
+                $user->organization()->create([
+                    'user_id' => $user->id,
+                    'social_reason' => $data['social_reason'],
+                    'name_contact' => $data['name_contact']??"",
+                    'phone_contact' => $data['phone_contact']??"",
+                    'commision_percentage' => $data['commision_percentage'],
+                    'category_id' => $data['category_id'],
+                    'nit' => $data['nit']
+                ]);
+                $user->assignRole($data['rol']);
+            }
             return $user;
         });
     }

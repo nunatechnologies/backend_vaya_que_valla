@@ -51,6 +51,13 @@ class UserController extends Controller
      *            @OA\Property(property="password", type="string", minLength=8),
      *            @OA\Property(property="rol", enum={"ADMINISTRADOR", "OPERADOR", "ANUNCIANTE","AGENCIA","CLIENTE"}, description="Allowed values: ADMINISTRADOR, OPERADOR, ANUNCIANTE, AGENCIA, CLIENTE"),
      *            @OA\Property(property="user_type", type="string", enum={"PERSON", "ORGANIZATION"}, example="PERSON"),
+     *            @OA\Property(property="ci", type="string", example="12345678",description="Required if user_type is PERSON"),
+     *            @OA\Property(property="social_reason", type="string", example="Mi Empresa SRL", description="Required if user_type is ORGANIZATION"),
+     *            @OA\Property(property="category_id", type="number", description="Required if user_type is ORGANIZATION"),
+     *            @OA\Property(property="name_contact", type="string", example="Carlos Méndez", description="Required if user_type is ORGANIZATION"),
+     *            @OA\Property(property="phone_contact", type="string", example="76789987", description="Required if user_type is ORGANIZATION"),
+     *            @OA\Property(property="commision_percentage", type="number", example="10", description="Required if user_type is ORGANIZATION"),
+     *            @OA\Property(property="nit", type="string", description="Required if user_type is ORGANIZATION"),
      *         ),
      *         @OA\MediaType(
      *            mediaType="multipart/form-data",
@@ -62,7 +69,16 @@ class UserController extends Controller
      *              @OA\Property(property="cod_phone", type="string"),
      *              @OA\Property(property="phone", type="string"),
      *              @OA\Property(property="password", type="string", minLength=8),
-     *              @OA\Property(property="image", type="string", format="binary", description="Optional image upload")
+     *              @OA\Property(property="image", type="string", format="binary", description="Optional image upload"),
+     *              @OA\Property(property="rol", enum={"ADMINISTRADOR", "OPERADOR", "ANUNCIANTE","AGENCIA","CLIENTE"}, description="Allowed values: ADMINISTRADOR, OPERADOR, ANUNCIANTE, AGENCIA, CLIENTE"),
+     *              @OA\Property(property="user_type", type="string", enum={"PERSON", "ORGANIZATION"}, example="PERSON"),
+     *              @OA\Property(property="ci", type="string", example="12345678",description="Required if user_type is PERSON"),
+     *              @OA\Property(property="social_reason", type="string", example="Mi Empresa SRL", description="Required if user_type is ORGANIZATION"),
+     *              @OA\Property(property="category_id", type="number", description="Required if user_type is ORGANIZATION"),
+     *              @OA\Property(property="name_contact", type="string", example="Carlos Méndez", description="Required if user_type is ORGANIZATION"),
+     *              @OA\Property(property="phone_contact", type="string", example="76789987", description="Required if user_type is ORGANIZATION"),
+     *              @OA\Property(property="commision_percentage", type="number", example="10", description="Required if user_type is ORGANIZATION"),
+     *              @OA\Property(property="nit", type="string", description="Required if user_type is ORGANIZATION"),
      *            )
      *         )
      *     ),
@@ -167,7 +183,14 @@ class UserController extends Controller
       *                 @OA\Property(property="phone", type="string", maxLength=255, example="77835516"),
       *                 @OA\Property(property="cod_phone", type="string", maxLength=255, example="+591"),
       *                 @OA\Property(property="user_type", type="string", enum={"PERSON", "ORGANIZATION"}, example="PERSON"),
-      *                 @OA\Property(property="entity_status", type="string", enum={"active", "inactive"}, example="active") 
+      *                 @OA\Property(property="entity_status", type="string", enum={"active", "inactive"}, example="active"),
+      *                 @OA\Property(property="ci", type="string", example="12345678",description="Required if user_type is PERSON"),
+      *                 @OA\Property(property="social_reason", type="string", example="Mi Empresa SRL", description="Required if user_type is ORGANIZATION"),
+      *                 @OA\Property(property="category_id", type="number", description="Required if user_type is ORGANIZATION"),
+      *                 @OA\Property(property="name_contact", type="string", example="Carlos Méndez", description="Required if user_type is ORGANIZATION"),
+      *                 @OA\Property(property="phone_contact", type="string", example="76789987", description="Required if user_type is ORGANIZATION"),
+      *                 @OA\Property(property="commision_percentage", type="number", example="10", description="Required if user_type is ORGANIZATION"),
+      *                 @OA\Property(property="nit", type="string", description="Required if user_type is ORGANIZATION"),
       *         ),
       *        @OA\MediaType(
       *            mediaType="multipart/form-data",
@@ -180,7 +203,14 @@ class UserController extends Controller
       *                @OA\Property(property="cod_phone", type="string"),
       *                @OA\Property(property="phone", type="string"),
       *                @OA\Property(property="image", type="string", format="binary", description="Optional image upload"),
-      *                @OA\Property(property="entity_status", type="string", enum={"active", "inactive"}, example="active") 
+      *                @OA\Property(property="entity_status", type="string", enum={"active", "inactive"}, example="active"),
+      *                @OA\Property(property="ci", type="string", example="12345678",description="Required if user_type is PERSON"),
+      *                @OA\Property(property="social_reason", type="string", example="Mi Empresa SRL", description="Required if user_type is ORGANIZATION"),
+      *                @OA\Property(property="category_id", type="number", description="Required if user_type is ORGANIZATION"),
+      *                @OA\Property(property="name_contact", type="string", example="Carlos Méndez", description="Required if user_type is ORGANIZATION"),
+      *                @OA\Property(property="phone_contact", type="string", example="76789987", description="Required if user_type is ORGANIZATION"),
+      *                @OA\Property(property="commision_percentage", type="number", example="10", description="Required if user_type is ORGANIZATION"),
+      *                @OA\Property(property="nit", type="string", description="Required if user_type is ORGANIZATION"),
       *             )
       *         )
       *     ),

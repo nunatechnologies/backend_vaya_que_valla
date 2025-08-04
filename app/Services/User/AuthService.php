@@ -78,7 +78,6 @@ class AuthService
             'entity_status' => 'inactive'
         ]);
     
-        // Crear relación según el tipo de usuario
         if ($data['user_type'] === UserType::PERSON->name) {
             $user->person()->create([
                 'user_id' => $user->id,
