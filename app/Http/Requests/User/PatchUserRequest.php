@@ -44,7 +44,15 @@ class PatchUserRequest extends FormRequest
             'entity_status' => ['sometimes', 'string', Rule::in([
                 'active',
                 'inactive'
-            ])]
+            ])],
+            'ci' => ['sometimes','required_if:user_type,PERSON', 'string','max:10'],
+            'social_reason' => ['sometimes','required_if:user_type,ORGANIZATION', 'string','max:50'],
+            'name_contact' => ['sometimes','required_if:user_type,ORGANIZATION', 'string','max:30'],
+            'phone_contact' => ['sometimes','required_if:user_type,ORGANIZATION', 'string','max:15'],
+            'commision_percentage' => ['sometimes','required_if:user_type,ORGANIZATION', 'numeric','min:0','max:100'],
+            'nit' => ['sometimes','required_if:user_type,ORGANIZATION', 'string','min:1','max:20'],
+            'category_id' => ['sometimes','required_if:user_type,ORGANIZATION', 'exists:categories,id']
+
         ];
     }
 

@@ -9,15 +9,21 @@ use App\Http\Messages\ErrorMessages;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\User\UserResource;
 use App\Http\Resources\PaginacionResource;
+use App\Repositories\Organization\OrganizationRepository;
+use App\Repositories\Person\PersonRepository;
 use App\Repositories\User\UserRepositoryInterface;
 
 class UserService
 {
     protected $userRepository;
+    protected $organizationRepository;
+    protected $personRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(UserRepositoryInterface $userRepository,  OrganizationRepository $organizationRepository,PersonRepository $personRepository)
     {
         $this->userRepository = $userRepository;
+        $this->organizationRepository = $organizationRepository;
+        $this->personRepository = $personRepository;
     }
 
     public function getUserById($id){
@@ -66,7 +72,35 @@ class UserService
 
     public function updateUser($id, $data)
     {
-        return  $this->userRepository->update($id, $data);
+        $user = $this->userRepository->update($id, $data);
+        
+        switch ($data['user_type']) 
+        {
+            case UserType::PERSON->name:
+                $data['user_id'] = $id;
+                if (!$user->person) 
+                {
+                    $this->personRepository->create($data);
+                } 
+                else 
+                {
+                    $this->personRepository->update($user->person->id, $data);
+                }
+                break;
+            
+            case UserType::ORGANIZATION->name:
+                $data['user_id'] = $id;
+                if (!$user->organization) 
+                {
+                    $this->organizationRepository->create($data);
+                } 
+                else 
+                {
+                    $this->organizationRepository->update($user->organization->id, $data);
+                }
+                break;
+        }
+        return $user;
     }
 
     public function findUserByEmail($email)

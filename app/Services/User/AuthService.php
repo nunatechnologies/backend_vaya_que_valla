@@ -78,15 +78,16 @@ class AuthService
             'entity_status' => 'inactive'
         ]);
     
-        if ($data['user_type'] === UserType::PERSON->name) {
+        if ($data['user_type'] === UserType::PERSON->name) 
+        {
             $user->person()->create([
                 'user_id' => $user->id,
                 'ci' => $data['ci'],
             ]);
-            $user->assignRole(RolSpatie::ANUNCIANTE->name);
         }
     
-        if ($data['user_type'] === UserType::ORGANIZATION->name) {
+        if ($data['user_type'] === UserType::ORGANIZATION->name) 
+        {
             $user->organization()->create([
                 'user_id' => $user->id,
                 'social_reason' => $data['social_reason'],
@@ -98,7 +99,7 @@ class AuthService
             ]);
             $user->assignRole($data['role']);
         }
-    
+        $user->assignRole($data['role']);
         $user->sendEmailVerificationNotification();
         Notification::route('mail', config('vayaquevalla.commercial_manager_email'))->notify(new RegistrationRequest($user));
         return $user;
