@@ -24,11 +24,13 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\RegistrationRequest;
 
 Route::get('/email/verify/{id}/{hash}', function (Request $request) {
     $user = User::findOrFail($request->route('id'));
     $isActive = $user->entity_status == 'active';
-    $activeMessage = $isActive?" y tu cuenta ya ha sido activada.":", te notificaremos a traves de un correo cuando tu cuenta haya sido activada.";
+    $activeMessage = $isActive?" y tu cuenta ya ha sido activada.":", te notificaremos a traves de un correo cuando un administrador haya activado tu cuenta.";
     $message = 'El email ha sido verificado correctamente'.$activeMessage;
 
     if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) 
@@ -40,8 +42,12 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request) {
     {
         $message = 'El email ya fue verificado'.$activeMessage;
     }
-
-    $user->markEmailAsVerified();
+    else
+    {
+        $user->markEmailAsVerified();
+        Notification::route('mail', config('vayaquevalla.commercial_manager_email'))->notify(new RegistrationRequest($user));
+    }
+    
     return view('emails/email-verified', compact('message'));
 
 })->middleware(['signed'])->name('verification.verify');
@@ -61,8 +67,11 @@ Route::get('/account/activation/{id}/{hash}', function (Request $request) {
     {
         $message = 'La cuenta del usuario '.$user->name.' ('.$user->email.') ya ha sido activada';
     }
-
-    $user->markAccountAsVerified();
+    else
+    {
+        $user->markAccountAsVerified();
+    }
+    
     return view('emails/user-account-actived', compact('message'));
 
 })->middleware(['signed'])->name('account.activation');

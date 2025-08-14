@@ -9,8 +9,6 @@ use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Support\Facades\Notification;
-use App\Notifications\RegistrationRequest;
 
 class AuthService
 {
@@ -101,7 +99,6 @@ class AuthService
         }
         $user->assignRole($data['role']);
         $user->sendEmailVerificationNotification();
-        Notification::route('mail', config('vayaquevalla.commercial_manager_email'))->notify(new RegistrationRequest($user));
         return $user;
     }
 }
