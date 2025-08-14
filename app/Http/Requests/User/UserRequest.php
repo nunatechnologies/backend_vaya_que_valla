@@ -38,6 +38,7 @@ class UserRequest extends FormRequest
             'phone' => 'nullable|string|unique:users,phone',
             'password' => 'required|string|min:8',
             'rol'=>['required', new Enum(RolSpatie::class)],
+            'image' => ['sometimes','image','max:2048'],
             'user_type' => ['required', 'string', Rule::in([
                 UserType::ORGANIZATION->name,
                 UserType::PERSON->name
@@ -63,6 +64,7 @@ class UserRequest extends FormRequest
             'phone' => 'teléfono',
             'password' => 'contrasenia',
             'rol' => 'rol',
+            'image' => 'imagen',
             'user_type' => 'tipo de usuario',
             'ci' => 'C.I.',
             'social_reason' => 'razón social',

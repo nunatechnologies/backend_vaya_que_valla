@@ -36,7 +36,7 @@ class PatchBillboardFaceRequest extends FormRequest
             'status'=>['required', new Enum(BillboardFaceStatus::class)],
             'rented_from' => ['sometimes','nullable',Rule::date()->format('Y-m-d')],
             'available_from' => ['sometimes','nullable',Rule::date()->format('Y-m-d')],
-            'image' => ['nullable','image','max:2048'],
+            'image' => ['sometimes','image','max:2048'],
             //Migrated from billboards
             'name' => ['sometimes','string','max:255'],
 			'location' => ['sometimes','string','max:255'],

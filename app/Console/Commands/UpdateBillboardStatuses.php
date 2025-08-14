@@ -47,7 +47,7 @@ class UpdateBillboardStatuses extends Command
                 $status = 'VERDE';
             } else {
                 $daysRemaining = $today->diffInDays($endDate, false);
-                $status = $daysRemaining > 30 ? 'ROJO' : 'AMARILLO';
+                $status = $daysRemaining > 30 ? 'AMARILLO' : 'ROJO';
             }
 
             $face->status = $status;
