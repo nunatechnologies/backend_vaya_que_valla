@@ -56,6 +56,26 @@ class PatchUserRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'name' => 'nombre',
+            'last_name' => 'apellido',
+            'email' => 'correo',
+            'cod_phone' => 'codigo de teléfono',
+            'phone' => 'teléfono',
+            'rol' => 'rol',
+            'user_type' => 'tipo de usuario',
+            'ci' => 'C.I.',
+            'social_reason' => 'razón social',
+            'name_contact' => 'nombre de contacto',
+            'phone_contact' => 'teléfono de contacto',
+            'commision_percentage' => 'porcentaje de comisión',
+            'nit' => 'NIT',
+            'category_id' => 'categoria',
+        ];
+    }
+
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(

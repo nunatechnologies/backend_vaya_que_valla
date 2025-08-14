@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,6 +22,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             AdminUserSeeder::class,
             CategorySeeder::class,
+            DigitalBillboardPlanSeeder::class,
             // OrganizationSeeder::class,
             // BillboardMasterSeeder::class
         ]);

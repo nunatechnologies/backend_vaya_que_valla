@@ -125,9 +125,8 @@ class UserService
         if ($datos->filled('search')) {
             $searchTerm = $datos->query('search');
             $query->where(function ($query) use ($searchTerm) {
-                $query->where('name', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('last_name', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('email', 'like', '%' . $searchTerm . '%');
+                $query->where(DB::raw("CONCAT(name, ' ', last_name)"), 'like', "%{$searchTerm}%")
+                    ->orWhere('email', 'like', "%{$searchTerm}%");
             });
         }
 

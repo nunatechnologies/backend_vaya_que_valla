@@ -53,6 +53,29 @@ class BillboardFaceRequest extends FormRequest
 		];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'code' => 'código',
+            'face' => 'cara',
+            'location_detail' => 'detalle de ubicación',
+            'status' => 'estado',
+            'rented_from' => 'rentado desde',
+            'available_from' => 'disponible desde',
+            'image' => 'imagen',
+            'name' => 'nombre',
+            'location' => 'ubicación',
+            'advertiser_id' => 'proveedor',
+            'city_id' => 'ciudad',
+            'zone_id' => 'zona',
+            'billboard_structure_id' => 'estructura',
+            'size' => 'tamaño',
+            'price_per_month' => 'precio por mes',
+            'longitude' => 'longitud',
+            'latitude' => 'latitud',
+        ];
+    }
+
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(

@@ -42,8 +42,8 @@ class CityService
         $query = $this->cityRepository->allquery();
 
         if ($datos->filled('search')) {
-            $query->where('department', 'like', '%' . $datos->query('search') . '%');
-
+            $query->where('department', 'like', '%' . $datos->query('search') . '%')
+            ->orWhere('name','like','%'.$datos->query('search').'%');
         }
 
         if ($datos->query('sortBy') && $datos->query('orderBy')) {
