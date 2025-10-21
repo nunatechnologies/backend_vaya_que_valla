@@ -27,7 +27,7 @@ class QuoteRequestController extends Controller
         $this->quoterequestService = $quoterequestService;
         $this->systemLogService = $systemLogService;
     }
-    
+
     /**
      * @OA\Post(
      *     path="/api/quote_request",
@@ -54,11 +54,14 @@ class QuoteRequestController extends Controller
             $request->quotes()->syncWithoutDetaching($quotesIds);
 
              // 1. Autentication:get token for each request
-            $authUrl = 'https://crm-back.vayaquevalla.com/api/authen/login';
+            $authUrl = config('crm.base_url') . '/api/authen/login';
+
+            $crmUserEmail = config('crm.user_email');
+            $crmUserPassword = config('crm.user_password');
 
             $loginResponse = Http::post($authUrl, [
-                'email' => 'backend@vayaquevalla.com',
-                'password' => '2£0#{6I8Lea{',
+                'email' => $crmUserEmail,
+                'password' => $crmUserPassword,
             ]);
 
             if (!$loginResponse->successful()) {
@@ -73,9 +76,10 @@ class QuoteRequestController extends Controller
             // 2. Send data
             $externalUrl = app()->environment('local')
                 ? 'http://vayaquevalla.test/api/authen/externals/receive-request'
-                : 'https://crm-back.vayaquevalla.com/api/opportunity/generate-lead-from-request';
+                : config('crm.base_url') . '/api/opportunity/generate-lead-from-request';
 
-            $response = Http::withToken($token)
+            // peticion api
+            $response = Http::withToken($token)->acceptJson()
                 ->post($externalUrl, new RequestResource($request));
 
             // 3. Result after send data
