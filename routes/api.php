@@ -33,12 +33,12 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request) {
     $activeMessage = $isActive?" y tu cuenta ya ha sido activada.":", te notificaremos a traves de un correo cuando un administrador haya activado tu cuenta.";
     $message = 'El email ha sido verificado correctamente'.$activeMessage;
 
-    if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) 
+    if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification())))
     {
         $message = "El enlace de verificación es inválido.";
     }
 
-    if ($user->hasVerifiedEmail()) 
+    if ($user->hasVerifiedEmail())
     {
         $message = 'El email ya fue verificado'.$activeMessage;
     }
@@ -47,7 +47,7 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request) {
         $user->markEmailAsVerified();
         Notification::route('mail', config('vayaquevalla.commercial_manager_email'))->notify(new RegistrationRequest($user));
     }
-    
+
     return view('emails/email-verified', compact('message'));
 
 })->middleware(['signed'])->name('verification.verify');
@@ -58,12 +58,12 @@ Route::get('/account/activation/{id}/{hash}', function (Request $request) {
 
     $message = 'La cuenta del usuario '.$user->name.' ('.$user->email.') ha sido activada exitosamente';
 
-    if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) 
+    if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification())))
     {
         $message = "El enlace de verificación es inválido.";
     }
 
-    if ($isActive) 
+    if ($isActive)
     {
         $message = 'La cuenta del usuario '.$user->name.' ('.$user->email.') ya ha sido activada';
     }
@@ -71,7 +71,7 @@ Route::get('/account/activation/{id}/{hash}', function (Request $request) {
     {
         $user->markAccountAsVerified();
     }
-    
+
     return view('emails/user-account-actived', compact('message'));
 
 })->middleware(['signed'])->name('account.activation');
@@ -100,12 +100,11 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     Route::put('/users/{id}', [UserController::class, 'update_user']);
     Route::get('/users/{id}', [UserController::class, 'get_user']);
     Route::get('/users', [UserController::class, 'list_user_pagination']);
-    
+
     // Route::get('/roles', [UserController::class, 'all_roles']);
-    
+
     //Cities
     Route::get('/cities/departments', [CityController::class, 'departments']);
-    Route::get('/cities', [CityController::class, 'list_city_pagination']);
     Route::post('/cities', [CityController::class, 'register']);
     Route::get('/cities/{id}', [CityController::class, 'get_city']);
     Route::put('/cities/{id}', [CityController::class, 'update_city']);
@@ -147,13 +146,11 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     Route::put('/billboards/{id}', [BillboardController::class, 'update_billboard']);
 
     //Billboard faces
-    Route::get('/available_faces', [BillboardFaceController::class, 'available_faces']);
-    Route::get('/billboard_faces', [BillboardFaceController::class, 'list_billboardface_pagination']);
     Route::post('/billboard_faces', [BillboardFaceController::class, 'register']);
     Route::post('/billboard_faces/upload_file', [BillboardFaceController::class, 'upload_file']);
     Route::get('/billboard_faces/{id}', [BillboardFaceController::class, 'get_billboardface']);
     Route::put('/billboard_faces/{id}', [BillboardFaceController::class, 'update_billboardface']);
-    
+
     //Roles
     Route::get('/roles', [RoleController::class, 'list_role_pagination']);
     Route::post('/roles', [RoleController::class, 'register']);
@@ -176,7 +173,6 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     //Dashboard
     Route::get('/dashboard/general', [DashboardController::class, 'getGeneralStatistics']);
 
-    Route::get('/billboard_structures', [BillboardStructureController::class, 'list_billboardstructure_pagination']);
     Route::post('/billboard_structures', [BillboardStructureController::class, 'register']);
     Route::get('/billboard_structures/{id}', [BillboardStructureController::class, 'get_billboardstructure']);
     Route::put('/billboard_structures/{id}', [BillboardStructureController::class, 'update_billboardstructure']);
@@ -199,3 +195,8 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     Route::get('/categories/{id}', [CategoryController::class, 'get_category']);
     Route::put('/categories/{id}', [CategoryController::class, 'update_category']);
 });
+
+Route::get('/available_faces', [BillboardFaceController::class, 'available_faces']);
+Route::get('/billboard_faces', [BillboardFaceController::class, 'list_billboardface_pagination']);
+Route::get('/cities', [CityController::class, 'list_city_pagination']);
+Route::get('/billboard_structures', [BillboardStructureController::class, 'list_billboardstructure_pagination']);
