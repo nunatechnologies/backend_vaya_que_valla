@@ -190,7 +190,6 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     Route::put('/zones/{id}', [ZoneController::class, 'update_zone']);
 
     //Categories
-    Route::get('/categories', [CategoryController::class, 'list_category_pagination']);
     Route::post('/categories', [CategoryController::class, 'register']);
     Route::get('/categories/{id}', [CategoryController::class, 'get_category']);
     Route::put('/categories/{id}', [CategoryController::class, 'update_category']);
@@ -200,3 +199,4 @@ Route::get('/available_faces', [BillboardFaceController::class, 'available_faces
 Route::get('/billboard_faces', [BillboardFaceController::class, 'list_billboardface_pagination']);
 Route::get('/cities', [CityController::class, 'list_city_pagination']);
 Route::get('/billboard_structures', [BillboardStructureController::class, 'list_billboardstructure_pagination']);
+Route::get('/categories', [CategoryController::class, 'list_category_pagination']);
