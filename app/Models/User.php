@@ -49,7 +49,8 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, HasMe
         'email',
         'password',
         'user_type',
-        'entity_status'
+        'entity_status',
+        'city_id'
     ];
 
     /**
@@ -88,6 +89,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, HasMe
     public function organization()
     {
         return $this->hasOne(Organization::class, 'user_id');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class);
     }
 
     public function sendEmailVerificationNotification()

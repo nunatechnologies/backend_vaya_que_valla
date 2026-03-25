@@ -12,6 +12,9 @@ class DigitalBillboardPlan extends Model
     protected $fillable = [
 		'name',
 		'passes_per_hour',
+		'price_per_month',
+		'seconds_per_day',
+		'max_videos',
 		'description',
 	];
 }

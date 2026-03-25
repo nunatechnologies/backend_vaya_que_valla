@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -12,6 +13,7 @@ class BillboardFace extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
+    use SoftDeletes;
 
     protected $fillable = [
         'code',
@@ -33,7 +35,8 @@ class BillboardFace extends Model implements HasMedia
         'billboard_structure_id',
         'city_id',
         'advertiser_id',
-        'zone_id'
+        'zone_id',
+        'approval_status'
     ];
     protected $casts = [
         'rented_from' => 'date:Y-m-d',
@@ -59,12 +62,16 @@ class BillboardFace extends Model implements HasMedia
         $this->addMediaConversion('md')
               ->width(480)
               ->height(360)
-              ->sharpen(10)->nonQueued();
+              ->sharpen(10)
+              ->format('webp')
+              ->nonQueued();
 
         $this->addMediaConversion('sm')
               ->width(240)
               ->height(180)
-              ->sharpen(10)->nonQueued();
+              ->sharpen(10)
+              ->format('webp')
+              ->nonQueued();
     }
 
     public function city()
@@ -85,5 +92,38 @@ class BillboardFace extends Model implements HasMedia
     public function advertiser()
     {
         return $this->belongsTo(User::class, 'advertiser_id');
+    }
+
+    public function quotes()
+    {
+        return $this->hasMany(Quote::class, 'billboard_face_id');
+    }
+
+    public function statusLogs()
+    {
+        return $this->hasMany(BillboardFaceStatusLog::class)->orderBy('changed_at');
+    }
+
+    public function hasActiveQuote(): bool
+    {
+        return $this->quotes()
+            ->where('status', 'approved')
+            ->where('end_date', '>=', now())
+            ->exists();
+    }
+
+    public function scopeForProvider($query, $userId)
+    {
+        return $query->where('advertiser_id', $userId);
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('approval_status', 'approved');
+    }
+
+    public function scopePendingApproval($query)
+    {
+        return $query->where('approval_status', 'pending');
     }
 }

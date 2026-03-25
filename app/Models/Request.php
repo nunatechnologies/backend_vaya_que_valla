@@ -18,6 +18,8 @@ class Request extends Model implements HasMedia
 		'user_id',
 		'company',
         'status',
+        'space_type',
+        'project_type',
         'description',
         'budget_description',
         'tentative_start_date'
