@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use App\Enums\SeveritySystemLog;
 use App\Http\Messages\SuccessMessages;
 use App\Http\Requests\BillboardFace\BillboardFaceBulkUpsertRequest;
+use App\Http\Requests\BillboardFace\ImportPreviewRequest;
+use App\Http\Requests\BillboardFace\ImportValidateRequest;
+use App\Http\Requests\BillboardFace\ImportExecuteRequest;
+use App\Http\Requests\BillboardFace\ImportImagesRequest;
 use App\Http\Requests\PaginationRequest;
 use App\Http\Resources\BillboardFace\BillboardFaceResource;
 use App\Http\Resources\PaginacionResource;
 use App\Http\Responses\ApiResponse;
+use App\Services\BillboardFace\BillboardFaceImportService;
 use App\Services\BillboardFace\BillboardFaceService;
 use App\Services\SystemLogService;
 use App\Http\Requests\BillboardFace\BillboardFaceRequest;
@@ -22,11 +27,16 @@ class BillboardFaceController extends Controller
 {
     protected $billboardfaceService;
     protected $systemLogService;
+    protected $importService;
 
-    public function __construct(BillboardFaceService $billboardfaceService, SystemLogService $systemLogService)
-    {
+    public function __construct(
+        BillboardFaceService $billboardfaceService,
+        SystemLogService $systemLogService,
+        BillboardFaceImportService $importService
+    ) {
         $this->billboardfaceService = $billboardfaceService;
         $this->systemLogService = $systemLogService;
+        $this->importService = $importService;
     }
     
      /**
@@ -308,7 +318,7 @@ class BillboardFaceController extends Controller
     {
         try {
             $data = $this->billboardfaceService->billboardFaceBulkUpsert($billboardFaceBulkUpsertRequest);
-            
+
             $this->systemLogService->logActivity('billboardface','Inserción masiva ejecutada exitosamente',
                 SeveritySystemLog::info->name,
                 null
@@ -321,6 +331,51 @@ class BillboardFaceController extends Controller
                 SeveritySystemLog::error->name,
             );
             return ApiResponse::error($e->getMessage(), $e, [], 500);
-        }        
+        }
+    }
+
+    public function importPreview(ImportPreviewRequest $request)
+    {
+        try {
+            $data = $this->importService->preview($request->file('file'));
+            return ApiResponse::success(SuccessMessages::SUCCESSFUL, $data, [], 200);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), null, [], 500);
+        }
+    }
+
+    public function importValidate(ImportValidateRequest $request)
+    {
+        try {
+            $data = $this->importService->validate($request->file_id, $request->mapping);
+            return ApiResponse::success(SuccessMessages::SUCCESSFUL, $data, [], 200);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), null, [], 500);
+        }
+    }
+
+    public function importExecute(ImportExecuteRequest $request)
+    {
+        try {
+            $data = $this->importService->execute(
+                $request->file_id,
+                $request->mapping,
+                $request->offset,
+                $request->limit ?? 50
+            );
+            return ApiResponse::success(SuccessMessages::SUCCESSFUL, $data, [], 200);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), null, [], 500);
+        }
+    }
+
+    public function importImages(ImportImagesRequest $request)
+    {
+        try {
+            $data = $this->importService->importImages($request->file('images'));
+            return ApiResponse::success(SuccessMessages::SUCCESSFUL, $data, [], 200);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), null, [], 500);
+        }
     }
 }

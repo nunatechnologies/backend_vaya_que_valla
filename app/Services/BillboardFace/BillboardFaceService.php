@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Messages\ErrorMessages;
 use App\Imports\BillboardsImport;
 use App\Models\BillboardFace;
+use App\Models\BillboardFaceStatusLog;
 use App\Models\BillboardStructure;
 use App\Models\City;
 use App\Models\Province;
@@ -43,6 +44,33 @@ class BillboardFaceService
 
     public function updateBillboardFace($id, $data)
     {
+        if (isset($data['status'])) {
+            $face = $this->billboardfaceRepository->find($id);
+            if ($face && $face->status !== $data['status']) {
+                BillboardFaceStatusLog::create([
+                    'billboard_face_id' => $id,
+                    'from_status' => $face->status,
+                    'to_status' => $data['status'],
+                    'user_id' => auth()->id(),
+                ]);
+            }
+            // Si el admin libera la valla a VERDE, limpiar fechas para que el cron no la "rente" de nuevo
+            // (sólo si el caller no envió fechas explícitas en este mismo update).
+            if ($data['status'] === 'VERDE'
+                && !array_key_exists('rented_from', $data)
+                && !array_key_exists('available_from', $data)) {
+                $data['rented_from'] = null;
+                $data['available_from'] = null;
+            }
+        }
+
+        // Columnas NOT NULL en la DB que la UI puede mandar vacías → coercionar a string vacío
+        foreach (['face', 'name', 'location', 'location_detail', 'size', 'traffic_data'] as $col) {
+            if (array_key_exists($col, $data) && $data[$col] === null) {
+                $data[$col] = '';
+            }
+        }
+
         return $this->billboardfaceRepository->update($id, $data);
     }
 
@@ -79,8 +107,9 @@ class BillboardFaceService
                 $providerId = NULL;
             }
             
+            $availableFromRaw = $availableFrom;
             $availableFrom = null;
-            if (!empty($availableFromRaw)) 
+            if (!empty($availableFromRaw))
             {
                 $parsedDate = \DateTime::createFromFormat('d/m/Y', trim($availableFromRaw));
                 if ($parsedDate && $parsedDate->format('d/m/Y') === trim($availableFromRaw)) {

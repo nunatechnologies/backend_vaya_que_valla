@@ -31,23 +31,23 @@ class PatchBillboardFaceRequest extends FormRequest
         return [
 			'code' => ['sometimes','string','max:10','unique:billboard_faces,code,'.$this->route("id")],
 			// 'billboard_id' => ['sometimes','integer','exists:billboards,id'],
-			'face' => ['sometimes','string','max:10'],
-			'location_detail' => ['sometimes','string','max:255'],
+			'face' => ['sometimes','nullable','string','max:10'],
+			'location_detail' => ['sometimes','nullable','string','max:255'],
             'status'=>['required', new Enum(BillboardFaceStatus::class)],
             'rented_from' => ['sometimes','nullable',Rule::date()->format('Y-m-d')],
             'available_from' => ['sometimes','nullable',Rule::date()->format('Y-m-d')],
             'image' => ['sometimes','image','max:2048'],
             //Migrated from billboards
-            'name' => ['sometimes','string','max:255'],
-			'location' => ['sometimes','string','max:255'],
-			'advertiser_id' => ['sometimes','integer'],
-			'city_id' => ['sometimes','integer'],
-            'zone_id' => ['sometimes','integer'],
-			'billboard_structure_id' => ['sometimes','integer'],
-			'size' => ['sometimes','string','max:255'],
-			'price_per_month' => ['sometimes','numeric','between:0,99999999.99'],
-			'longitude' => ['sometimes','numeric'],
-			'latitude' => ['sometimes','numeric']
+            'name' => ['sometimes','nullable','string','max:255'],
+			'location' => ['sometimes','nullable','string','max:255'],
+			'advertiser_id' => ['sometimes','nullable','integer'],
+			'city_id' => ['sometimes','nullable','integer'],
+            'zone_id' => ['sometimes','nullable','integer'],
+			'billboard_structure_id' => ['sometimes','nullable','integer'],
+			'size' => ['sometimes','nullable','string','max:255'],
+			'price_per_month' => ['sometimes','nullable','numeric','between:0,99999999.99'],
+			'longitude' => ['sometimes','nullable','numeric'],
+			'latitude' => ['sometimes','nullable','numeric']
 		];
     }
 
