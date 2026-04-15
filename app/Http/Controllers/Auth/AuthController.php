@@ -56,7 +56,7 @@ class AuthController extends Controller
             $user = $this->authService->authUser($authrequest->input('email'), $authrequest->input('password'));
             Auth::login($user);
             $token = JWTAuth::fromUser($user);
-            $tokenTTL = auth('api')->factory()->getTTL();
+            $tokenTTL = (int) auth('api')->factory()->getTTL();
             $tokenExpiration = now()->addMinutes($tokenTTL);
             $issuedAt = now();
             $this->SystemLogService->logActivity(
@@ -80,7 +80,8 @@ class AuthController extends Controller
                 'Intento de inicio de sesión fallido',
                 SeveritySystemLog::warning->name,
             );
-            return ApiResponse::error($e->getMessage(), null, [], 500);
+            $statusCode = $e->getCode() ?: 500;
+            return ApiResponse::error($e->getMessage(), null, [], $statusCode);
         }
     }
 
@@ -179,7 +180,7 @@ class AuthController extends Controller
 
             Auth::login($user);
             $token = JWTAuth::fromUser($user);
-            $tokenTTL = auth('api')->factory()->getTTL();
+            $tokenTTL = (int) auth('api')->factory()->getTTL();
             $tokenExpiration = now()->addMinutes($tokenTTL);
             $issuedAt = now();
 

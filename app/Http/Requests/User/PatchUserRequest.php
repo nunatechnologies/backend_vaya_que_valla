@@ -52,7 +52,9 @@ class PatchUserRequest extends FormRequest
             'phone_contact' => ['sometimes','required_if:user_type,ORGANIZATION', 'string','max:15'],
             'commision_percentage' => ['sometimes','required_if:user_type,ORGANIZATION', 'numeric','min:0','max:100'],
             'nit' => ['sometimes','required_if:user_type,ORGANIZATION', 'string','min:1','max:20'],
-            'category_id' => ['sometimes','required_if:user_type,ORGANIZATION', 'exists:categories,id']
+            'category_id' => ['sometimes','required_if:user_type,ORGANIZATION', 'exists:categories,id'],
+            'city_id' => ['sometimes','nullable', 'exists:cities,id'],
+            'password' => ['sometimes','nullable','string','min:8'],
 
         ];
     }

@@ -15,7 +15,9 @@ use App\Http\Responses\ApiResponse;
 use App\Services\User\UserService;
 use App\Services\SystemLogService;
 use App\Services\User\AuthService;
+use App\Notifications\ProviderCredentials;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -90,13 +92,26 @@ class UserController extends Controller
      public function register(UserRequest $UserRequest)
      {
         try {
+            $sendCredentials = $UserRequest->boolean('send_credentials');
+            $plainPassword = $UserRequest->input('password');
+
             $userData = $this->userService->createUser($UserRequest->all());
             $this->systemLogService->logActivity('usuario','Usuario registrado',
                  SeveritySystemLog::info->name,
                  $userData
             );
-            $userData->sendEmailVerificationNotification();
-            if (request()->hasFile('image')) 
+
+            if ($sendCredentials) {
+                // Activar cuenta directamente y enviar credenciales
+                $userData->email_verified_at = now();
+                $userData->entity_status = 'active';
+                $userData->save();
+                $userData->notify(new ProviderCredentials($plainPassword, true));
+            } else {
+                $userData->sendEmailVerificationNotification();
+            }
+
+            if (request()->hasFile('image'))
             {
                 $userData->addMediaFromRequest('image')->toMediaCollection();
             }
@@ -222,8 +237,37 @@ class UserController extends Controller
      public function update_user(PatchUserRequest $userRequest, $id)
      {
          try {
-            $user = $this->userService->updateUser($id, $userRequest->validated());
-            if (request()->hasFile('image')) 
+            $sendCredentials = $userRequest->boolean('send_credentials');
+
+            $validated = $userRequest->validated();
+            // Password manual del admin tiene prioridad. Si no se envió y se pidió enviar
+            // credenciales, generar una random como antes.
+            $plainPassword = !empty($validated['password']) ? $validated['password'] : null;
+            if ($sendCredentials && !$plainPassword) {
+                $plainPassword = Str::random(10);
+                $validated['password'] = $plainPassword;
+            }
+            // Si quedó vacío en el array (caso "sometimes nullable"), lo quitamos para no
+            // sobrescribir con null en la DB.
+            if (array_key_exists('password', $validated) && empty($validated['password'])) {
+                unset($validated['password']);
+            }
+
+            $user = $this->userService->updateUser($id, $validated);
+
+            // Si el admin definió una nueva contraseña (con o sin envío de email),
+            // activar la cuenta para que el proveedor pueda iniciar sesión inmediatamente.
+            if ($plainPassword) {
+                $user->email_verified_at = $user->email_verified_at ?? now();
+                $user->entity_status = 'active';
+                $user->save();
+            }
+
+            if ($sendCredentials && $plainPassword) {
+                $user->notify(new ProviderCredentials($plainPassword, false));
+            }
+
+            if (request()->hasFile('image'))
             {
                 $user->addMediaFromRequest('image')->toMediaCollection();
             }
@@ -376,7 +420,36 @@ class UserController extends Controller
      * )
      */
 
-     public function update_profile(UpdateProfileRequest $request)
+     public function pending_validation()
+    {
+        try {
+            $users = \App\Models\User::whereNotNull('email_verified_at')
+                ->where('entity_status', 'inactive')
+                ->with(['roles', 'person', 'organization'])
+                ->orderBy('email_verified_at', 'desc')
+                ->get();
+            return ApiResponse::success(SuccessMessages::SUCCESSFUL, UserResource::collection($users), [], 200);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), null, [], 500);
+        }
+    }
+
+    public function activate_user($id)
+    {
+        try {
+            $user = \App\Models\User::findOrFail($id);
+            if ($user->entity_status === 'active') {
+                return ApiResponse::error('El usuario ya está activo', null, [], 422);
+            }
+            $user->markAccountAsVerified();
+            $this->systemLogService->logActivity('user', 'Cuenta de usuario activada', SeveritySystemLog::info->name, $user);
+            return ApiResponse::success(SuccessMessages::UPDATE_SUCCESS, new UserResource($user), [], 200);
+        } catch (\Exception $e) {
+            return ApiResponse::error($e->getMessage(), null, [], 500);
+        }
+    }
+
+    public function update_profile(UpdateProfileRequest $request)
      {
         try {
             

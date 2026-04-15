@@ -34,6 +34,11 @@ class UserResource extends JsonResource
             ],
             'entity_status' => $this->entity_status,
             'person' => new PersonResource($this->whenLoaded('person')),
+            'city_id' => $this->city_id,
+            'city' => $this->whenLoaded('city', fn() => [
+                'id' => $this->city->id,
+                'name' => $this->city->name,
+            ]),
         ];
     }
 }

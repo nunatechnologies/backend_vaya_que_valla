@@ -73,18 +73,18 @@ class AuthService
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'user_type' => $data['user_type'],
-            'entity_status' => 'inactive'
+            'entity_status' => 'active'
         ]);
-    
-        if ($data['user_type'] === UserType::PERSON->name) 
+
+        if ($data['user_type'] === UserType::PERSON->name)
         {
             $user->person()->create([
                 'user_id' => $user->id,
                 'ci' => $data['ci'],
             ]);
         }
-    
-        if ($data['user_type'] === UserType::ORGANIZATION->name) 
+
+        if ($data['user_type'] === UserType::ORGANIZATION->name)
         {
             $user->organization()->create([
                 'user_id' => $user->id,
@@ -98,7 +98,16 @@ class AuthService
             $user->assignRole($data['role']);
         }
         $user->assignRole($data['role']);
-        $user->sendEmailVerificationNotification();
+
+        try {
+            $user->sendEmailVerificationNotification();
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Error enviando email de verificación: ' . $e->getMessage(), [
+                'user_id' => $user->id,
+                'email' => $user->email,
+            ]);
+        }
+
         return $user;
     }
 }

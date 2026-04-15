@@ -40,7 +40,7 @@ class ResetPasswordCustom extends Notification
         if (env('APP_ENV') == 'production') {
             $frontendUrl = 'https://panel.vayaquevalla.com';
         } else {
-            $frontendUrl = 'http://localhost:5173';
+            $frontendUrl = env('FRONTEND_URL', 'http://localhost:5174');
         }
 
         $url = $frontendUrl . '/authentication/reset-password/' . $this->token . '?email=' . urlencode($notifiable->email);

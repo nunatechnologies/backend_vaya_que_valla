@@ -50,7 +50,8 @@ class UserRequest extends FormRequest
             'phone_contact' => ['nullable', 'string','max:15'],
             'commision_percentage' => ['nullable', 'numeric','min:0','max:100'],
             'nit' => ['nullable', 'string','min:1','max:20'],
-            'category_id' => ['nullable', 'exists:categories,id']
+            'category_id' => ['nullable', 'exists:categories,id'],
+            'city_id' => ['nullable', 'exists:cities,id']
         ];
     }
 
