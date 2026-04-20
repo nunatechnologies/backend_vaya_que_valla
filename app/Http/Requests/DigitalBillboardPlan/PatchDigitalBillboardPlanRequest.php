@@ -28,6 +28,9 @@ class PatchDigitalBillboardPlanRequest extends FormRequest
         return [
 			'name' => ['sometimes','string','max:255'],
 			'passes_per_hour' => ['sometimes','integer'],
+			'price_per_month' => ['sometimes','numeric','min:0'],
+			'seconds_per_day' => ['sometimes','integer','min:0'],
+			'max_videos' => ['sometimes','integer','min:1'],
 			'description' => ['sometimes']
 		];
     }

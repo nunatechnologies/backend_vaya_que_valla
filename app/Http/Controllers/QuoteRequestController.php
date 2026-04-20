@@ -74,24 +74,27 @@ class QuoteRequestController extends Controller
             $token = $loginResponse->json('meta.accessToken');
 
             // 2. Send data
-            $externalUrl = app()->environment('local')
-                ? 'http://vayaquevalla.test/api/authen/externals/receive-request'
-                : config('crm.base_url') . '/api/opportunity/generate-lead-from-request';
+            $externalUrl = config('crm.base_url') . '/api/opportunity/generate-lead-from-request';
 
             // peticion api
-            $response = Http::withToken($token)->acceptJson()
-                ->post($externalUrl, new RequestResource($request));
+            try {
+                $response = Http::withToken($token)->acceptJson()
+                    ->timeout(10)
+                    ->post($externalUrl, new RequestResource($request));
 
-            // 3. Result after send data
-            if ($response->failed()) {
-                Log::error('Error pushing data to ' . $externalUrl, [
-                    'response' => $response->body(),
-                ]);
-            } else {
-                Log::info('Pushed data to ' . $externalUrl, [
-                    'response' => $response->body(),
-                    'data' => new RequestResource($request)
-                ]);
+                // 3. Result after send data
+                if ($response->failed()) {
+                    Log::error('Error pushing data to ' . $externalUrl, [
+                        'response' => $response->body(),
+                    ]);
+                } else {
+                    Log::info('Pushed data to ' . $externalUrl, [
+                        'response' => $response->body(),
+                        'data' => new RequestResource($request)
+                    ]);
+                }
+            } catch (\Exception $httpException) {
+                Log::warning('No se pudo enviar al CRM (no crítico): ' . $httpException->getMessage());
             }
 
             $this->systemLogService->logActivity('quoterequest','QuoteRequest registrado',

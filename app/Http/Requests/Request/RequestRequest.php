@@ -30,9 +30,11 @@ class RequestRequest extends FormRequest
 			'user_id' => ['required','integer'],
 			'company' => ['nullable','string','max:40'],
 			'status' => ['required', Rule::in(['pending', 'approved', 'rejected'])],
-			'description' => ['nullable','string', "max:200"],
+			'space_type' => ['nullable', 'string', Rule::in(['billboard', 'digital'])],
+			'project_type' => ['nullable', 'string', Rule::in(['standard_print', 'special_project', 'video_quote', 'advisory'])],
+			'description' => ['nullable','string', "max:500"],
 			'budget_description' => ['nullable','string', "max:200"],
-			'tentative_start_date' => ['required', Rule::date()->format('Y-m-d')]
+			'tentative_start_date' => ['nullable', Rule::date()->format('Y-m-d')]
 		];
     }
 

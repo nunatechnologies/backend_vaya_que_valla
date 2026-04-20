@@ -30,7 +30,7 @@ class QuoteService
     {
         return DB::transaction(function () use ($data) {
             $startDate = Carbon::parse($data['start_date']);
-            $endDate = $startDate->copy()->addMonths($data['months'])->toDateString();
+            $endDate = $startDate->copy()->addMonths((int) $data['months'])->toDateString();
             $data['end_date'] = $endDate;
             return $this->quoteRepository->create($data);
         });

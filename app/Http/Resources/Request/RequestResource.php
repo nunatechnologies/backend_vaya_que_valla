@@ -22,6 +22,8 @@ class RequestResource extends JsonResource
             'company' => $this->company,
             'quotes' => QuoteResource::collection($this->quotes),
             'status' => $this->status,
+            'space_type' => $this->space_type,
+            'project_type' => $this->project_type,
             'description' => $this->description,
             'budget_description' => $this->budget_description,
             'tentative_start_date' => $this->tentative_start_date,

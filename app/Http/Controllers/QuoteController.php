@@ -107,7 +107,7 @@ class QuoteController extends Controller
             if ($quoteRequest->has('status') && $quoteRequest->get('status') == 'approved') 
             {
                 $startDate = $quote->start_date;
-                $endDateObj = $startDate->copy()->addMonths($quote->months);
+                $endDateObj = $startDate->copy()->addMonths((int) $quote->months);
                 $daysRemaining = now()->diffInDays($endDateObj, false);
 
                 $status = $daysRemaining > 30 ? 'ROJO' : 'AMARILLO';
