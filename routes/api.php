@@ -8,6 +8,8 @@ use App\Http\Controllers\BillboardStructureController;
 use App\Http\Controllers\BillboardTypeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\ProviderBillboardController;
+use App\Http\Controllers\ProviderDashboardController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DigitalBillboardPlanController;
 use App\Http\Controllers\OrganizationController;
@@ -29,24 +31,24 @@ use App\Notifications\RegistrationRequest;
 
 Route::get('/email/verify/{id}/{hash}', function (Request $request) {
     $user = User::findOrFail($request->route('id'));
-    $isActive = $user->entity_status == 'active';
-    $activeMessage = $isActive?" y tu cuenta ya ha sido activada.":", te notificaremos a traves de un correo cuando un administrador haya activado tu cuenta.";
-    $message = 'El email ha sido verificado correctamente'.$activeMessage;
 
     if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification())))
     {
         $message = "El enlace de verificación es inválido.";
+        return view('emails/email-verified', compact('message'));
     }
 
     if ($user->hasVerifiedEmail())
     {
-        $message = 'El email ya fue verificado'.$activeMessage;
+        $message = 'El email ya fue verificado y tu cuenta está activa. Ya puedes iniciar sesión.';
     }
     else
     {
         $user->markEmailAsVerified();
-        Notification::route('mail', config('vayaquevalla.commercial_manager_email'))->notify(new RegistrationRequest($user));
+        $user->markAccountAsVerified();
     }
+
+    $message = $message ?? 'Tu email ha sido verificado y tu cuenta ha sido activada. Ya puedes iniciar sesión.';
 
     return view('emails/email-verified', compact('message'));
 
@@ -81,6 +83,22 @@ Route::post('/email/resend', function (Request $request) {
     return response()->json(['message' => 'Correo de verificación reenviado']);
 })->middleware(['auth:api'])->name('verification.send');
 
+Route::post('/email/resend-by-email', function (Request $request) {
+    $request->validate(['email' => 'required|email']);
+    $user = User::where('email', $request->email)->first();
+
+    if (!$user) {
+        return response()->json(['message' => 'Si el correo existe, se enviará un nuevo enlace de verificación.'], 200);
+    }
+
+    if ($user->hasVerifiedEmail()) {
+        return response()->json(['message' => 'Tu correo ya fue verificado. Tu cuenta está pendiente de activación por un administrador.'], 200);
+    }
+
+    $user->sendEmailVerificationNotification();
+    return response()->json(['message' => 'Correo de verificación reenviado. Revisa tu bandeja de entrada.'], 200);
+})->middleware(['throttle:3,1440'])->name('verification.resend-by-email');
+
 Route::group(['prefix' => 'authen'], function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
@@ -98,6 +116,8 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     Route::post('/users', [UserController::class, 'register']);
     Route::post('/users/{id}/rol', [UserController::class, 'update_rol']);
     Route::put('/users/{id}', [UserController::class, 'update_user']);
+    Route::get('/users/pending-validation', [UserController::class, 'pending_validation']);
+    Route::post('/users/{id}/activate', [UserController::class, 'activate_user']);
     Route::get('/users/{id}', [UserController::class, 'get_user']);
     Route::get('/users', [UserController::class, 'list_user_pagination']);
 
@@ -148,6 +168,10 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     //Billboard faces
     Route::post('/billboard_faces', [BillboardFaceController::class, 'register']);
     Route::post('/billboard_faces/upload_file', [BillboardFaceController::class, 'upload_file']);
+    Route::post('/billboard_faces/import/preview', [BillboardFaceController::class, 'importPreview']);
+    Route::post('/billboard_faces/import/validate', [BillboardFaceController::class, 'importValidate']);
+    Route::post('/billboard_faces/import/execute', [BillboardFaceController::class, 'importExecute']);
+    Route::post('/billboard_faces/import/images', [BillboardFaceController::class, 'importImages']);
     Route::get('/billboard_faces/{id}', [BillboardFaceController::class, 'get_billboardface']);
     Route::put('/billboard_faces/{id}', [BillboardFaceController::class, 'update_billboardface']);
 
@@ -193,6 +217,21 @@ Route::group(['middleware' => ['api', 'jwt.auth']], function () {
     Route::post('/categories', [CategoryController::class, 'register']);
     Route::get('/categories/{id}', [CategoryController::class, 'get_category']);
     Route::put('/categories/{id}', [CategoryController::class, 'update_category']);
+
+    // Provider dashboard
+    Route::get('/provider/dashboard', [ProviderDashboardController::class, 'index']);
+
+    // Provider billboard face management (scoped to authenticated user)
+    Route::get('/provider/billboard-faces', [ProviderBillboardController::class, 'index']);
+    Route::get('/provider/billboard-faces/{id}', [ProviderBillboardController::class, 'show']);
+    Route::post('/provider/billboard-faces', [ProviderBillboardController::class, 'store']);
+    Route::put('/provider/billboard-faces/{id}', [ProviderBillboardController::class, 'update']);
+    Route::delete('/provider/billboard-faces/{id}', [ProviderBillboardController::class, 'destroy']);
+
+    // Admin: billboard face approval
+    Route::get('/admin/billboard-faces/pending', [ProviderBillboardController::class, 'pendingApproval']);
+    Route::post('/admin/billboard-faces/bulk-approve', [ProviderBillboardController::class, 'bulkApprove']);
+    Route::post('/admin/billboard-faces/bulk-reject', [ProviderBillboardController::class, 'bulkReject']);
 });
 
 Route::get('/available_faces', [BillboardFaceController::class, 'available_faces']);

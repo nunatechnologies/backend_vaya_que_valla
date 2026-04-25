@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use App\Models\BillboardFace;
+use App\Models\BillboardFaceStatusLog;
 use App\Models\Quote;
 
 class UpdateBillboardStatuses extends Command
@@ -28,32 +29,55 @@ class UpdateBillboardStatuses extends Command
      */
     public function handle()
     {
-        $faces = BillboardFace::all();
+        // Solo procesa vallas con ambas fechas. Si no tiene fechas, el admin la controla manualmente.
+        $faces = BillboardFace::whereNotNull('rented_from')
+            ->whereNotNull('available_from')
+            ->get();
         $today = now();
+        $touched = 0;
 
-        foreach ($faces as $face) 
+        foreach ($faces as $face)
         {
-            if (!$face->rented_from || !$face->available_from) 
-            {
-                $face->status = 'VERDE';
-                $face->save();
+            $startDate = Carbon::parse($face->rented_from);
+            $endDate = Carbon::parse($face->available_from);
+
+            $clearDates = false;
+
+            if ($today->lt($startDate)) {
+                // Antes de que arranque el alquiler — la valla aún no debería marcarse como rentada
+                $status = 'VERDE';
+            } elseif ($today->gt($endDate)) {
+                // Contrato vencido: liberar valla y limpiar fechas para que el admin pueda manipular libre
+                $status = 'VERDE';
+                $clearDates = true;
+            } else {
+                // Durante el alquiler: ROJO normal, AMARILLO en el último mes
+                $daysRemaining = $today->diffInDays($endDate, false);
+                $status = $daysRemaining > 30 ? 'ROJO' : 'AMARILLO';
+            }
+
+            $needsUpdate = $face->status !== $status || $clearDates;
+            if (!$needsUpdate) {
                 continue;
             }
 
-            $startDate = Carbon::parse($face->rented_from);
-            $endDate = Carbon::parse($face->available_from)->copy();
-
-            if ($today->lt($startDate) || $today->gt($endDate)) {
-                $status = 'VERDE';
-            } else {
-                $daysRemaining = $today->diffInDays($endDate, false);
-                $status = $daysRemaining > 30 ? 'AMARILLO' : 'ROJO';
+            if ($face->status !== $status) {
+                BillboardFaceStatusLog::create([
+                    'billboard_face_id' => $face->id,
+                    'from_status' => $face->status,
+                    'to_status' => $status,
+                ]);
             }
 
             $face->status = $status;
+            if ($clearDates) {
+                $face->rented_from = null;
+                $face->available_from = null;
+            }
             $face->save();
+            $touched++;
         }
 
-        $this->info('BillboardFaces status updated.');
+        $this->info("BillboardFaces status updated. Touched: {$touched}");
     }
 }
